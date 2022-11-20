@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package software.sirsch.sa4e.puzzles.protobuf;
+
+service PuzzleSolver {
+  rpc SolvePuzzle (SolvePuzzleRequest) returns (SolvePuzzleResponse) {}
+}
+
+message SolvePuzzleRequest {
+  repeated Symbol symbols = 1;
+  repeated Cell cells = 2;
+}
+
+message Symbol {
+  uint32 id = 1;
+  string description = 2;
+}
+
+message Cell {
+  uint32 row = 1;
+  uint32 column = 2;
+  SymbolNumber symbol_number = 3;
+}
+
+message SymbolNumber {
+  repeated uint32 symbol_ids = 1;
+}
+
+message SolvePuzzleResponse {
+  map<uint32, uint32> symbol_id_to_digit = 1;
+}
