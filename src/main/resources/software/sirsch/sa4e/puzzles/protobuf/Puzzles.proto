@@ -13,17 +13,13 @@ message SolvePuzzleRequest {
 
 message Symbol {
   uint32 id = 1;
-  string description = 2;
+  optional string description = 2;
 }
 
 message Cell {
   uint32 row = 1;
   uint32 column = 2;
-  SymbolNumber symbol_number = 3;
-}
-
-message SymbolNumber {
-  repeated uint32 symbol_ids = 1;
+  repeated uint32 number_as_symbol_ids = 3;
 }
 
 message SolvePuzzleResponse {

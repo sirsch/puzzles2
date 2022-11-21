@@ -1173,12 +1173,17 @@ public final class Puzzles {
     int getId();
 
     /**
-     * <code>string description = 2;</code>
+     * <code>optional string description = 2;</code>
+     * @return Whether the description field is set.
+     */
+    boolean hasDescription();
+    /**
+     * <code>optional string description = 2;</code>
      * @return The description.
      */
     java.lang.String getDescription();
     /**
-     * <code>string description = 2;</code>
+     * <code>optional string description = 2;</code>
      * @return The bytes for description.
      */
     com.google.protobuf.ByteString
@@ -1225,6 +1230,7 @@ public final class Puzzles {
               software.sirsch.sa4e.puzzles.protobuf.Puzzles.Symbol.class, software.sirsch.sa4e.puzzles.protobuf.Puzzles.Symbol.Builder.class);
     }
 
+    private int bitField0_;
     public static final int ID_FIELD_NUMBER = 1;
     private int id_;
     /**
@@ -1239,7 +1245,15 @@ public final class Puzzles {
     public static final int DESCRIPTION_FIELD_NUMBER = 2;
     private volatile java.lang.Object description_;
     /**
-     * <code>string description = 2;</code>
+     * <code>optional string description = 2;</code>
+     * @return Whether the description field is set.
+     */
+    @java.lang.Override
+    public boolean hasDescription() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <code>optional string description = 2;</code>
      * @return The description.
      */
     @java.lang.Override
@@ -1256,7 +1270,7 @@ public final class Puzzles {
       }
     }
     /**
-     * <code>string description = 2;</code>
+     * <code>optional string description = 2;</code>
      * @return The bytes for description.
      */
     @java.lang.Override
@@ -1291,7 +1305,7 @@ public final class Puzzles {
       if (id_ != 0) {
         output.writeUInt32(1, id_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(description_)) {
+      if (((bitField0_ & 0x00000001) != 0)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, description_);
       }
       getUnknownFields().writeTo(output);
@@ -1307,7 +1321,7 @@ public final class Puzzles {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(1, id_);
       }
-      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(description_)) {
+      if (((bitField0_ & 0x00000001) != 0)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, description_);
       }
       size += getUnknownFields().getSerializedSize();
@@ -1327,8 +1341,11 @@ public final class Puzzles {
 
       if (getId()
           != other.getId()) return false;
-      if (!getDescription()
-          .equals(other.getDescription())) return false;
+      if (hasDescription() != other.hasDescription()) return false;
+      if (hasDescription()) {
+        if (!getDescription()
+            .equals(other.getDescription())) return false;
+      }
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -1342,8 +1359,10 @@ public final class Puzzles {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + ID_FIELD_NUMBER;
       hash = (53 * hash) + getId();
-      hash = (37 * hash) + DESCRIPTION_FIELD_NUMBER;
-      hash = (53 * hash) + getDescription().hashCode();
+      if (hasDescription()) {
+        hash = (37 * hash) + DESCRIPTION_FIELD_NUMBER;
+        hash = (53 * hash) + getDescription().hashCode();
+      }
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1475,7 +1494,7 @@ public final class Puzzles {
         id_ = 0;
 
         description_ = "";
-
+        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
 
@@ -1502,8 +1521,14 @@ public final class Puzzles {
       @java.lang.Override
       public software.sirsch.sa4e.puzzles.protobuf.Puzzles.Symbol buildPartial() {
         software.sirsch.sa4e.puzzles.protobuf.Puzzles.Symbol result = new software.sirsch.sa4e.puzzles.protobuf.Puzzles.Symbol(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
         result.id_ = id_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          to_bitField0_ |= 0x00000001;
+        }
         result.description_ = description_;
+        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -1555,7 +1580,8 @@ public final class Puzzles {
         if (other.getId() != 0) {
           setId(other.getId());
         }
-        if (!other.getDescription().isEmpty()) {
+        if (other.hasDescription()) {
+          bitField0_ |= 0x00000001;
           description_ = other.description_;
           onChanged();
         }
@@ -1592,7 +1618,7 @@ public final class Puzzles {
               } // case 8
               case 18: {
                 description_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000001;
                 break;
               } // case 18
               default: {
@@ -1610,6 +1636,7 @@ public final class Puzzles {
         } // finally
         return this;
       }
+      private int bitField0_;
 
       private int id_ ;
       /**
@@ -1644,7 +1671,14 @@ public final class Puzzles {
 
       private java.lang.Object description_ = "";
       /**
-       * <code>string description = 2;</code>
+       * <code>optional string description = 2;</code>
+       * @return Whether the description field is set.
+       */
+      public boolean hasDescription() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <code>optional string description = 2;</code>
        * @return The description.
        */
       public java.lang.String getDescription() {
@@ -1660,7 +1694,7 @@ public final class Puzzles {
         }
       }
       /**
-       * <code>string description = 2;</code>
+       * <code>optional string description = 2;</code>
        * @return The bytes for description.
        */
       public com.google.protobuf.ByteString
@@ -1677,7 +1711,7 @@ public final class Puzzles {
         }
       }
       /**
-       * <code>string description = 2;</code>
+       * <code>optional string description = 2;</code>
        * @param value The description to set.
        * @return This builder for chaining.
        */
@@ -1686,23 +1720,23 @@ public final class Puzzles {
         if (value == null) {
     throw new NullPointerException();
   }
-  
+  bitField0_ |= 0x00000001;
         description_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>string description = 2;</code>
+       * <code>optional string description = 2;</code>
        * @return This builder for chaining.
        */
       public Builder clearDescription() {
-        
+        bitField0_ = (bitField0_ & ~0x00000001);
         description_ = getDefaultInstance().getDescription();
         onChanged();
         return this;
       }
       /**
-       * <code>string description = 2;</code>
+       * <code>optional string description = 2;</code>
        * @param value The bytes for description to set.
        * @return This builder for chaining.
        */
@@ -1712,7 +1746,7 @@ public final class Puzzles {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
-        
+        bitField0_ |= 0x00000001;
         description_ = value;
         onChanged();
         return this;
@@ -1798,19 +1832,21 @@ public final class Puzzles {
     int getColumn();
 
     /**
-     * <code>.software.sirsch.sa4e.puzzles.protobuf.SymbolNumber symbol_number = 3;</code>
-     * @return Whether the symbolNumber field is set.
+     * <code>repeated uint32 number_as_symbol_ids = 3;</code>
+     * @return A list containing the numberAsSymbolIds.
      */
-    boolean hasSymbolNumber();
+    java.util.List<java.lang.Integer> getNumberAsSymbolIdsList();
     /**
-     * <code>.software.sirsch.sa4e.puzzles.protobuf.SymbolNumber symbol_number = 3;</code>
-     * @return The symbolNumber.
+     * <code>repeated uint32 number_as_symbol_ids = 3;</code>
+     * @return The count of numberAsSymbolIds.
      */
-    software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber getSymbolNumber();
+    int getNumberAsSymbolIdsCount();
     /**
-     * <code>.software.sirsch.sa4e.puzzles.protobuf.SymbolNumber symbol_number = 3;</code>
+     * <code>repeated uint32 number_as_symbol_ids = 3;</code>
+     * @param index The index of the element to return.
+     * @return The numberAsSymbolIds at the given index.
      */
-    software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumberOrBuilder getSymbolNumberOrBuilder();
+    int getNumberAsSymbolIds(int index);
   }
   /**
    * Protobuf type {@code software.sirsch.sa4e.puzzles.protobuf.Cell}
@@ -1825,6 +1861,7 @@ public final class Puzzles {
       super(builder);
     }
     private Cell() {
+      numberAsSymbolIds_ = emptyIntList();
     }
 
     @java.lang.Override
@@ -1874,31 +1911,33 @@ public final class Puzzles {
       return column_;
     }
 
-    public static final int SYMBOL_NUMBER_FIELD_NUMBER = 3;
-    private software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber symbolNumber_;
+    public static final int NUMBER_AS_SYMBOL_IDS_FIELD_NUMBER = 3;
+    private com.google.protobuf.Internal.IntList numberAsSymbolIds_;
     /**
-     * <code>.software.sirsch.sa4e.puzzles.protobuf.SymbolNumber symbol_number = 3;</code>
-     * @return Whether the symbolNumber field is set.
+     * <code>repeated uint32 number_as_symbol_ids = 3;</code>
+     * @return A list containing the numberAsSymbolIds.
      */
     @java.lang.Override
-    public boolean hasSymbolNumber() {
-      return symbolNumber_ != null;
+    public java.util.List<java.lang.Integer>
+        getNumberAsSymbolIdsList() {
+      return numberAsSymbolIds_;
     }
     /**
-     * <code>.software.sirsch.sa4e.puzzles.protobuf.SymbolNumber symbol_number = 3;</code>
-     * @return The symbolNumber.
+     * <code>repeated uint32 number_as_symbol_ids = 3;</code>
+     * @return The count of numberAsSymbolIds.
      */
-    @java.lang.Override
-    public software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber getSymbolNumber() {
-      return symbolNumber_ == null ? software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber.getDefaultInstance() : symbolNumber_;
+    public int getNumberAsSymbolIdsCount() {
+      return numberAsSymbolIds_.size();
     }
     /**
-     * <code>.software.sirsch.sa4e.puzzles.protobuf.SymbolNumber symbol_number = 3;</code>
+     * <code>repeated uint32 number_as_symbol_ids = 3;</code>
+     * @param index The index of the element to return.
+     * @return The numberAsSymbolIds at the given index.
      */
-    @java.lang.Override
-    public software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumberOrBuilder getSymbolNumberOrBuilder() {
-      return getSymbolNumber();
+    public int getNumberAsSymbolIds(int index) {
+      return numberAsSymbolIds_.getInt(index);
     }
+    private int numberAsSymbolIdsMemoizedSerializedSize = -1;
 
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
@@ -1914,14 +1953,19 @@ public final class Puzzles {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
+      getSerializedSize();
       if (row_ != 0) {
         output.writeUInt32(1, row_);
       }
       if (column_ != 0) {
         output.writeUInt32(2, column_);
       }
-      if (symbolNumber_ != null) {
-        output.writeMessage(3, getSymbolNumber());
+      if (getNumberAsSymbolIdsList().size() > 0) {
+        output.writeUInt32NoTag(26);
+        output.writeUInt32NoTag(numberAsSymbolIdsMemoizedSerializedSize);
+      }
+      for (int i = 0; i < numberAsSymbolIds_.size(); i++) {
+        output.writeUInt32NoTag(numberAsSymbolIds_.getInt(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -1940,9 +1984,19 @@ public final class Puzzles {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(2, column_);
       }
-      if (symbolNumber_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, getSymbolNumber());
+      {
+        int dataSize = 0;
+        for (int i = 0; i < numberAsSymbolIds_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeUInt32SizeNoTag(numberAsSymbolIds_.getInt(i));
+        }
+        size += dataSize;
+        if (!getNumberAsSymbolIdsList().isEmpty()) {
+          size += 1;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        numberAsSymbolIdsMemoizedSerializedSize = dataSize;
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -1963,11 +2017,8 @@ public final class Puzzles {
           != other.getRow()) return false;
       if (getColumn()
           != other.getColumn()) return false;
-      if (hasSymbolNumber() != other.hasSymbolNumber()) return false;
-      if (hasSymbolNumber()) {
-        if (!getSymbolNumber()
-            .equals(other.getSymbolNumber())) return false;
-      }
+      if (!getNumberAsSymbolIdsList()
+          .equals(other.getNumberAsSymbolIdsList())) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -1983,9 +2034,9 @@ public final class Puzzles {
       hash = (53 * hash) + getRow();
       hash = (37 * hash) + COLUMN_FIELD_NUMBER;
       hash = (53 * hash) + getColumn();
-      if (hasSymbolNumber()) {
-        hash = (37 * hash) + SYMBOL_NUMBER_FIELD_NUMBER;
-        hash = (53 * hash) + getSymbolNumber().hashCode();
+      if (getNumberAsSymbolIdsCount() > 0) {
+        hash = (37 * hash) + NUMBER_AS_SYMBOL_IDS_FIELD_NUMBER;
+        hash = (53 * hash) + getNumberAsSymbolIdsList().hashCode();
       }
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
@@ -2119,12 +2170,8 @@ public final class Puzzles {
 
         column_ = 0;
 
-        if (symbolNumberBuilder_ == null) {
-          symbolNumber_ = null;
-        } else {
-          symbolNumber_ = null;
-          symbolNumberBuilder_ = null;
-        }
+        numberAsSymbolIds_ = emptyIntList();
+        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
 
@@ -2151,13 +2198,14 @@ public final class Puzzles {
       @java.lang.Override
       public software.sirsch.sa4e.puzzles.protobuf.Puzzles.Cell buildPartial() {
         software.sirsch.sa4e.puzzles.protobuf.Puzzles.Cell result = new software.sirsch.sa4e.puzzles.protobuf.Puzzles.Cell(this);
+        int from_bitField0_ = bitField0_;
         result.row_ = row_;
         result.column_ = column_;
-        if (symbolNumberBuilder_ == null) {
-          result.symbolNumber_ = symbolNumber_;
-        } else {
-          result.symbolNumber_ = symbolNumberBuilder_.build();
+        if (((bitField0_ & 0x00000001) != 0)) {
+          numberAsSymbolIds_.makeImmutable();
+          bitField0_ = (bitField0_ & ~0x00000001);
         }
+        result.numberAsSymbolIds_ = numberAsSymbolIds_;
         onBuilt();
         return result;
       }
@@ -2212,8 +2260,15 @@ public final class Puzzles {
         if (other.getColumn() != 0) {
           setColumn(other.getColumn());
         }
-        if (other.hasSymbolNumber()) {
-          mergeSymbolNumber(other.getSymbolNumber());
+        if (!other.numberAsSymbolIds_.isEmpty()) {
+          if (numberAsSymbolIds_.isEmpty()) {
+            numberAsSymbolIds_ = other.numberAsSymbolIds_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            ensureNumberAsSymbolIdsIsMutable();
+            numberAsSymbolIds_.addAll(other.numberAsSymbolIds_);
+          }
+          onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
@@ -2251,11 +2306,20 @@ public final class Puzzles {
 
                 break;
               } // case 16
+              case 24: {
+                int v = input.readUInt32();
+                ensureNumberAsSymbolIdsIsMutable();
+                numberAsSymbolIds_.addInt(v);
+                break;
+              } // case 24
               case 26: {
-                input.readMessage(
-                    getSymbolNumberFieldBuilder().getBuilder(),
-                    extensionRegistry);
-
+                int length = input.readRawVarint32();
+                int limit = input.pushLimit(length);
+                ensureNumberAsSymbolIdsIsMutable();
+                while (input.getBytesUntilLimit() > 0) {
+                  numberAsSymbolIds_.addInt(input.readUInt32());
+                }
+                input.popLimit(limit);
                 break;
               } // case 26
               default: {
@@ -2273,6 +2337,7 @@ public final class Puzzles {
         } // finally
         return this;
       }
+      private int bitField0_;
 
       private int row_ ;
       /**
@@ -2336,123 +2401,83 @@ public final class Puzzles {
         return this;
       }
 
-      private software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber symbolNumber_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber, software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber.Builder, software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumberOrBuilder> symbolNumberBuilder_;
-      /**
-       * <code>.software.sirsch.sa4e.puzzles.protobuf.SymbolNumber symbol_number = 3;</code>
-       * @return Whether the symbolNumber field is set.
-       */
-      public boolean hasSymbolNumber() {
-        return symbolNumberBuilder_ != null || symbolNumber_ != null;
+      private com.google.protobuf.Internal.IntList numberAsSymbolIds_ = emptyIntList();
+      private void ensureNumberAsSymbolIdsIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          numberAsSymbolIds_ = mutableCopy(numberAsSymbolIds_);
+          bitField0_ |= 0x00000001;
+         }
       }
       /**
-       * <code>.software.sirsch.sa4e.puzzles.protobuf.SymbolNumber symbol_number = 3;</code>
-       * @return The symbolNumber.
+       * <code>repeated uint32 number_as_symbol_ids = 3;</code>
+       * @return A list containing the numberAsSymbolIds.
        */
-      public software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber getSymbolNumber() {
-        if (symbolNumberBuilder_ == null) {
-          return symbolNumber_ == null ? software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber.getDefaultInstance() : symbolNumber_;
-        } else {
-          return symbolNumberBuilder_.getMessage();
-        }
+      public java.util.List<java.lang.Integer>
+          getNumberAsSymbolIdsList() {
+        return ((bitField0_ & 0x00000001) != 0) ?
+                 java.util.Collections.unmodifiableList(numberAsSymbolIds_) : numberAsSymbolIds_;
       }
       /**
-       * <code>.software.sirsch.sa4e.puzzles.protobuf.SymbolNumber symbol_number = 3;</code>
+       * <code>repeated uint32 number_as_symbol_ids = 3;</code>
+       * @return The count of numberAsSymbolIds.
        */
-      public Builder setSymbolNumber(software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber value) {
-        if (symbolNumberBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          symbolNumber_ = value;
-          onChanged();
-        } else {
-          symbolNumberBuilder_.setMessage(value);
-        }
-
-        return this;
+      public int getNumberAsSymbolIdsCount() {
+        return numberAsSymbolIds_.size();
       }
       /**
-       * <code>.software.sirsch.sa4e.puzzles.protobuf.SymbolNumber symbol_number = 3;</code>
+       * <code>repeated uint32 number_as_symbol_ids = 3;</code>
+       * @param index The index of the element to return.
+       * @return The numberAsSymbolIds at the given index.
        */
-      public Builder setSymbolNumber(
-          software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber.Builder builderForValue) {
-        if (symbolNumberBuilder_ == null) {
-          symbolNumber_ = builderForValue.build();
-          onChanged();
-        } else {
-          symbolNumberBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
+      public int getNumberAsSymbolIds(int index) {
+        return numberAsSymbolIds_.getInt(index);
       }
       /**
-       * <code>.software.sirsch.sa4e.puzzles.protobuf.SymbolNumber symbol_number = 3;</code>
+       * <code>repeated uint32 number_as_symbol_ids = 3;</code>
+       * @param index The index to set the value at.
+       * @param value The numberAsSymbolIds to set.
+       * @return This builder for chaining.
        */
-      public Builder mergeSymbolNumber(software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber value) {
-        if (symbolNumberBuilder_ == null) {
-          if (symbolNumber_ != null) {
-            symbolNumber_ =
-              software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber.newBuilder(symbolNumber_).mergeFrom(value).buildPartial();
-          } else {
-            symbolNumber_ = value;
-          }
-          onChanged();
-        } else {
-          symbolNumberBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.software.sirsch.sa4e.puzzles.protobuf.SymbolNumber symbol_number = 3;</code>
-       */
-      public Builder clearSymbolNumber() {
-        if (symbolNumberBuilder_ == null) {
-          symbolNumber_ = null;
-          onChanged();
-        } else {
-          symbolNumber_ = null;
-          symbolNumberBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <code>.software.sirsch.sa4e.puzzles.protobuf.SymbolNumber symbol_number = 3;</code>
-       */
-      public software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber.Builder getSymbolNumberBuilder() {
-        
+      public Builder setNumberAsSymbolIds(
+          int index, int value) {
+        ensureNumberAsSymbolIdsIsMutable();
+        numberAsSymbolIds_.setInt(index, value);
         onChanged();
-        return getSymbolNumberFieldBuilder().getBuilder();
+        return this;
       }
       /**
-       * <code>.software.sirsch.sa4e.puzzles.protobuf.SymbolNumber symbol_number = 3;</code>
+       * <code>repeated uint32 number_as_symbol_ids = 3;</code>
+       * @param value The numberAsSymbolIds to add.
+       * @return This builder for chaining.
        */
-      public software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumberOrBuilder getSymbolNumberOrBuilder() {
-        if (symbolNumberBuilder_ != null) {
-          return symbolNumberBuilder_.getMessageOrBuilder();
-        } else {
-          return symbolNumber_ == null ?
-              software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber.getDefaultInstance() : symbolNumber_;
-        }
+      public Builder addNumberAsSymbolIds(int value) {
+        ensureNumberAsSymbolIdsIsMutable();
+        numberAsSymbolIds_.addInt(value);
+        onChanged();
+        return this;
       }
       /**
-       * <code>.software.sirsch.sa4e.puzzles.protobuf.SymbolNumber symbol_number = 3;</code>
+       * <code>repeated uint32 number_as_symbol_ids = 3;</code>
+       * @param values The numberAsSymbolIds to add.
+       * @return This builder for chaining.
        */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber, software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber.Builder, software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumberOrBuilder> 
-          getSymbolNumberFieldBuilder() {
-        if (symbolNumberBuilder_ == null) {
-          symbolNumberBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber, software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber.Builder, software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumberOrBuilder>(
-                  getSymbolNumber(),
-                  getParentForChildren(),
-                  isClean());
-          symbolNumber_ = null;
-        }
-        return symbolNumberBuilder_;
+      public Builder addAllNumberAsSymbolIds(
+          java.lang.Iterable<? extends java.lang.Integer> values) {
+        ensureNumberAsSymbolIdsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, numberAsSymbolIds_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated uint32 number_as_symbol_ids = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearNumberAsSymbolIds() {
+        numberAsSymbolIds_ = emptyIntList();
+        bitField0_ = (bitField0_ & ~0x00000001);
+        onChanged();
+        return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -2513,594 +2538,6 @@ public final class Puzzles {
 
     @java.lang.Override
     public software.sirsch.sa4e.puzzles.protobuf.Puzzles.Cell getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
-  public interface SymbolNumberOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:software.sirsch.sa4e.puzzles.protobuf.SymbolNumber)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>repeated uint32 symbol_ids = 1;</code>
-     * @return A list containing the symbolIds.
-     */
-    java.util.List<java.lang.Integer> getSymbolIdsList();
-    /**
-     * <code>repeated uint32 symbol_ids = 1;</code>
-     * @return The count of symbolIds.
-     */
-    int getSymbolIdsCount();
-    /**
-     * <code>repeated uint32 symbol_ids = 1;</code>
-     * @param index The index of the element to return.
-     * @return The symbolIds at the given index.
-     */
-    int getSymbolIds(int index);
-  }
-  /**
-   * Protobuf type {@code software.sirsch.sa4e.puzzles.protobuf.SymbolNumber}
-   */
-  public static final class SymbolNumber extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:software.sirsch.sa4e.puzzles.protobuf.SymbolNumber)
-      SymbolNumberOrBuilder {
-  private static final long serialVersionUID = 0L;
-    // Use SymbolNumber.newBuilder() to construct.
-    private SymbolNumber(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private SymbolNumber() {
-      symbolIds_ = emptyIntList();
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({"unused"})
-    protected java.lang.Object newInstance(
-        UnusedPrivateParameter unused) {
-      return new SymbolNumber();
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return software.sirsch.sa4e.puzzles.protobuf.Puzzles.internal_static_software_sirsch_sa4e_puzzles_protobuf_SymbolNumber_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return software.sirsch.sa4e.puzzles.protobuf.Puzzles.internal_static_software_sirsch_sa4e_puzzles_protobuf_SymbolNumber_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber.class, software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber.Builder.class);
-    }
-
-    public static final int SYMBOL_IDS_FIELD_NUMBER = 1;
-    private com.google.protobuf.Internal.IntList symbolIds_;
-    /**
-     * <code>repeated uint32 symbol_ids = 1;</code>
-     * @return A list containing the symbolIds.
-     */
-    @java.lang.Override
-    public java.util.List<java.lang.Integer>
-        getSymbolIdsList() {
-      return symbolIds_;
-    }
-    /**
-     * <code>repeated uint32 symbol_ids = 1;</code>
-     * @return The count of symbolIds.
-     */
-    public int getSymbolIdsCount() {
-      return symbolIds_.size();
-    }
-    /**
-     * <code>repeated uint32 symbol_ids = 1;</code>
-     * @param index The index of the element to return.
-     * @return The symbolIds at the given index.
-     */
-    public int getSymbolIds(int index) {
-      return symbolIds_.getInt(index);
-    }
-    private int symbolIdsMemoizedSerializedSize = -1;
-
-    private byte memoizedIsInitialized = -1;
-    @java.lang.Override
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (getSymbolIdsList().size() > 0) {
-        output.writeUInt32NoTag(10);
-        output.writeUInt32NoTag(symbolIdsMemoizedSerializedSize);
-      }
-      for (int i = 0; i < symbolIds_.size(); i++) {
-        output.writeUInt32NoTag(symbolIds_.getInt(i));
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      {
-        int dataSize = 0;
-        for (int i = 0; i < symbolIds_.size(); i++) {
-          dataSize += com.google.protobuf.CodedOutputStream
-            .computeUInt32SizeNoTag(symbolIds_.getInt(i));
-        }
-        size += dataSize;
-        if (!getSymbolIdsList().isEmpty()) {
-          size += 1;
-          size += com.google.protobuf.CodedOutputStream
-              .computeInt32SizeNoTag(dataSize);
-        }
-        symbolIdsMemoizedSerializedSize = dataSize;
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber)) {
-        return super.equals(obj);
-      }
-      software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber other = (software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber) obj;
-
-      if (!getSymbolIdsList()
-          .equals(other.getSymbolIdsList())) return false;
-      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
-      return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      if (getSymbolIdsCount() > 0) {
-        hash = (37 * hash) + SYMBOL_IDS_FIELD_NUMBER;
-        hash = (53 * hash) + getSymbolIdsList().hashCode();
-      }
-      hash = (29 * hash) + getUnknownFields().hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    @java.lang.Override
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code software.sirsch.sa4e.puzzles.protobuf.SymbolNumber}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:software.sirsch.sa4e.puzzles.protobuf.SymbolNumber)
-        software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumberOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return software.sirsch.sa4e.puzzles.protobuf.Puzzles.internal_static_software_sirsch_sa4e_puzzles_protobuf_SymbolNumber_descriptor;
-      }
-
-      @java.lang.Override
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return software.sirsch.sa4e.puzzles.protobuf.Puzzles.internal_static_software_sirsch_sa4e_puzzles_protobuf_SymbolNumber_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber.class, software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber.Builder.class);
-      }
-
-      // Construct using software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber.newBuilder()
-      private Builder() {
-
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-
-      }
-      @java.lang.Override
-      public Builder clear() {
-        super.clear();
-        symbolIds_ = emptyIntList();
-        bitField0_ = (bitField0_ & ~0x00000001);
-        return this;
-      }
-
-      @java.lang.Override
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return software.sirsch.sa4e.puzzles.protobuf.Puzzles.internal_static_software_sirsch_sa4e_puzzles_protobuf_SymbolNumber_descriptor;
-      }
-
-      @java.lang.Override
-      public software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber getDefaultInstanceForType() {
-        return software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber.getDefaultInstance();
-      }
-
-      @java.lang.Override
-      public software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber build() {
-        software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      @java.lang.Override
-      public software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber buildPartial() {
-        software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber result = new software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber(this);
-        int from_bitField0_ = bitField0_;
-        if (((bitField0_ & 0x00000001) != 0)) {
-          symbolIds_.makeImmutable();
-          bitField0_ = (bitField0_ & ~0x00000001);
-        }
-        result.symbolIds_ = symbolIds_;
-        onBuilt();
-        return result;
-      }
-
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
-      @java.lang.Override
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber) {
-          return mergeFrom((software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber other) {
-        if (other == software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber.getDefaultInstance()) return this;
-        if (!other.symbolIds_.isEmpty()) {
-          if (symbolIds_.isEmpty()) {
-            symbolIds_ = other.symbolIds_;
-            bitField0_ = (bitField0_ & ~0x00000001);
-          } else {
-            ensureSymbolIdsIsMutable();
-            symbolIds_.addAll(other.symbolIds_);
-          }
-          onChanged();
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        onChanged();
-        return this;
-      }
-
-      @java.lang.Override
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      @java.lang.Override
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        if (extensionRegistry == null) {
-          throw new java.lang.NullPointerException();
-        }
-        try {
-          boolean done = false;
-          while (!done) {
-            int tag = input.readTag();
-            switch (tag) {
-              case 0:
-                done = true;
-                break;
-              case 8: {
-                int v = input.readUInt32();
-                ensureSymbolIdsIsMutable();
-                symbolIds_.addInt(v);
-                break;
-              } // case 8
-              case 10: {
-                int length = input.readRawVarint32();
-                int limit = input.pushLimit(length);
-                ensureSymbolIdsIsMutable();
-                while (input.getBytesUntilLimit() > 0) {
-                  symbolIds_.addInt(input.readUInt32());
-                }
-                input.popLimit(limit);
-                break;
-              } // case 10
-              default: {
-                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
-                  done = true; // was an endgroup tag
-                }
-                break;
-              } // default:
-            } // switch (tag)
-          } // while (!done)
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          throw e.unwrapIOException();
-        } finally {
-          onChanged();
-        } // finally
-        return this;
-      }
-      private int bitField0_;
-
-      private com.google.protobuf.Internal.IntList symbolIds_ = emptyIntList();
-      private void ensureSymbolIdsIsMutable() {
-        if (!((bitField0_ & 0x00000001) != 0)) {
-          symbolIds_ = mutableCopy(symbolIds_);
-          bitField0_ |= 0x00000001;
-         }
-      }
-      /**
-       * <code>repeated uint32 symbol_ids = 1;</code>
-       * @return A list containing the symbolIds.
-       */
-      public java.util.List<java.lang.Integer>
-          getSymbolIdsList() {
-        return ((bitField0_ & 0x00000001) != 0) ?
-                 java.util.Collections.unmodifiableList(symbolIds_) : symbolIds_;
-      }
-      /**
-       * <code>repeated uint32 symbol_ids = 1;</code>
-       * @return The count of symbolIds.
-       */
-      public int getSymbolIdsCount() {
-        return symbolIds_.size();
-      }
-      /**
-       * <code>repeated uint32 symbol_ids = 1;</code>
-       * @param index The index of the element to return.
-       * @return The symbolIds at the given index.
-       */
-      public int getSymbolIds(int index) {
-        return symbolIds_.getInt(index);
-      }
-      /**
-       * <code>repeated uint32 symbol_ids = 1;</code>
-       * @param index The index to set the value at.
-       * @param value The symbolIds to set.
-       * @return This builder for chaining.
-       */
-      public Builder setSymbolIds(
-          int index, int value) {
-        ensureSymbolIdsIsMutable();
-        symbolIds_.setInt(index, value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated uint32 symbol_ids = 1;</code>
-       * @param value The symbolIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addSymbolIds(int value) {
-        ensureSymbolIdsIsMutable();
-        symbolIds_.addInt(value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated uint32 symbol_ids = 1;</code>
-       * @param values The symbolIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addAllSymbolIds(
-          java.lang.Iterable<? extends java.lang.Integer> values) {
-        ensureSymbolIdsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, symbolIds_);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated uint32 symbol_ids = 1;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearSymbolIds() {
-        symbolIds_ = emptyIntList();
-        bitField0_ = (bitField0_ & ~0x00000001);
-        onChanged();
-        return this;
-      }
-      @java.lang.Override
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
-      }
-
-      @java.lang.Override
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:software.sirsch.sa4e.puzzles.protobuf.SymbolNumber)
-    }
-
-    // @@protoc_insertion_point(class_scope:software.sirsch.sa4e.puzzles.protobuf.SymbolNumber)
-    private static final software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber();
-    }
-
-    public static software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<SymbolNumber>
-        PARSER = new com.google.protobuf.AbstractParser<SymbolNumber>() {
-      @java.lang.Override
-      public SymbolNumber parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        Builder builder = newBuilder();
-        try {
-          builder.mergeFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          throw e.setUnfinishedMessage(builder.buildPartial());
-        } catch (com.google.protobuf.UninitializedMessageException e) {
-          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
-        } catch (java.io.IOException e) {
-          throw new com.google.protobuf.InvalidProtocolBufferException(e)
-              .setUnfinishedMessage(builder.buildPartial());
-        }
-        return builder.buildPartial();
-      }
-    };
-
-    public static com.google.protobuf.Parser<SymbolNumber> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<SymbolNumber> getParserForType() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public software.sirsch.sa4e.puzzles.protobuf.Puzzles.SymbolNumber getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -3836,11 +3273,6 @@ public final class Puzzles {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_software_sirsch_sa4e_puzzles_protobuf_Cell_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_software_sirsch_sa4e_puzzles_protobuf_SymbolNumber_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_software_sirsch_sa4e_puzzles_protobuf_SymbolNumber_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_software_sirsch_sa4e_puzzles_protobuf_SolvePuzzleResponse_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -3865,21 +3297,19 @@ public final class Puzzles {
       "ePuzzleRequest\022>\n\007symbols\030\001 \003(\0132-.softwa" +
       "re.sirsch.sa4e.puzzles.protobuf.Symbol\022:" +
       "\n\005cells\030\002 \003(\0132+.software.sirsch.sa4e.puz" +
-      "zles.protobuf.Cell\")\n\006Symbol\022\n\n\002id\030\001 \001(\r" +
-      "\022\023\n\013description\030\002 \001(\t\"o\n\004Cell\022\013\n\003row\030\001 \001" +
-      "(\r\022\016\n\006column\030\002 \001(\r\022J\n\rsymbol_number\030\003 \001(" +
-      "\01323.software.sirsch.sa4e.puzzles.protobu" +
-      "f.SymbolNumber\"\"\n\014SymbolNumber\022\022\n\nsymbol" +
-      "_ids\030\001 \003(\r\"\272\001\n\023SolvePuzzleResponse\022k\n\022sy" +
-      "mbol_id_to_digit\030\001 \003(\0132O.software.sirsch" +
-      ".sa4e.puzzles.protobuf.SolvePuzzleRespon" +
-      "se.SymbolIdToDigitEntry\0326\n\024SymbolIdToDig" +
-      "itEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028\0012" +
-      "\227\001\n\014PuzzleSolver\022\206\001\n\013SolvePuzzle\0229.softw" +
-      "are.sirsch.sa4e.puzzles.protobuf.SolvePu" +
-      "zzleRequest\032:.software.sirsch.sa4e.puzzl" +
-      "es.protobuf.SolvePuzzleResponse\"\000b\006proto" +
-      "3"
+      "zles.protobuf.Cell\">\n\006Symbol\022\n\n\002id\030\001 \001(\r" +
+      "\022\030\n\013description\030\002 \001(\tH\000\210\001\001B\016\n\014_descripti" +
+      "on\"A\n\004Cell\022\013\n\003row\030\001 \001(\r\022\016\n\006column\030\002 \001(\r\022" +
+      "\034\n\024number_as_symbol_ids\030\003 \003(\r\"\272\001\n\023SolveP" +
+      "uzzleResponse\022k\n\022symbol_id_to_digit\030\001 \003(" +
+      "\0132O.software.sirsch.sa4e.puzzles.protobu" +
+      "f.SolvePuzzleResponse.SymbolIdToDigitEnt" +
+      "ry\0326\n\024SymbolIdToDigitEntry\022\013\n\003key\030\001 \001(\r\022" +
+      "\r\n\005value\030\002 \001(\r:\0028\0012\227\001\n\014PuzzleSolver\022\206\001\n\013" +
+      "SolvePuzzle\0229.software.sirsch.sa4e.puzzl" +
+      "es.protobuf.SolvePuzzleRequest\032:.softwar" +
+      "e.sirsch.sa4e.puzzles.protobuf.SolvePuzz" +
+      "leResponse\"\000b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -3896,21 +3326,15 @@ public final class Puzzles {
     internal_static_software_sirsch_sa4e_puzzles_protobuf_Symbol_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_software_sirsch_sa4e_puzzles_protobuf_Symbol_descriptor,
-        new java.lang.String[] { "Id", "Description", });
+        new java.lang.String[] { "Id", "Description", "Description", });
     internal_static_software_sirsch_sa4e_puzzles_protobuf_Cell_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_software_sirsch_sa4e_puzzles_protobuf_Cell_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_software_sirsch_sa4e_puzzles_protobuf_Cell_descriptor,
-        new java.lang.String[] { "Row", "Column", "SymbolNumber", });
-    internal_static_software_sirsch_sa4e_puzzles_protobuf_SymbolNumber_descriptor =
-      getDescriptor().getMessageTypes().get(3);
-    internal_static_software_sirsch_sa4e_puzzles_protobuf_SymbolNumber_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_software_sirsch_sa4e_puzzles_protobuf_SymbolNumber_descriptor,
-        new java.lang.String[] { "SymbolIds", });
+        new java.lang.String[] { "Row", "Column", "NumberAsSymbolIds", });
     internal_static_software_sirsch_sa4e_puzzles_protobuf_SolvePuzzleResponse_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(3);
     internal_static_software_sirsch_sa4e_puzzles_protobuf_SolvePuzzleResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_software_sirsch_sa4e_puzzles_protobuf_SolvePuzzleResponse_descriptor,
