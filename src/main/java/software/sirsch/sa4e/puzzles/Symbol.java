@@ -66,7 +66,7 @@ public class Symbol {
 	}
 
 	/**
-	 * Diese Methode prüft ob ein Wert gebunden wurde.
+	 * Diese Methode prüft, ob ein Wert gebunden wurde.
 	 *
 	 * @return {@code true}, falls der Wert gebunden ist, sonst {@code false}
 	 */
@@ -78,6 +78,7 @@ public class Symbol {
 	 * Diese Methode gibt den gebundenen Wert zurück.
 	 *
 	 * @return der Wert
+	 * @throws IllegalStateException wenn {@link #isValueBound()} {@code == false}
 	 */
 	public byte getBoundValue() {
 		if (this.boundValue == VALUE_NOT_BOUND) {
