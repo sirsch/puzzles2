@@ -49,7 +49,7 @@ public class AdditionTest {
 	}
 
 	/**
-	 * Diese Methode prüft {@link Addition#isFalse()}, wenn die Zelle des ersten Summanden ein nicht
+	 * Diese Methode prüft {@link Addition#isContradiction()}, wenn die Zelle des ersten Summanden ein nicht
 	 * gebundenes Symbol enthält.
 	 */
 	@Test
@@ -58,13 +58,13 @@ public class AdditionTest {
 
 		when(this.firstSummand.areAllValuesBound()).thenReturn(false);
 
-		result = this.objectUnderTest.isFalse();
+		result = this.objectUnderTest.isContradiction();
 
 		assertFalse(result);
 	}
 
 	/**
-	 * Diese Methode prüft {@link Addition#isFalse()}, wenn die Zelle des zweiten Summanden ein
+	 * Diese Methode prüft {@link Addition#isContradiction()}, wenn die Zelle des zweiten Summanden ein
 	 * nicht gebundenes Symbol enthält.
 	 */
 	@Test
@@ -74,13 +74,13 @@ public class AdditionTest {
 		when(this.firstSummand.areAllValuesBound()).thenReturn(true);
 		when(this.secondSummand.areAllValuesBound()).thenReturn(false);
 
-		result = this.objectUnderTest.isFalse();
+		result = this.objectUnderTest.isContradiction();
 
 		assertFalse(result);
 	}
 
 	/**
-	 * Diese Methode prüft {@link Addition#isFalse()}, wenn die Zelle der Summe ein nicht gebundenes
+	 * Diese Methode prüft {@link Addition#isContradiction()}, wenn die Zelle der Summe ein nicht gebundenes
 	 * Symbol enthält.
 	 */
 	@Test
@@ -91,13 +91,13 @@ public class AdditionTest {
 		when(this.secondSummand.areAllValuesBound()).thenReturn(true);
 		when(this.sum.areAllValuesBound()).thenReturn(false);
 
-		result = this.objectUnderTest.isFalse();
+		result = this.objectUnderTest.isContradiction();
 
 		assertFalse(result);
 	}
 
 	/**
-	 * Diese Methode prüft {@link Addition#isFalse()}, wenn die Zelle der Summe ein nicht gebundenes
+	 * Diese Methode prüft {@link Addition#isContradiction()}, wenn die Zelle der Summe ein nicht gebundenes
 	 * Symbol enthält.
 	 */
 	@Test
@@ -111,13 +111,13 @@ public class AdditionTest {
 		when(this.secondSummand.calculateValue()).thenReturn(2L);
 		when(this.sum.calculateValue()).thenReturn(3L);
 
-		result = this.objectUnderTest.isFalse();
+		result = this.objectUnderTest.isContradiction();
 
 		assertFalse(result);
 	}
 
 	/**
-	 * Diese Methode prüft {@link Addition#isFalse()}, wenn die Zelle der Summe ein nicht gebundenes
+	 * Diese Methode prüft {@link Addition#isContradiction()}, wenn die Zelle der Summe ein nicht gebundenes
 	 * Symbol enthält.
 	 */
 	@Test
@@ -131,7 +131,7 @@ public class AdditionTest {
 		when(this.secondSummand.calculateValue()).thenReturn(2L);
 		when(this.sum.calculateValue()).thenReturn(42L);
 
-		result = this.objectUnderTest.isFalse();
+		result = this.objectUnderTest.isContradiction();
 
 		assertTrue(result);
 	}

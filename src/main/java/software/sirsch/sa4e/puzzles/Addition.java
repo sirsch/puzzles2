@@ -49,16 +49,15 @@ public class Addition {
 	 * Diese Methode zeigt an, ob es bei der Auswertung der Summe zu einem Widerspruch kam.
 	 *
 	 * <p>
-	 *     Falls die Summe wegen fehlender Werte noch nicht berechnet werden kann, liegt noch kein
+	 *     Falls die Summe wegen fehlender Werte noch nicht berechnet werden kann, liegt kein
 	 *     Widerspruch vor.
 	 * </p>
 	 *
-	 * @return {@code false} falls die Summe ausgewertet werden konnte und dabei ein Widerspruch
-	 * festgestellt wurde, sonst {@code true}
-	 * @see org.apache.commons.lang3.BooleanUtils#isFalse(Boolean)
+	 * @return {@code true} falls die Summe ausgewertet werden konnte und dabei ein Widerspruch
+	 * festgestellt wurde, sonst {@code false}
 	 */
-	public boolean isFalse() {
-		return this.areAllValuesBound() && !this.evaluate();
+	public boolean isContradiction() {
+		return this.areAllValuesBound() && !this.evaluatePredicate();
 	}
 
 	/**
@@ -73,12 +72,13 @@ public class Addition {
 	}
 
 	/**
-	 * Diese Methode prüft, ob die Summe stimmt.
+	 * Diese Methode prüft, ob es sich bei den für die Symbole eingesetzen Werte um eine Lösung der
+	 * Gleichung handelt.
 	 *
 	 * @return {@code true}, falls es sich um eine gültige Aussage handelt, sonst {@code false}
 	 * @throws IllegalStateException wenn {@link #areAllValuesBound()} {@code == false}
 	 */
-	private boolean evaluate() {
+	private boolean evaluatePredicate() {
 		return this.firstSummand.calculateValue() + this.secondSummand.calculateValue()
 				== this.sum.calculateValue();
 	}
