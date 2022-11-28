@@ -1,6 +1,5 @@
 package software.sirsch.sa4e.puzzles;
 
-import java.lang.reflect.InaccessibleObjectException;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;

@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import static java.util.List.copyOf;
+
 /**
  * Diese KLasse repräsentiert eine Zelle im Zahlenrätsel.
  *
@@ -20,15 +22,25 @@ public class Cell {
 	 * </p>
 	 */
 	@Nonnull
-	private final List<Symbol> number;
+	private final List<Symbol> symbols;
 
 	/**
 	 * Dieser Konstruktor legt die Zahl als Liste von Symbolen fest.
 	 *
-	 * @param number die zu setzende Zahl
+	 * @param symbols die zu setzende Zahl
 	 */
-	public Cell(@Nonnull final List<Symbol> number) {
-		this.number = number;
+	public Cell(@Nonnull final List<Symbol> symbols) {
+		this.symbols = copyOf(symbols);
+	}
+
+	/**
+	 * Diese Methode gibt die Symbole zurück.
+	 *
+	 * @return eine unveränderbare Liste der Symbole
+	 */
+	@Nonnull
+	public List<Symbol> getSymbols() {
+		return this.symbols;
 	}
 
 	/**
@@ -37,7 +49,7 @@ public class Cell {
 	 * @return {@code true}, falls alle Werte gebunden sind, sonst {@code false}
 	 */
 	public boolean areAllValuesBound() {
-		for (Symbol symbol : this.number) {
+		for (Symbol symbol : this.symbols) {
 			if (!symbol.isValueBound()) {
 				return false;
 			}
@@ -58,7 +70,7 @@ public class Cell {
 		long result = 0;
 		long factor = 1;
 
-		for (Symbol place : this.number) {
+		for (Symbol place : this.symbols) {
 			result += factor * place.getBoundValue();
 			factor *= base;
 		}

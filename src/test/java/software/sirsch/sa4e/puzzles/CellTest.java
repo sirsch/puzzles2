@@ -52,6 +52,18 @@ public class CellTest {
 	}
 
 	/**
+	 * Diese Methode prüft {@link Cell#getSymbols()}.
+	 */
+	@Test
+	public void testGetSymbols() {
+		List<Symbol> result;
+
+		result = this.objectUnderTest.getSymbols();
+
+		assertEquals(List.of(this.symbol0, this.symbol1, this.symbol2), result);
+	}
+
+	/**
 	 * Diese Methode prüft {@link Cell#areAllValuesBound()}, wenn allen Symbolen ein Wert gesetzt
 	 * wurde.
 	 */
