@@ -107,7 +107,18 @@ public class ProtobufConverter {
 	@Nonnull
 	private List<Symbol> convertSymbols(@Nonnull final List<Integer> symbolIds) {
 		return symbolIds.stream()
-				.map(symbolID -> this.puzzleBuilder.findOrCreateSymbol(symbolID, null))
+				.map(this::findSymbol)
 				.collect(Collectors.toList());
+	}
+
+	/**
+	 * Diese Methode sucht das Symbol zu einer ID.
+	 *
+	 * @param symbolID die ID des zu suchenden Symbols
+	 * @return das ermittelte Symbol
+	 */
+	@Nonnull
+	private Symbol findSymbol(final int symbolID) {
+		return this.puzzleBuilder.findOrCreateSymbol(symbolID, null);
 	}
 }
