@@ -134,7 +134,7 @@ public class ProtobufConverterTest {
 				argThat(arg -> arg.getId() == 0 && "A".equals(arg.getDescription())));
 		orderVerifier.verify(this.puzzleBuilder).findOrCreateSymbol(
 				argThat(arg -> arg.getId() == 1 && "B".equals(arg.getDescription())));
-		orderVerifier.verify(this.puzzleBuilder).withCell(1, 2, this.cell);
+		orderVerifier.verify(this.puzzleBuilder).withCell(this.cell);
 		orderVerifier.verify(this.puzzleBuilder).build();
 	}
 }

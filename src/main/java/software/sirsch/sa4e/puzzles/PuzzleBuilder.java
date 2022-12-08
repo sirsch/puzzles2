@@ -85,16 +85,25 @@ public class PuzzleBuilder {
 	/**
 	 * Diese Methode fügt eine Zelle hinzu.
 	 *
-	 * @param column die Spaltennummer
-	 * @param row die Zeilennummer
 	 * @param cell die hinzuzufügende Zelle
 	 * @return diese Instanz für Invocation-Chaining
 	 */
-	public PuzzleBuilder withCell(final int row, final int column, @Nonnull final Cell cell) {
+	public PuzzleBuilder withCell(@Nonnull final Cell cell) {
+		this.addCell(cell.getRow(), cell.getColumn(), cell);
+		return this;
+	}
+
+	/**
+	 * Diese Methode fügt eine Zelle hinzu.
+	 *
+	 * @param column die Spaltennummer
+	 * @param row die Zeilennummer
+	 * @param cell die hinzuzufügende Zelle
+	 */
+	private void addCell(final int row, final int column, @Nonnull final Cell cell) {
 		this.verify(row, column);
 		this.verifySymbols(cell);
 		this.rows[row][column] = cell;
-		return this;
 	}
 
 	/**

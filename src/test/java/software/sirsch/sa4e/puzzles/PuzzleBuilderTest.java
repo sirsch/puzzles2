@@ -145,6 +145,24 @@ public class PuzzleBuilderTest {
 		this.puzzle = mock(Puzzle.class);
 		this.puzzleFactory = mock(PuzzleFactory.class);
 		this.additionFactory = mock(AdditionFactory.class);
+		when(this.cell00.getRow()).thenReturn(0);
+		when(this.cell00.getColumn()).thenReturn(0);
+		when(this.cell01.getRow()).thenReturn(0);
+		when(this.cell01.getColumn()).thenReturn(1);
+		when(this.cell02.getRow()).thenReturn(0);
+		when(this.cell02.getColumn()).thenReturn(2);
+		when(this.cell10.getRow()).thenReturn(1);
+		when(this.cell10.getColumn()).thenReturn(0);
+		when(this.cell11.getRow()).thenReturn(1);
+		when(this.cell11.getColumn()).thenReturn(1);
+		when(this.cell12.getRow()).thenReturn(1);
+		when(this.cell12.getColumn()).thenReturn(2);
+		when(this.cell20.getRow()).thenReturn(2);
+		when(this.cell20.getColumn()).thenReturn(0);
+		when(this.cell21.getRow()).thenReturn(2);
+		when(this.cell21.getColumn()).thenReturn(1);
+		when(this.cell22.getRow()).thenReturn(2);
+		when(this.cell22.getColumn()).thenReturn(2);
 		when(this.additionFactory.create(this.cell00, this.cell01, this.cell02))
 				.thenReturn(this.additionRow0);
 		when(this.additionFactory.create(this.cell10, this.cell11, this.cell12))
@@ -162,63 +180,71 @@ public class PuzzleBuilderTest {
 	}
 
 	/**
-	 * Diese Methode prüft {@link PuzzleBuilder#withCell(int, int, Cell)}.
+	 * Diese Methode prüft {@link PuzzleBuilder#withCell(Cell)}.
 	 */
 	@Test
 	public void testWithCell() {
 		PuzzleBuilder result;
 
-		result = this.objectUnderTest.withCell(0, 0, this.cell00);
+		result = this.objectUnderTest.withCell(this.cell00);
 
 		assertEquals(this.objectUnderTest, result);
 	}
 
 	/**
-	 * Diese Methode prüft {@link PuzzleBuilder#withCell(int, int, Cell)}, wenn die Zeilennummer
+	 * Diese Methode prüft {@link PuzzleBuilder#withCell(Cell)}, wenn die Zeilennummer
 	 * zu klein ist.
 	 */
 	@Test
 	public void testWithCellRowNumberToLow() {
-		assertThrows(
-				IllegalArgumentException.class,
-				() -> this.objectUnderTest.withCell(-1, 0, this.cell00));
+		Cell cell = mock(Cell.class);
+
+		when(cell.getRow()).thenReturn(-1);
+
+		assertThrows(IllegalArgumentException.class, () -> this.objectUnderTest.withCell(cell));
 	}
 
 	/**
-	 * Diese Methode prüft {@link PuzzleBuilder#withCell(int, int, Cell)}, wenn die Zeilennummer
+	 * Diese Methode prüft {@link PuzzleBuilder#withCell(Cell)}, wenn die Zeilennummer
 	 * zu groß ist.
 	 */
 	@Test
 	public void testWithCellRowNumberToHigh() {
-		assertThrows(
-				IllegalArgumentException.class,
-				() -> this.objectUnderTest.withCell(3, 0, this.cell00));
+		Cell cell = mock(Cell.class);
+
+		when(cell.getRow()).thenReturn(3);
+
+		assertThrows(IllegalArgumentException.class, () -> this.objectUnderTest.withCell(cell));
 	}
 
 	/**
-	 * Diese Methode prüft {@link PuzzleBuilder#withCell(int, int, Cell)}, wenn die Spaltennummer
+	 * Diese Methode prüft {@link PuzzleBuilder#withCell(Cell)}, wenn die Spaltennummer
 	 * zu klein ist.
 	 */
 	@Test
 	public void testWithCellColumnNumberToLow() {
-		assertThrows(
-				IllegalArgumentException.class,
-				() -> this.objectUnderTest.withCell(0, -1, this.cell00));
+		Cell cell = mock(Cell.class);
+
+		when(cell.getColumn()).thenReturn(-1);
+
+		assertThrows(IllegalArgumentException.class, () -> this.objectUnderTest.withCell(cell));
 	}
 
 	/**
-	 * Diese Methode prüft {@link PuzzleBuilder#withCell(int, int, Cell)}, wenn die Spaltennummer
+	 * Diese Methode prüft {@link PuzzleBuilder#withCell(Cell)}, wenn die Spaltennummer
 	 * zu groß ist.
 	 */
 	@Test
 	public void testWithCellColumnNumberToHigh() {
-		assertThrows(
-				IllegalArgumentException.class,
-				() -> this.objectUnderTest.withCell(0, 3, this.cell00));
+		Cell cell = mock(Cell.class);
+
+		when(cell.getColumn()).thenReturn(3);
+
+		assertThrows(IllegalArgumentException.class, () -> this.objectUnderTest.withCell(cell));
 	}
 
 	/**
-	 * Diese Methode prüft {@link PuzzleBuilder#withCell(int, int, Cell)}, wenn die Zelle ein
+	 * Diese Methode prüft {@link PuzzleBuilder#withCell(Cell)}, wenn die Zelle ein
 	 * ungültiges Symbol enthält.
 	 */
 	@Test
@@ -227,7 +253,7 @@ public class PuzzleBuilderTest {
 
 		assertThrows(
 				IllegalArgumentException.class,
-				() -> this.objectUnderTest.withCell(0, 0, this.cell00));
+				() -> this.objectUnderTest.withCell(this.cell00));
 	}
 
 	/**
@@ -291,15 +317,15 @@ public class PuzzleBuilderTest {
 		when(this.cell00.getSymbols()).thenReturn(List.of(firstSymbol, secondSymbol));
 		when(this.puzzleFactory.create(List.of(firstSymbol, secondSymbol), this.listAdditions()))
 				.thenReturn(this.puzzle);
-		this.objectUnderTest.withCell(0, 0, this.cell00);
-		this.objectUnderTest.withCell(0, 1, this.cell01);
-		this.objectUnderTest.withCell(0, 2, this.cell02);
-		this.objectUnderTest.withCell(1, 0, this.cell10);
-		this.objectUnderTest.withCell(1, 1, this.cell11);
-		this.objectUnderTest.withCell(1, 2, this.cell12);
-		this.objectUnderTest.withCell(2, 0, this.cell20);
-		this.objectUnderTest.withCell(2, 1, this.cell21);
-		this.objectUnderTest.withCell(2, 2, this.cell22);
+		this.objectUnderTest.withCell(this.cell00);
+		this.objectUnderTest.withCell(this.cell01);
+		this.objectUnderTest.withCell(this.cell02);
+		this.objectUnderTest.withCell(this.cell10);
+		this.objectUnderTest.withCell(this.cell11);
+		this.objectUnderTest.withCell(this.cell12);
+		this.objectUnderTest.withCell(this.cell20);
+		this.objectUnderTest.withCell(this.cell21);
+		this.objectUnderTest.withCell(this.cell22);
 
 		result = this.objectUnderTest.build();
 
@@ -327,15 +353,15 @@ public class PuzzleBuilderTest {
 		firstSymbol = this.objectUnderTest.findOrCreateSymbol(42, "firstSymbol");
 		secondSymbol = this.objectUnderTest.findOrCreateSymbol(13, "secondSymbol");
 		when(this.cell00.getSymbols()).thenReturn(List.of(firstSymbol, secondSymbol));
-		this.objectUnderTest.withCell(0, 0, this.cell00);
-		this.objectUnderTest.withCell(0, 1, this.cell01);
-		this.objectUnderTest.withCell(0, 2, this.cell02);
-		this.objectUnderTest.withCell(1, 0, this.cell10);
-		this.objectUnderTest.withCell(1, 1, this.cell11);
-		this.objectUnderTest.withCell(1, 2, this.cell12);
-		this.objectUnderTest.withCell(2, 0, this.cell20);
-		this.objectUnderTest.withCell(2, 1, this.cell21);
-		this.objectUnderTest.withCell(2, 2, this.cell22);
+		this.objectUnderTest.withCell(this.cell00);
+		this.objectUnderTest.withCell(this.cell01);
+		this.objectUnderTest.withCell(this.cell02);
+		this.objectUnderTest.withCell(this.cell10);
+		this.objectUnderTest.withCell(this.cell11);
+		this.objectUnderTest.withCell(this.cell12);
+		this.objectUnderTest.withCell(this.cell20);
+		this.objectUnderTest.withCell(this.cell21);
+		this.objectUnderTest.withCell(this.cell22);
 		assertNotNull(this.objectUnderTest.build());
 	}
 

@@ -83,7 +83,7 @@ public class ProtobufConverter {
 	 */
 	@Nonnull
 	private void addCell(@Nonnull final Puzzles.Cell cell) {
-		this.puzzleBuilder.withCell(cell.getRow(), cell.getColumn(), this.convertCell(cell));
+		this.puzzleBuilder.withCell(this.convertCell(cell));
 	}
 
 	/**
