@@ -18,10 +18,10 @@ import software.sirsch.sa4e.puzzles.protobuf.Puzzles;
 public class ProtobufConverter {
 
 	/**
-	 * Dieses Feld muss die Fabrik für {@link PuzzleBuilder} enthalten.
+	 * Dieses Feld muss den {@link PuzzleBuilder} enthalten.
 	 */
 	@Nonnull
-	private final Supplier<PuzzleBuilder> puzzleBuilderFactory;
+	private final PuzzleBuilder puzzleBuilder;
 
 	/**
 	 * Dieses Feld muss die Fabrik für {@link Cell} enthalten.
@@ -46,7 +46,7 @@ public class ProtobufConverter {
 			@Nonnull final  Supplier<PuzzleBuilder> puzzleBuilderFactory,
 			@Nonnull final  Function<List<Symbol>, Cell> cellFactory) {
 
-		this.puzzleBuilderFactory = puzzleBuilderFactory;
+		this.puzzleBuilder = puzzleBuilderFactory.get();
 		this.cellFactory = cellFactory;
 	}
 
@@ -59,7 +59,8 @@ public class ProtobufConverter {
 	@Nonnull
 	public Puzzle createPuzzle(@Nonnull final Puzzles.SolvePuzzleRequest request) {
 		try {
-			return this.buildPuzzle(request, this.puzzleBuilderFactory.get()).build();
+			this.loadPuzzle(request);
+			return this.puzzleBuilder.build();
 		} catch (IllegalStateException e) {
 			throw new IllegalArgumentException(e.getMessage(), e);
 		}
@@ -69,68 +70,44 @@ public class ProtobufConverter {
 	 * Diese Methode befüllt einen {@link PuzzleBuilder} mit den Daten aus der Anfrage.
 	 *
 	 * @param request die zu untersuchende Anfrage
-	 * @param builder der zu befüllende Builder
-	 * @return der befüllt Builder
 	 */
 	@Nonnull
-	private PuzzleBuilder buildPuzzle(
-			@Nonnull final Puzzles.SolvePuzzleRequest request,
-			@Nonnull final PuzzleBuilder builder) {
-
-		request.getSymbolsList().forEach(builder::findOrCreateSymbol);
-		request.getCellsList().forEach(cell -> this.addCell(cell, builder));
-		return builder;
+	private void loadPuzzle(@Nonnull final Puzzles.SolvePuzzleRequest request) {
+		request.getSymbolsList().forEach(this.puzzleBuilder::findOrCreateSymbol);
+		request.getCellsList().forEach(this::addCell);
 	}
 
 	/**
 	 * Diese Methode übernimmt eine Zelle aus der Anfrage in den Builder.
 	 *
 	 * @param cell die zu übernehmende Zelle aus der Anfrage
-	 * @param builder der zu befüllende Builder
-	 * @return der Befüllte builder
 	 */
 	@Nonnull
-	private PuzzleBuilder addCell(
-			@Nonnull final Puzzles.Cell cell,
-			@Nonnull final PuzzleBuilder builder) {
-
-		return builder.withCell(
-				cell.getRow(),
-				cell.getColumn(),
-				this.convertCell(cell, builder));
+	private void addCell(@Nonnull final Puzzles.Cell cell) {
+		this.puzzleBuilder.withCell(cell.getRow(), cell.getColumn(), this.convertCell(cell));
 	}
 
 	/**
 	 * Diese Methode erzeugt eine {@link Cell} aus einer {@link Puzzles.Cell}.
 	 *
 	 * @param cell die zu untersuchende Zelle
-	 * @param builder der zu verwendende Builder
 	 * @return die erzeugte Zelle
 	 */
 	@Nonnull
-	private Cell convertCell(
-			@Nonnull final Puzzles.Cell cell,
-			@Nonnull final PuzzleBuilder builder) {
-
-		return this.cellFactory.apply(
-				this.convertSymbols(cell.getNumberAsSymbolIdsList(),
-						builder));
+	private Cell convertCell(@Nonnull final Puzzles.Cell cell) {
+		return this.cellFactory.apply(this.convertSymbols(cell.getNumberAsSymbolIdsList()));
 	}
 
 	/**
 	 * Diese Methode erzeugt eine Symbolliste aus der Liste der Symbol-IDs.
 	 *
 	 * @param symbolIds die auszuwertenden Symbol-IDs
-	 * @param builder der zu verwendende Builder
 	 * @return die erzeugte Liste
 	 */
 	@Nonnull
-	private List<Symbol> convertSymbols(
-			@Nonnull final List<Integer> symbolIds,
-			@Nonnull final PuzzleBuilder builder) {
-
+	private List<Symbol> convertSymbols(@Nonnull final List<Integer> symbolIds) {
 		return symbolIds.stream()
-				.map(symbolID -> builder.findOrCreateSymbol(symbolID, null))
+				.map(symbolID -> this.puzzleBuilder.findOrCreateSymbol(symbolID, null))
 				.collect(Collectors.toList());
 	}
 }
