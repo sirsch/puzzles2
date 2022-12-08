@@ -89,6 +89,7 @@ public class ProtobufConverter {
 	 * @param builder der zu befüllende Builder
 	 * @return der Befüllte builder
 	 */
+	@Nonnull
 	private PuzzleBuilder addCell(
 			@Nonnull final Puzzles.Cell cell,
 			@Nonnull final PuzzleBuilder builder) {
@@ -96,8 +97,40 @@ public class ProtobufConverter {
 		return builder.withCell(
 				cell.getRow(),
 				cell.getColumn(),
-				this.cellFactory.apply(cell.getNumberAsSymbolIdsList().stream()
-						.map(symbolID -> builder.findOrCreateSymbol(symbolID, null))
-						.collect(Collectors.toList())));
+				this.convertCell(cell, builder));
+	}
+
+	/**
+	 * Diese Methode erzeugt eine {@link Cell} aus einer {@link Puzzles.Cell}.
+	 *
+	 * @param cell die zu untersuchende Zelle
+	 * @param builder der zu verwendende Builder
+	 * @return die erzeugte Zelle
+	 */
+	@Nonnull
+	private Cell convertCell(
+			@Nonnull final Puzzles.Cell cell,
+			@Nonnull final PuzzleBuilder builder) {
+
+		return this.cellFactory.apply(
+				this.convertSymbols(cell.getNumberAsSymbolIdsList(),
+						builder));
+	}
+
+	/**
+	 * Diese Methode erzeugt eine Symbolliste aus der Liste der Symbol-IDs.
+	 *
+	 * @param symbolIds die auszuwertenden Symbol-IDs
+	 * @param builder der zu verwendende Builder
+	 * @return die erzeugte Liste
+	 */
+	@Nonnull
+	private List<Symbol> convertSymbols(
+			@Nonnull final List<Integer> symbolIds,
+			@Nonnull final PuzzleBuilder builder) {
+
+		return symbolIds.stream()
+				.map(symbolID -> builder.findOrCreateSymbol(symbolID, null))
+				.collect(Collectors.toList());
 	}
 }
