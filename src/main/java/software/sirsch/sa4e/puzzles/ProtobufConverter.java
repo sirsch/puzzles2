@@ -1,7 +1,6 @@
 package software.sirsch.sa4e.puzzles;
 
 import java.util.List;
-import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -27,7 +26,7 @@ public class ProtobufConverter {
 	 * Dieses Feld muss die Fabrik für {@link Cell} enthalten.
 	 */
 	@Nonnull
-	private final Function<List<Symbol>, Cell> cellFactory;
+	private final CellFactory cellFactory;
 
 	/**
 	 * Dieser Konstruktor nimmt die interne Initialisierung vor.
@@ -44,7 +43,7 @@ public class ProtobufConverter {
 	 */
 	protected ProtobufConverter(
 			@Nonnull final  Supplier<PuzzleBuilder> puzzleBuilderFactory,
-			@Nonnull final  Function<List<Symbol>, Cell> cellFactory) {
+			@Nonnull final  CellFactory cellFactory) {
 
 		this.puzzleBuilder = puzzleBuilderFactory.get();
 		this.cellFactory = cellFactory;
@@ -95,7 +94,10 @@ public class ProtobufConverter {
 	 */
 	@Nonnull
 	private Cell convertCell(@Nonnull final Puzzles.Cell cell) {
-		return this.cellFactory.apply(this.convertSymbols(cell.getNumberAsSymbolIdsList()));
+		return this.cellFactory.create(
+				cell.getRow(),
+				cell.getColumn(),
+				this.convertSymbols(cell.getNumberAsSymbolIdsList()));
 	}
 
 	/**

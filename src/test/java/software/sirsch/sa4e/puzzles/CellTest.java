@@ -48,7 +48,34 @@ public class CellTest {
 		this.symbol1 = mock(Symbol.class);
 		this.symbol2 = mock(Symbol.class);
 
-		this.objectUnderTest = new Cell(List.of(this.symbol0, this.symbol1, this.symbol2));
+		this.objectUnderTest = new Cell(
+				1,
+				2,
+				List.of(this.symbol0, this.symbol1, this.symbol2));
+	}
+
+	/**
+	 * Diese Methode prüft {@link Cell#getRow()}.
+	 */
+	@Test
+	public void testGetRow() {
+		int result;
+
+		result = this.objectUnderTest.getRow();
+
+		assertEquals(1, result);
+	}
+
+	/**
+	 * Diese Methode prüft {@link Cell#getColumn()}.
+	 */
+	@Test
+	public void testGetColumn() {
+		int result;
+
+		result = this.objectUnderTest.getColumn();
+
+		assertEquals(2, result);
 	}
 
 	/**

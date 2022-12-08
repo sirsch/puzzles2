@@ -15,6 +15,16 @@ import static java.util.List.copyOf;
 public class Cell {
 
 	/**
+	 * Dieses Feld enthält die Zeilennummer.
+	 */
+	private final int row;
+
+	/**
+	 * Dieses Feld enthält die Spaltennummer.
+	 */
+	private final int column;
+
+	/**
 	 * Dieses Feld enthält die Zahl als Liste von Symbolen.
 	 *
 	 * <p>
@@ -27,10 +37,32 @@ public class Cell {
 	/**
 	 * Dieser Konstruktor legt die Zahl als Liste von Symbolen fest.
 	 *
+	 * @param row die zu setzende Spaltennummer
+	 * @param column die zu setzende Zeilennummer
 	 * @param symbols die zu setzende Zahl
 	 */
-	public Cell(@Nonnull final List<Symbol> symbols) {
+	public Cell(final int row, final int column, @Nonnull final List<Symbol> symbols) {
+		this.row = row;
+		this.column = column;
 		this.symbols = copyOf(symbols);
+	}
+
+	/**
+	 * Diese Methode gibt die Zeilennummer zurück.
+	 *
+	 * @return die Zeilennummer
+	 */
+	public int getRow() {
+		return this.row;
+	}
+
+	/**
+	 * Diese Methode gibt die Spaltennummer zurück.
+	 *
+	 * @return die Spaltennummer
+	 */
+	public int getColumn() {
+		return this.column;
 	}
 
 	/**

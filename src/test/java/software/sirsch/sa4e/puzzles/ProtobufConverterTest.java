@@ -1,7 +1,6 @@
 package software.sirsch.sa4e.puzzles;
 
 import java.util.List;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 import software.sirsch.sa4e.puzzles.protobuf.Puzzles;
@@ -12,13 +11,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -64,7 +60,7 @@ public class ProtobufConverterTest {
 	/**
 	 * Dieses Feld soll den Mock für die Fabrik für {@link Cell} enthalten.
 	 */
-	private Function<List<Symbol>, Cell> cellFactory;
+	private CellFactory cellFactory;
 
 	/**
 	 * Dieses Feld soll das zu testende Objekt enthalten.
@@ -82,13 +78,15 @@ public class ProtobufConverterTest {
 		this.puzzle = mock(Puzzle.class);
 		this.puzzleBuilder = mock(PuzzleBuilder.class);
 		this.puzzleBuilderFactory = mock(Supplier.class);
-		this.cellFactory = mock(Function.class);
+		this.cellFactory = mock(CellFactory.class);
 		when(this.puzzleBuilderFactory.get()).thenReturn(this.puzzleBuilder);
 		when(this.puzzleBuilder.findOrCreateSymbol(any())).thenCallRealMethod();
 		when(this.puzzleBuilder.findOrCreateSymbol(eq(0), any())).thenReturn(this.symbolA);
 		when(this.puzzleBuilder.findOrCreateSymbol(eq(1), any())).thenReturn(this.symbolB);
-		when(this.cellFactory.apply(List.of(this.symbolA, this.symbolB, this.symbolA)))
-				.thenReturn(this.cell);
+		when(this.cellFactory.create(
+				1,
+				2,
+				List.of(this.symbolA, this.symbolB, this.symbolA))).thenReturn(this.cell);
 		when(this.puzzleBuilder.build()).thenReturn(this.puzzle);
 
 		this.objectUnderTest = new ProtobufConverter(this.puzzleBuilderFactory, this.cellFactory);
