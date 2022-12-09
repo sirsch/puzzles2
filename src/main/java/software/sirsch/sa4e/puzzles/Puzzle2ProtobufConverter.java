@@ -1,5 +1,6 @@
 package software.sirsch.sa4e.puzzles;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -22,23 +23,69 @@ public class Puzzle2ProtobufConverter {
 	 */
 	@Nonnull
 	public Puzzles.SolvePuzzleRequest createSolvePuzzleRequest(@Nonnull final Puzzle puzzle) {
-		Puzzles.SolvePuzzleRequest.Builder builder = Puzzles.SolvePuzzleRequest.newBuilder();
+		return this.fillBuilder(puzzle, Puzzles.SolvePuzzleRequest.newBuilder()).build();
+	}
+
+	/**
+	 * Diese Methode befüllt den {@link Puzzles.SolvePuzzleRequest.Builder} mit dem Puzzle.
+	 *
+	 * @param puzzle das zu untersuchende Puzzle
+	 * @param builder der zu befüllende Builder
+	 * @return der befüllt Builder
+	 */
+	@Nonnull
+	private Puzzles.SolvePuzzleRequest.Builder fillBuilder(
+			@Nonnull final Puzzle puzzle,
+			@Nonnull final Puzzles.SolvePuzzleRequest.Builder builder) {
 
 		puzzle.getSymbols().stream()
-				.map(symbol -> Puzzles.Symbol.newBuilder()
-						.setId(symbol.getId())
-						.setDescription(symbol.getDescription())
-						.build())
+				.map(this::convertSymbol)
 				.forEach(builder::addSymbols);
 		puzzle.getCells().stream()
-				.map(cell -> Puzzles.Cell.newBuilder()
-						.setRow(cell.getRow())
-						.setColumn(cell.getColumn())
-						.addAllNumberAsSymbolIds(cell.getSymbols().stream()
-								.map(Symbol::getId)
-								.collect(Collectors.toList()))
-						.build())
+				.map(this::convertCell)
 				.forEach(builder::addCells);
-		return builder.build();
+		return builder;
+	}
+
+	/**
+	 * Diese Methode überträgt ein {@link Symbol} in die Protobuf-Repräsentation.
+	 *
+	 * @param symbol das zu untersuchende Symbol
+	 * @return das erzeugte Symbol
+	 */
+	@Nonnull
+	private Puzzles.Symbol convertSymbol(@Nonnull final Symbol symbol) {
+		return Puzzles.Symbol.newBuilder()
+				.setId(symbol.getId())
+				.setDescription(symbol.getDescription())
+				.build();
+	}
+
+	/**
+	 * Diese Methode überträgt eine {@link Cell} in die Protobuf-Repräsentation.
+	 *
+	 * @param cell die zu untersuchende Zelle
+	 * @return die erzeugte Zelle
+	 */
+	@Nonnull
+	private Puzzles.Cell convertCell(@Nonnull final Cell cell) {
+		return Puzzles.Cell.newBuilder()
+				.setRow(cell.getRow())
+				.setColumn(cell.getColumn())
+				.addAllNumberAsSymbolIds(this.convertSymbolsToIDs(cell.getSymbols()))
+				.build();
+	}
+
+	/**
+	 * Diese Methode konvertiert eine Symbolliste in eine Liste von IDs.
+	 *
+	 * @param symbols die zu untersuchende Liste
+	 * @return die erzeugte Liste
+	 */
+	@Nonnull
+	private List<Integer> convertSymbolsToIDs(@Nonnull final List<Symbol> symbols) {
+		return symbols.stream()
+				.map(Symbol::getId)
+				.collect(Collectors.toList());
 	}
 }
