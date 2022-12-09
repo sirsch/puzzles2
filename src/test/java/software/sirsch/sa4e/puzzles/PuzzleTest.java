@@ -1,6 +1,7 @@
 package software.sirsch.sa4e.puzzles;
 
 import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -137,5 +138,29 @@ public class PuzzleTest {
 		assertTrue(result);
 		verify(this.firstSymbol).bindValue((byte) 1);
 		verify(this.secondSymbol).bindValue(null);
+	}
+
+	/**
+	 * Diese Methode prüft {@link Puzzle#getCells()}.
+	 */
+	@Test
+	public void testGetCells() {
+		Cell cell00 = mock(Cell.class);
+		Cell cell01 = mock(Cell.class);
+		Cell cell02 = mock(Cell.class);
+		Cell cell10 = mock(Cell.class);
+		Cell cell20 = mock(Cell.class);
+		Set<Cell> result;
+
+		when(this.firstAddition.getFirstSummand()).thenReturn(cell00);
+		when(this.firstAddition.getSecondSummand()).thenReturn(cell01);
+		when(this.firstAddition.getSum()).thenReturn(cell02);
+		when(this.secondAddition.getFirstSummand()).thenReturn(cell00);
+		when(this.secondAddition.getSecondSummand()).thenReturn(cell10);
+		when(this.secondAddition.getSum()).thenReturn(cell20);
+
+		result = this.objectUnderTest.getCells();
+
+		assertEquals(Set.of(cell00, cell01, cell02, cell10, cell20), result);
 	}
 }

@@ -1,7 +1,9 @@
 package software.sirsch.sa4e.puzzles;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 
@@ -141,6 +143,24 @@ public class Puzzle {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Diese Methode ermittelt die Zellen des Puzzles.
+	 *
+	 * @return die Menge der Zellen
+	 */
+	@Nonnull
+	public Set<Cell> getCells() {
+		Set<Cell> result = new HashSet<>();
+
+		for (Addition addition : this.additions) {
+			result.add(addition.getFirstSummand());
+			result.add(addition.getSecondSummand());
+			result.add(addition.getSum());
+		}
+
+		return result;
 	}
 
 	/**

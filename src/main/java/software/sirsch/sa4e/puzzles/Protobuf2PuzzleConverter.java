@@ -14,7 +14,7 @@ import software.sirsch.sa4e.puzzles.protobuf.Puzzles;
  * @author sirsch
  * @since 29.11.2022
  */
-public class ProtobufConverter {
+public class Protobuf2PuzzleConverter {
 
 	/**
 	 * Dieses Feld muss den {@link PuzzleBuilder} enthalten.
@@ -31,7 +31,7 @@ public class ProtobufConverter {
 	/**
 	 * Dieser Konstruktor nimmt die interne Initialisierung vor.
 	 */
-	public ProtobufConverter() {
+	public Protobuf2PuzzleConverter() {
 		this(PuzzleBuilder::new, Cell::new);
 	}
 
@@ -41,7 +41,7 @@ public class ProtobufConverter {
 	 * @param puzzleBuilderFactory die zu setzende Fabrik für {@link PuzzleBuilder}
 	 * @param cellFactory die zu setzende Fabrik für {@link Cell}
 	 */
-	protected ProtobufConverter(
+	protected Protobuf2PuzzleConverter(
 			@Nonnull final  Supplier<PuzzleBuilder> puzzleBuilderFactory,
 			@Nonnull final  CellFactory cellFactory) {
 

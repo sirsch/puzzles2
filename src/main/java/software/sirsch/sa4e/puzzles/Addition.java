@@ -46,6 +46,36 @@ public class Addition {
 	}
 
 	/**
+	 * Diese Methode gibt den ersten Summanden zurück.
+	 *
+	 * @return die Zelle des ersten Summanden
+	 */
+	@Nonnull
+	public Cell getFirstSummand() {
+		return this.firstSummand;
+	}
+
+	/**
+	 * Diese Methode gibt den zweiten Summanden zurück.
+	 *
+	 * @return die Zelle des zweiten Summanden
+	 */
+	@Nonnull
+	public Cell getSecondSummand() {
+		return this.secondSummand;
+	}
+
+	/**
+	 * Diese Methode gibt das Ergebnis zurück.
+	 *
+	 * @return die Zelle mit dem Ergebnis der Summe
+	 */
+	@Nonnull
+	public Cell getSum() {
+		return this.sum;
+	}
+
+	/**
 	 * Diese Methode zeigt an, ob es bei der Auswertung der Summe zu einem Widerspruch kam.
 	 *
 	 * <p>

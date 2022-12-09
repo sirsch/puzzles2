@@ -20,12 +20,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Diese Klasse stellt Tests für {@link ProtobufConverter} bereit.
+ * Diese Klasse stellt Tests für {@link Protobuf2PuzzleConverter} bereit.
  *
  * @author sirsch
  * @since 05.12.2022
  */
-public class ProtobufConverterTest {
+public class Protobuf2PuzzleConverterTest {
 
 	/**
 	 * Dieses Feld soll den Mock für das {@link Symbol} A enthalten.
@@ -65,7 +65,7 @@ public class ProtobufConverterTest {
 	/**
 	 * Dieses Feld soll das zu testende Objekt enthalten.
 	 */
-	private ProtobufConverter objectUnderTest;
+	private Protobuf2PuzzleConverter objectUnderTest;
 
 	/**
 	 * Diese Methode bereitet die Testumgebung für jeden Testfall vor.
@@ -89,15 +89,15 @@ public class ProtobufConverterTest {
 				List.of(this.symbolA, this.symbolB, this.symbolA))).thenReturn(this.cell);
 		when(this.puzzleBuilder.build()).thenReturn(this.puzzle);
 
-		this.objectUnderTest = new ProtobufConverter(this.puzzleBuilderFactory, this.cellFactory);
+		this.objectUnderTest = new Protobuf2PuzzleConverter(this.puzzleBuilderFactory, this.cellFactory);
 	}
 
 	/**
-	 * Diese Methode prüft {@link ProtobufConverter#ProtobufConverter()}.
+	 * Diese Methode prüft {@link Protobuf2PuzzleConverter#Protobuf2PuzzleConverter()}.
 	 */
 	@Test
 	public void testDefaultConstructor() {
-		this.objectUnderTest = new ProtobufConverter();
+		this.objectUnderTest = new Protobuf2PuzzleConverter();
 
 		assertThrows(
 				IllegalArgumentException.class,
@@ -106,7 +106,7 @@ public class ProtobufConverterTest {
 	}
 
 	/**
-	 * Diese Methode prüft {@link ProtobufConverter#createPuzzle(SolvePuzzleRequest)}.
+	 * Diese Methode prüft {@link Protobuf2PuzzleConverter#createPuzzle(SolvePuzzleRequest)}.
 	 */
 	@Test
 	public void testCreatePuzzle() {

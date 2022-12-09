@@ -3,6 +3,7 @@ package software.sirsch.sa4e.puzzles;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -46,6 +47,42 @@ public class AdditionTest {
 		this.sum = mock(Cell.class);
 
 		this.objectUnderTest = new Addition(this.firstSummand, this.secondSummand, this.sum);
+	}
+
+	/**
+	 * Diese Methode prüft {@link Addition#getFirstSummand()}.
+	 */
+	@Test
+	public void testGetFirstSummand() {
+		Cell result;
+
+		result = this.objectUnderTest.getFirstSummand();
+
+		assertEquals(this.firstSummand, result);
+	}
+
+	/**
+	 * Diese Methode prüft {@link Addition#getSecondSummand()}.
+	 */
+	@Test
+	public void testGetSecondSummand() {
+		Cell result;
+
+		result = this.objectUnderTest.getSecondSummand();
+
+		assertEquals(this.secondSummand, result);
+	}
+
+	/**
+	 * Diese Methode prüft {@link Addition#getSum()}.
+	 */
+	@Test
+	public void testGetSum() {
+		Cell result;
+
+		result = this.objectUnderTest.getSum();
+
+		assertEquals(this.sum, result);
 	}
 
 	/**
