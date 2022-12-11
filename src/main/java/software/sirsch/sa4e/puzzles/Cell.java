@@ -102,8 +102,8 @@ public class Cell {
 		long result = 0;
 		long factor = 1;
 
-		for (Symbol place : this.symbols) {
-			result += factor * place.getBoundValue();
+		for (Symbol digit : this.symbols) {
+			result += factor * digit.getBoundValue();
 			factor *= base;
 		}
 
