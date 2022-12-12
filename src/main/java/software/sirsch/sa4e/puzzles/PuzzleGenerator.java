@@ -107,7 +107,7 @@ public class PuzzleGenerator {
 	 * @return das erzeugte Puzzle
 	 */
 	@Nonnull
-	private Puzzle generate(
+	protected Puzzle generate(
 			final int cell00,
 			final int cell01,
 			final int cell10,
