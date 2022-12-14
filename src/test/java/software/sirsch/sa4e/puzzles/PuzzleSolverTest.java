@@ -5,11 +5,14 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasProperty;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Diese Klasse stellt Tests für {@link PuzzleSolver} bereit.
@@ -18,11 +21,6 @@ import static org.hamcrest.Matchers.hasProperty;
  * @since 12.12.2022
  */
 public class PuzzleSolverTest {
-
-	/**
-	 * Dieses Feld soll das Puzzle zum Testen enthalten.
-	 */
-	private Puzzle puzzle;
 
 	/**
 	 * Dieses Feld soll das zu testende Objekt enthalten.
@@ -34,19 +32,19 @@ public class PuzzleSolverTest {
 	 */
 	@BeforeEach
 	public void setUp() {
-		this.puzzle = new PuzzleGenerator().generate(12, 34, 78, 56);
-
 		this.objectUnderTest = new PuzzleSolver();
 	}
 
 	/**
-	 * Diese Methode prüft {@link PuzzleSolver#solvePuzzle(Puzzle)}.
+	 * Diese Methode prüft {@link PuzzleSolver#solvePuzzle(Puzzle)}, wenn das Puzzle mindestens eine
+	 * Lösung hat.
 	 */
 	@Test
-	public void testSolvePuzzle() {
+	public void testSolvePuzzleWithSolution() {
+		Puzzle puzzle = new PuzzleGenerator().generate(12, 34, 78, 56);
 		List<Symbol> result;
 
-		result = this.objectUnderTest.solvePuzzle(this.puzzle);
+		result = this.objectUnderTest.solvePuzzle(puzzle);
 
 		assertThat(result, contains(
 				allOf(
@@ -79,5 +77,33 @@ public class PuzzleSolverTest {
 				allOf(
 						hasProperty("id", equalTo(10)),
 						hasProperty("boundValue", equalTo((byte) 9)))));
+	}
+
+	/**
+	 * Diese Methode prüft {@link PuzzleSolver#solvePuzzle(Puzzle)}, wenn das Puzzle mindestens
+	 * keine Lösung hat.
+	 */
+	@Test
+	public void testSolvePuzzleWithoutSolution() {
+		PuzzleBuilder puzzleBuilder = new PuzzleBuilder();
+		Symbol symbol0 = puzzleBuilder.findOrCreateSymbol(0, null);
+		Symbol symbol1 = puzzleBuilder.findOrCreateSymbol(1, null);
+		Puzzle puzzle;
+		List<Symbol> result;
+
+		puzzleBuilder.withCell(new Cell(0, 0, singletonList(symbol0)));
+		puzzleBuilder.withCell(new Cell(0, 1, singletonList(symbol0)));
+		puzzleBuilder.withCell(new Cell(0, 2, singletonList(symbol0)));
+		puzzleBuilder.withCell(new Cell(1, 0, singletonList(symbol1)));
+		puzzleBuilder.withCell(new Cell(1, 1, singletonList(symbol1)));
+		puzzleBuilder.withCell(new Cell(1, 2, singletonList(symbol1)));
+		puzzleBuilder.withCell(new Cell(2, 0, singletonList(symbol1)));
+		puzzleBuilder.withCell(new Cell(2, 1, singletonList(symbol1)));
+		puzzleBuilder.withCell(new Cell(2, 2, singletonList(symbol1)));
+		puzzle = puzzleBuilder.build();
+
+		result = this.objectUnderTest.solvePuzzle(puzzle);
+
+		assertEquals(emptyList(), result);
 	}
 }
