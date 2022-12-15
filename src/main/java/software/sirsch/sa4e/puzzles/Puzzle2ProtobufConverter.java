@@ -1,6 +1,7 @@
 package software.sirsch.sa4e.puzzles;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -55,10 +56,25 @@ public class Puzzle2ProtobufConverter {
 	 */
 	@Nonnull
 	private Puzzles.Symbol convertSymbol(@Nonnull final Symbol symbol) {
-		return Puzzles.Symbol.newBuilder()
-				.setId(symbol.getId())
-				.setDescription(symbol.getDescription())
-				.build();
+		return this.fillBuilder(symbol, Puzzles.Symbol.newBuilder()).build();
+	}
+
+	/**
+	 * Diese Methode befüllt den {@link Puzzles.Symbol.Builder} mit dem Symbol.
+	 *
+	 * @param symbol das zu untersuchende Symbol
+	 * @param builder der zu befüllende Builder
+	 * @return der befüllt Builder
+	 */
+	@Nonnull
+	private Puzzles.Symbol.Builder fillBuilder(
+			@Nonnull final Symbol symbol,
+			@Nonnull final Puzzles.Symbol.Builder builder) {
+
+		builder.setId(symbol.getId());
+		Optional.ofNullable(symbol.getDescription())
+				.ifPresent(builder::setDescription);
+		return builder;
 	}
 
 	/**

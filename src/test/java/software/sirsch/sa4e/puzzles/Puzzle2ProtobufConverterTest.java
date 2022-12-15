@@ -14,6 +14,7 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -95,6 +96,38 @@ public class Puzzle2ProtobufConverterTest {
 						allOf(
 								hasProperty("id", equalTo(42)),
 								hasProperty("description", equalTo("42"))),
+						allOf(
+								hasProperty("id", equalTo(13)),
+								hasProperty("description", equalTo("13"))))),
+				hasProperty("cellsList", containsInAnyOrder(
+						allOf(
+								hasProperty("row", equalTo(0)),
+								hasProperty("column", equalTo(1)),
+								hasProperty("numberAsSymbolIdsList", contains(42, 13))),
+						allOf(
+								hasProperty("row", equalTo(1)),
+								hasProperty("column", equalTo(2)),
+								hasProperty("numberAsSymbolIdsList", contains(13, 42)))
+				))));
+	}
+
+	/**
+	 * Diese Methode prüft {@link Puzzle2ProtobufConverter#createSolvePuzzleRequest(Puzzle)} wenn
+	 * bei einem Symbol keine Beschreibung vorhanden ist.
+	 */
+	@Test
+	public void testCreateSolvePuzzleRequestWithSymbolWithoutDescription() {
+		Puzzles.SolvePuzzleRequest result;
+
+		when(this.firstSymbol.getDescription()).thenReturn(null);
+
+		result = this.objectUnderTest.createSolvePuzzleRequest(this.puzzle);
+
+		assertThat(result, allOf(
+				hasProperty("symbolsList", contains(
+						allOf(
+								hasProperty("id", equalTo(42)),
+								hasProperty("description", equalTo(""))),
 						allOf(
 								hasProperty("id", equalTo(13)),
 								hasProperty("description", equalTo("13"))))),
