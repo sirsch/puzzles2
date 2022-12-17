@@ -150,7 +150,10 @@ public class PuzzleBuilder {
 	 */
 	@Nonnull
 	public Symbol findOrCreateSymbol(@Nonnull final Puzzles.Symbol symbolMessage) {
-		return this.findOrCreateSymbol(symbolMessage.getId(), symbolMessage.getDescription());
+		return this.findOrCreateSymbol(
+				symbolMessage.getId(),
+				symbolMessage.getDescription(),
+				symbolMessage.getIconCodePoint());
 	}
 
 	/**
@@ -158,12 +161,17 @@ public class PuzzleBuilder {
 	 *
 	 * @param id die ID des zu suchenden Symbols
 	 * @param description die Beschreibung für den Fall, dass ein neues Symbol erzeugt werden muss
+	 * @param iconCodePoint der zu setzende Code-Point für das Icon
 	 * @return das gefundene oder erzeugte Symbol
 	 */
 	@Nonnull
-	public Symbol findOrCreateSymbol(final int id, @CheckForNull final String description) {
+	public Symbol findOrCreateSymbol(
+			final int id,
+			@CheckForNull final String description,
+			final int iconCodePoint) {
+
 		return this.findSymbol(id)
-				.orElseGet(() -> this.createSymbol(id, description));
+				.orElseGet(() -> this.createSymbol(id, description, iconCodePoint));
 	}
 
 	/**
@@ -184,11 +192,16 @@ public class PuzzleBuilder {
 	 *
 	 * @param id die ID des zu erzeugenden Symbols
 	 * @param description die Beschreibung des zu erzeugenden Symbols
+	 * @param iconCodePoint der zu setzende Code-Point für das Icon
 	 * @return das erzeugte Symbol
 	 */
 	@Nonnull
-	private Symbol createSymbol(final int id, @CheckForNull final String description) {
-		return this.addSymbol(new Symbol(id, description));
+	private Symbol createSymbol(
+			final int id,
+			@CheckForNull final String description,
+			final int iconCodePoint) {
+
+		return this.addSymbol(new Symbol(id, description, iconCodePoint));
 	}
 
 	/**

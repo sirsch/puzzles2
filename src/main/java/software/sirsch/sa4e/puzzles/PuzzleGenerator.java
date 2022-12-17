@@ -28,6 +28,7 @@ public class PuzzleGenerator {
 	 */
 	private final Map<Integer, Symbol> symbolLookup = new HashMap<>();
 
+
 	/**
 	 * Dieses Feld muss den Pseudozufallszahlengenerator enthalten.
 	 */
@@ -47,10 +48,16 @@ public class PuzzleGenerator {
 	private final CellFactory cellFactory;
 
 	/**
+	 * Dieses Feld muss den {@link RandomIconGenerator} enthalten.
+	 */
+	@Nonnull
+	private final RandomIconGenerator randomIconGenerator;
+
+	/**
 	 * Dieser Konstruktor nimmt die interne Initialisierung vor.
 	 */
 	public PuzzleGenerator() {
-		this(new Random(), new PuzzleBuilder(), Cell::new);
+		this(new Random(), new PuzzleBuilder(), Cell::new, new RandomIconGenerator());
 	}
 
 	/**
@@ -59,15 +66,18 @@ public class PuzzleGenerator {
 	 * @param random der zu setzende Pseudozufallszahlengenerator
 	 * @param puzzleBuilder der zu setzende {@link PuzzleBuilder}
 	 * @param cellFactory die zu setzende {@link CellFactory}
+	 * @param randomIconGenerator der zu setzende {@link RandomIconGenerator}
 	 */
 	protected PuzzleGenerator(
 			@Nonnull final Random random,
 			@Nonnull final PuzzleBuilder puzzleBuilder,
-			@Nonnull final CellFactory cellFactory) {
+			@Nonnull final CellFactory cellFactory,
+			@Nonnull final RandomIconGenerator randomIconGenerator) {
 
 		this.random = random;
 		this.puzzleBuilder = puzzleBuilder;
 		this.cellFactory = cellFactory;
+		this.randomIconGenerator = randomIconGenerator;
 	}
 
 	/**
@@ -197,6 +207,9 @@ public class PuzzleGenerator {
 	 */
 	@Nonnull
 	private Symbol createSymbol() {
-		return this.puzzleBuilder.findOrCreateSymbol(this.nextID++, null);
+		return this.puzzleBuilder.findOrCreateSymbol(
+				this.nextID++,
+				null,
+				this.randomIconGenerator.nextIconCodePoint());
 	}
 }

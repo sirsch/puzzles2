@@ -79,7 +79,7 @@ public class SolvePuzzleCommandTest {
 				this.tempFile.getAbsolutePath());
 
 		orderVerifier.verify(this.out).println("Solution found:");
-		orderVerifier.verify(this.out).println("Symbol ID: 0, digit value: 0");
+		orderVerifier.verify(this.out).println("Symbol 0 ID: 0, digit value: 0");
 		orderVerifier.verifyNoMoreInteractions();
 	}
 
@@ -121,7 +121,7 @@ public class SolvePuzzleCommandTest {
 	@Nonnull
 	private Puzzle generateSimplePuzzle() {
 		PuzzleBuilder puzzleBuilder = new PuzzleBuilder();
-		Symbol symbol0 = puzzleBuilder.findOrCreateSymbol(0, null);
+		Symbol symbol0 = puzzleBuilder.findOrCreateSymbol(0, null, '0');
 
 		puzzleBuilder.withCell(new Cell(0, 0, singletonList(symbol0)));
 		puzzleBuilder.withCell(new Cell(0, 1, singletonList(symbol0)));
@@ -143,8 +143,8 @@ public class SolvePuzzleCommandTest {
 	@Nonnull
 	private Puzzle generateUnsolvablePuzzle() {
 		PuzzleBuilder puzzleBuilder = new PuzzleBuilder();
-		Symbol symbol0 = puzzleBuilder.findOrCreateSymbol(0, null);
-		Symbol symbol1 = puzzleBuilder.findOrCreateSymbol(1, null);
+		Symbol symbol0 = puzzleBuilder.findOrCreateSymbol(0, null, 0);
+		Symbol symbol1 = puzzleBuilder.findOrCreateSymbol(1, null, 0);
 
 		puzzleBuilder.withCell(new Cell(0, 0, singletonList(symbol0)));
 		puzzleBuilder.withCell(new Cell(0, 1, singletonList(symbol0)));

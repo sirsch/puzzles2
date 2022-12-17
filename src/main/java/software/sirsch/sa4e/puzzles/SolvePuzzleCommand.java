@@ -113,7 +113,8 @@ public class SolvePuzzleCommand implements Command {
 	 * @param symbols die Liste der auszugebenden Symbole
 	 */
 	private void printSymbols(@Nonnull final List<Symbol> symbols) {
-		symbols.forEach(symbol -> this.out.println(
-				"Symbol ID: " + symbol.getId() + ", digit value: " + symbol.getBoundValue()));
+		symbols.forEach(symbol -> this.out.println("Symbol "
+				+ Character.toString(symbol.getIconCodePoint()) + " ID: " + symbol.getId()
+				+ ", digit value: " + symbol.getBoundValue()));
 	}
 }

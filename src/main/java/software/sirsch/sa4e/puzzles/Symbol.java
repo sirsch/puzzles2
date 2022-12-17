@@ -38,16 +38,27 @@ public class Symbol {
 	private byte boundValue = VALUE_NOT_BOUND;
 
 	/**
+	 * Dieses Feld enthält den Code-Point für das Icon.
+	 */
+	private int iconCodePoint;
+
+	/**
 	 * Dieser Konstruktor erzeugt ein neues Symbol mit ID und Beschreibung.
 	 * <p>
 	 * Dieser Konstruktor wird typischerweise vom {@link PuzzleBuilder} aufgerufen.
 	 *
 	 * @param id die zu setzende ID
 	 * @param description die zu setzende Beschreibung
+	 * @param iconCodePoint der zu setzende Code-Point für das Icon
 	 */
-	protected Symbol(final int id, @CheckForNull final String description) {
+	protected Symbol(
+			final int id,
+			@CheckForNull final String description,
+			final int iconCodePoint) {
+
 		this.id = id;
 		this.description = description;
+		this.iconCodePoint = iconCodePoint;
 	}
 
 	/**
@@ -105,5 +116,14 @@ public class Symbol {
 	@CheckForNull
 	public String getDescription() {
 		return this.description;
+	}
+
+	/**
+	 * Diese Methode gibt den Code-Point für das Icon zurück.
+	 *
+	 * @return der Code-Point
+	 */
+	public int getIconCodePoint() {
+		return this.iconCodePoint;
 	}
 }

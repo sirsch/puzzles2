@@ -96,6 +96,11 @@ public class PuzzleGeneratorTest {
 	private PuzzleBuilder puzzleBuilder;
 
 	/**
+	 * Dieses Feld soll den Mock für {@link RandomIconGenerator} enthalten.
+	 */
+	private RandomIconGenerator randomIconGenerator;
+
+	/**
 	 * Dieses Feld soll das zu testende Objekt enthalten.
 	 */
 	private PuzzleGenerator objectUnderTest;
@@ -118,23 +123,35 @@ public class PuzzleGeneratorTest {
 		this.symbol9 = mock(Symbol.class);
 		this.puzzle = mock(Puzzle.class);
 		this.puzzleBuilder = mock(PuzzleBuilder.class);
+		this.randomIconGenerator = mock(RandomIconGenerator.class);
 		when(this.random.nextInt(100)).thenReturn(12, 34, 78, 56);
-		when(this.puzzleBuilder.findOrCreateSymbol(1, null)).thenReturn(this.symbol2);
-		when(this.puzzleBuilder.findOrCreateSymbol(2, null)).thenReturn(this.symbol1);
-		when(this.puzzleBuilder.findOrCreateSymbol(3, null)).thenReturn(this.symbol4);
-		when(this.puzzleBuilder.findOrCreateSymbol(4, null)).thenReturn(this.symbol3);
-		when(this.puzzleBuilder.findOrCreateSymbol(5, null)).thenReturn(this.symbol6);
-		when(this.puzzleBuilder.findOrCreateSymbol(6, null)).thenReturn(this.symbol8);
-		when(this.puzzleBuilder.findOrCreateSymbol(7, null)).thenReturn(this.symbol7);
-		when(this.puzzleBuilder.findOrCreateSymbol(8, null)).thenReturn(this.symbol5);
-		when(this.puzzleBuilder.findOrCreateSymbol(9, null)).thenReturn(this.symbol0);
-		when(this.puzzleBuilder.findOrCreateSymbol(10, null)).thenReturn(this.symbol9);
+		when(this.puzzleBuilder.findOrCreateSymbol(1, null, 0))
+				.thenReturn(this.symbol2);
+		when(this.puzzleBuilder.findOrCreateSymbol(2, null, 0))
+				.thenReturn(this.symbol1);
+		when(this.puzzleBuilder.findOrCreateSymbol(3, null, 0))
+				.thenReturn(this.symbol4);
+		when(this.puzzleBuilder.findOrCreateSymbol(4, null, 0))
+				.thenReturn(this.symbol3);
+		when(this.puzzleBuilder.findOrCreateSymbol(5, null, 0))
+				.thenReturn(this.symbol6);
+		when(this.puzzleBuilder.findOrCreateSymbol(6, null, 0))
+				.thenReturn(this.symbol8);
+		when(this.puzzleBuilder.findOrCreateSymbol(7, null, 0))
+				.thenReturn(this.symbol7);
+		when(this.puzzleBuilder.findOrCreateSymbol(8, null, 0))
+				.thenReturn(this.symbol5);
+		when(this.puzzleBuilder.findOrCreateSymbol(9, null, 0))
+				.thenReturn(this.symbol0);
+		when(this.puzzleBuilder.findOrCreateSymbol(10, null, 0))
+				.thenReturn(this.symbol9);
 		when(this.puzzleBuilder.build()).thenReturn(this.puzzle);
 
 		this.objectUnderTest = new PuzzleGenerator(
 				this.random,
 				this.puzzleBuilder,
-				Cell::new);
+				Cell::new,
+				this.randomIconGenerator);
 	}
 
 	/**

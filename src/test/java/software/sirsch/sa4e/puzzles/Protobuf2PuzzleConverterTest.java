@@ -13,6 +13,7 @@ import org.mockito.InOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.inOrder;
@@ -81,8 +82,10 @@ public class Protobuf2PuzzleConverterTest {
 		this.cellFactory = mock(CellFactory.class);
 		when(this.puzzleBuilderFactory.get()).thenReturn(this.puzzleBuilder);
 		when(this.puzzleBuilder.findOrCreateSymbol(any())).thenCallRealMethod();
-		when(this.puzzleBuilder.findOrCreateSymbol(eq(0), any())).thenReturn(this.symbolA);
-		when(this.puzzleBuilder.findOrCreateSymbol(eq(1), any())).thenReturn(this.symbolB);
+		when(this.puzzleBuilder.findOrCreateSymbol(eq(0), any(), anyInt()))
+				.thenReturn(this.symbolA);
+		when(this.puzzleBuilder.findOrCreateSymbol(eq(1), any(), anyInt()))
+				.thenReturn(this.symbolB);
 		when(this.cellFactory.create(
 				1,
 				2,

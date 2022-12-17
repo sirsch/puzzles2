@@ -74,6 +74,7 @@ public class Puzzle2ProtobufConverter {
 		builder.setId(symbol.getId());
 		Optional.ofNullable(symbol.getDescription())
 				.ifPresent(builder::setDescription);
+		builder.setIconCodePoint(symbol.getIconCodePoint());
 		return builder;
 	}
 

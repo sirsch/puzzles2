@@ -276,31 +276,40 @@ public class PuzzleBuilderTest {
 	}
 
 	/**
-	 * Diese Methode prüft {@link PuzzleBuilder#findOrCreateSymbol(int, String)}, dass bei mehreren
-	 * Aufrufen mit derselben ID dieselbe Instanz zurückgegeben wird.
+	 * Diese Methode prüft {@link PuzzleBuilder#findOrCreateSymbol(int, String, int)}, dass bei
+	 * mehreren Aufrufen mit derselben ID dieselbe Instanz zurückgegeben wird.
 	 */
 	@Test
 	public void testFindOrCreateSymbolRepeatedCallReturnsSameInstance() {
 		Symbol firstResult;
 		Symbol secondResult;
 
-		firstResult = this.objectUnderTest.findOrCreateSymbol(42, "testDescription");
-		secondResult = this.objectUnderTest.findOrCreateSymbol(42, "otherDescription");
+		firstResult = this.objectUnderTest.findOrCreateSymbol(
+				42,
+				"testDescription",
+				0);
+		secondResult = this.objectUnderTest.findOrCreateSymbol(
+				42,
+				"otherDescription",
+				0);
 
 		assertNotNull(firstResult);
 		assertSame(firstResult, secondResult);
 	}
 
 	/**
-	 * Diese Methode prüft {@link PuzzleBuilder#findOrCreateSymbol(int, String)}, dass nicht mehr
-	 * als 10 Symbole erzeugt werden können.
+	 * Diese Methode prüft {@link PuzzleBuilder#findOrCreateSymbol(int, String, int)}, dass nicht
+	 * mehr als 10 Symbole erzeugt werden können.
 	 */
 	@Test
 	public void testFindOrCreateSymbolToManySymbols() {
 		assertThrows(
 				IllegalStateException.class,
 				() -> IntStream.range(0, 11).forEach(
-						id -> this.objectUnderTest.findOrCreateSymbol(id, null)));
+						id -> this.objectUnderTest.findOrCreateSymbol(
+								id,
+								null,
+								0)));
 	}
 
 	/**
@@ -312,8 +321,14 @@ public class PuzzleBuilderTest {
 		Symbol secondSymbol;
 		Puzzle result;
 
-		firstSymbol = this.objectUnderTest.findOrCreateSymbol(42, "firstSymbol");
-		secondSymbol = this.objectUnderTest.findOrCreateSymbol(13, "secondSymbol");
+		firstSymbol = this.objectUnderTest.findOrCreateSymbol(
+				42,
+				"firstSymbol",
+				0);
+		secondSymbol = this.objectUnderTest.findOrCreateSymbol(
+				13,
+				"secondSymbol",
+				0);
 		when(this.cell00.getSymbols()).thenReturn(List.of(firstSymbol, secondSymbol));
 		when(this.puzzleFactory.create(List.of(firstSymbol, secondSymbol), this.listAdditions()))
 				.thenReturn(this.puzzle);
@@ -350,8 +365,14 @@ public class PuzzleBuilderTest {
 
 		this.objectUnderTest = new PuzzleBuilder();
 
-		firstSymbol = this.objectUnderTest.findOrCreateSymbol(42, "firstSymbol");
-		secondSymbol = this.objectUnderTest.findOrCreateSymbol(13, "secondSymbol");
+		firstSymbol = this.objectUnderTest.findOrCreateSymbol(
+				42,
+				"firstSymbol",
+				0);
+		secondSymbol = this.objectUnderTest.findOrCreateSymbol(
+				13,
+				"secondSymbol",
+				0);
 		when(this.cell00.getSymbols()).thenReturn(List.of(firstSymbol, secondSymbol));
 		this.objectUnderTest.withCell(this.cell00);
 		this.objectUnderTest.withCell(this.cell01);

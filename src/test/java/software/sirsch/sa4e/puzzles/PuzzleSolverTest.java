@@ -86,8 +86,8 @@ public class PuzzleSolverTest {
 	@Test
 	public void testSolvePuzzleWithoutSolution() {
 		PuzzleBuilder puzzleBuilder = new PuzzleBuilder();
-		Symbol symbol0 = puzzleBuilder.findOrCreateSymbol(0, null);
-		Symbol symbol1 = puzzleBuilder.findOrCreateSymbol(1, null);
+		Symbol symbol0 = puzzleBuilder.findOrCreateSymbol(0, null, 0);
+		Symbol symbol1 = puzzleBuilder.findOrCreateSymbol(1, null, 0);
 		Puzzle puzzle;
 		List<Symbol> result;
 

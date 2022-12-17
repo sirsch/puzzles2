@@ -1188,6 +1188,12 @@ public final class Puzzles {
      */
     com.google.protobuf.ByteString
         getDescriptionBytes();
+
+    /**
+     * <code>uint32 iconCodePoint = 3;</code>
+     * @return The iconCodePoint.
+     */
+    int getIconCodePoint();
   }
   /**
    * Protobuf type {@code software.sirsch.sa4e.puzzles.protobuf.Symbol}
@@ -1288,6 +1294,17 @@ public final class Puzzles {
       }
     }
 
+    public static final int ICONCODEPOINT_FIELD_NUMBER = 3;
+    private int iconCodePoint_;
+    /**
+     * <code>uint32 iconCodePoint = 3;</code>
+     * @return The iconCodePoint.
+     */
+    @java.lang.Override
+    public int getIconCodePoint() {
+      return iconCodePoint_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -1308,6 +1325,9 @@ public final class Puzzles {
       if (((bitField0_ & 0x00000001) != 0)) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, description_);
       }
+      if (iconCodePoint_ != 0) {
+        output.writeUInt32(3, iconCodePoint_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -1323,6 +1343,10 @@ public final class Puzzles {
       }
       if (((bitField0_ & 0x00000001) != 0)) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, description_);
+      }
+      if (iconCodePoint_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(3, iconCodePoint_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -1346,6 +1370,8 @@ public final class Puzzles {
         if (!getDescription()
             .equals(other.getDescription())) return false;
       }
+      if (getIconCodePoint()
+          != other.getIconCodePoint()) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -1363,6 +1389,8 @@ public final class Puzzles {
         hash = (37 * hash) + DESCRIPTION_FIELD_NUMBER;
         hash = (53 * hash) + getDescription().hashCode();
       }
+      hash = (37 * hash) + ICONCODEPOINT_FIELD_NUMBER;
+      hash = (53 * hash) + getIconCodePoint();
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1495,6 +1523,8 @@ public final class Puzzles {
 
         description_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
+        iconCodePoint_ = 0;
+
         return this;
       }
 
@@ -1528,6 +1558,7 @@ public final class Puzzles {
           to_bitField0_ |= 0x00000001;
         }
         result.description_ = description_;
+        result.iconCodePoint_ = iconCodePoint_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1585,6 +1616,9 @@ public final class Puzzles {
           description_ = other.description_;
           onChanged();
         }
+        if (other.getIconCodePoint() != 0) {
+          setIconCodePoint(other.getIconCodePoint());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
@@ -1621,6 +1655,11 @@ public final class Puzzles {
                 bitField0_ |= 0x00000001;
                 break;
               } // case 18
+              case 24: {
+                iconCodePoint_ = input.readUInt32();
+
+                break;
+              } // case 24
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -1748,6 +1787,37 @@ public final class Puzzles {
   checkByteStringIsUtf8(value);
         bitField0_ |= 0x00000001;
         description_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int iconCodePoint_ ;
+      /**
+       * <code>uint32 iconCodePoint = 3;</code>
+       * @return The iconCodePoint.
+       */
+      @java.lang.Override
+      public int getIconCodePoint() {
+        return iconCodePoint_;
+      }
+      /**
+       * <code>uint32 iconCodePoint = 3;</code>
+       * @param value The iconCodePoint to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIconCodePoint(int value) {
+        
+        iconCodePoint_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>uint32 iconCodePoint = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearIconCodePoint() {
+        
+        iconCodePoint_ = 0;
         onChanged();
         return this;
       }
@@ -3297,19 +3367,20 @@ public final class Puzzles {
       "ePuzzleRequest\022>\n\007symbols\030\001 \003(\0132-.softwa" +
       "re.sirsch.sa4e.puzzles.protobuf.Symbol\022:" +
       "\n\005cells\030\002 \003(\0132+.software.sirsch.sa4e.puz" +
-      "zles.protobuf.Cell\">\n\006Symbol\022\n\n\002id\030\001 \001(\r" +
-      "\022\030\n\013description\030\002 \001(\tH\000\210\001\001B\016\n\014_descripti" +
-      "on\"A\n\004Cell\022\013\n\003row\030\001 \001(\r\022\016\n\006column\030\002 \001(\r\022" +
-      "\034\n\024number_as_symbol_ids\030\003 \003(\r\"\272\001\n\023SolveP" +
-      "uzzleResponse\022k\n\022symbol_id_to_digit\030\001 \003(" +
-      "\0132O.software.sirsch.sa4e.puzzles.protobu" +
-      "f.SolvePuzzleResponse.SymbolIdToDigitEnt" +
-      "ry\0326\n\024SymbolIdToDigitEntry\022\013\n\003key\030\001 \001(\r\022" +
-      "\r\n\005value\030\002 \001(\r:\0028\0012\227\001\n\014PuzzleSolver\022\206\001\n\013" +
-      "SolvePuzzle\0229.software.sirsch.sa4e.puzzl" +
-      "es.protobuf.SolvePuzzleRequest\032:.softwar" +
-      "e.sirsch.sa4e.puzzles.protobuf.SolvePuzz" +
-      "leResponse\"\000b\006proto3"
+      "zles.protobuf.Cell\"U\n\006Symbol\022\n\n\002id\030\001 \001(\r" +
+      "\022\030\n\013description\030\002 \001(\tH\000\210\001\001\022\025\n\riconCodePo" +
+      "int\030\003 \001(\rB\016\n\014_description\"A\n\004Cell\022\013\n\003row" +
+      "\030\001 \001(\r\022\016\n\006column\030\002 \001(\r\022\034\n\024number_as_symb" +
+      "ol_ids\030\003 \003(\r\"\272\001\n\023SolvePuzzleResponse\022k\n\022" +
+      "symbol_id_to_digit\030\001 \003(\0132O.software.sirs" +
+      "ch.sa4e.puzzles.protobuf.SolvePuzzleResp" +
+      "onse.SymbolIdToDigitEntry\0326\n\024SymbolIdToD" +
+      "igitEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028" +
+      "\0012\227\001\n\014PuzzleSolver\022\206\001\n\013SolvePuzzle\0229.sof" +
+      "tware.sirsch.sa4e.puzzles.protobuf.Solve" +
+      "PuzzleRequest\032:.software.sirsch.sa4e.puz" +
+      "zles.protobuf.SolvePuzzleResponse\"\000b\006pro" +
+      "to3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -3326,7 +3397,7 @@ public final class Puzzles {
     internal_static_software_sirsch_sa4e_puzzles_protobuf_Symbol_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_software_sirsch_sa4e_puzzles_protobuf_Symbol_descriptor,
-        new java.lang.String[] { "Id", "Description", "Description", });
+        new java.lang.String[] { "Id", "Description", "IconCodePoint", "Description", });
     internal_static_software_sirsch_sa4e_puzzles_protobuf_Cell_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_software_sirsch_sa4e_puzzles_protobuf_Cell_fieldAccessorTable = new

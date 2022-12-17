@@ -26,7 +26,7 @@ public class SymbolTest {
 	 */
 	@BeforeEach
 	public void setUp() {
-		this.objectUnderTest = new Symbol(42, "testDescription");
+		this.objectUnderTest = new Symbol(42, "testDescription", 4242);
 	}
 
 	/**
@@ -126,5 +126,17 @@ public class SymbolTest {
 		result = this.objectUnderTest.getDescription();
 
 		assertEquals("testDescription", result);
+	}
+
+	/**
+	 * Diese Methode prüft {@link Symbol#getIconCodePoint()}.
+	 */
+	@Test
+	public void testGetIconCodePoint() {
+		int result;
+
+		result = this.objectUnderTest.getIconCodePoint();
+
+		assertEquals(4242, result);
 	}
 }

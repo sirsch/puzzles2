@@ -121,6 +121,6 @@ public class Protobuf2PuzzleConverter {
 	 */
 	@Nonnull
 	private Symbol findSymbol(final int symbolID) {
-		return this.puzzleBuilder.findOrCreateSymbol(symbolID, null);
+		return this.puzzleBuilder.findOrCreateSymbol(symbolID, null, 0);
 	}
 }

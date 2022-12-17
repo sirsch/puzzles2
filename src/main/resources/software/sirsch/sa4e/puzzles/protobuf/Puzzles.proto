@@ -14,6 +14,7 @@ message SolvePuzzleRequest {
 message Symbol {
   uint32 id = 1;
   optional string description = 2;
+  uint32 iconCodePoint = 3;
 }
 
 message Cell {

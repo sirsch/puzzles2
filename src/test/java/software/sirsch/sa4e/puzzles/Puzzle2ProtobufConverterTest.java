@@ -14,7 +14,6 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -68,8 +67,10 @@ public class Puzzle2ProtobufConverterTest {
 		this.puzzle = mock(Puzzle.class);
 		when(this.firstSymbol.getId()).thenReturn(42);
 		when(this.firstSymbol.getDescription()).thenReturn("42");
+		when(this.firstSymbol.getIconCodePoint()).thenReturn((int) 'A');
 		when(this.secondSymbol.getId()).thenReturn(13);
 		when(this.secondSymbol.getDescription()).thenReturn("13");
+		when(this.secondSymbol.getIconCodePoint()).thenReturn((int) 'B');
 		when(this.firstCell.getRow()).thenReturn(0);
 		when(this.firstCell.getColumn()).thenReturn(1);
 		when(this.firstCell.getSymbols()).thenReturn(List.of(this.firstSymbol, this.secondSymbol));
@@ -95,10 +96,12 @@ public class Puzzle2ProtobufConverterTest {
 				hasProperty("symbolsList", contains(
 						allOf(
 								hasProperty("id", equalTo(42)),
-								hasProperty("description", equalTo("42"))),
+								hasProperty("description", equalTo("42")),
+								hasProperty("iconCodePoint", equalTo((int) 'A'))),
 						allOf(
 								hasProperty("id", equalTo(13)),
-								hasProperty("description", equalTo("13"))))),
+								hasProperty("description", equalTo("13")),
+								hasProperty("iconCodePoint", equalTo((int) 'B'))))),
 				hasProperty("cellsList", containsInAnyOrder(
 						allOf(
 								hasProperty("row", equalTo(0)),
@@ -127,10 +130,12 @@ public class Puzzle2ProtobufConverterTest {
 				hasProperty("symbolsList", contains(
 						allOf(
 								hasProperty("id", equalTo(42)),
-								hasProperty("description", equalTo(""))),
+								hasProperty("description", equalTo("")),
+								hasProperty("iconCodePoint", equalTo((int) 'A'))),
 						allOf(
 								hasProperty("id", equalTo(13)),
-								hasProperty("description", equalTo("13"))))),
+								hasProperty("description", equalTo("13")),
+								hasProperty("iconCodePoint", equalTo((int) 'B'))))),
 				hasProperty("cellsList", containsInAnyOrder(
 						allOf(
 								hasProperty("row", equalTo(0)),
