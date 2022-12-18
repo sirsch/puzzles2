@@ -27,22 +27,35 @@ public class SolvePuzzleCommand implements Command {
 	/**
 	 * Dieses Feld muss den für die Ausgabe zu verwendenden {@link PrintStream} enthalten.
 	 */
+	@Nonnull
 	private final PrintStream out;
+
+	/**
+	 * Dieses Feld soll den {@link PuzzlePrinter} enthalten.
+	 */
+	@Nonnull
+	private final PuzzlePrinter puzzlePrinter;
 
 	/**
 	 * Dieser Konstruktor nimmt die interne Initialisierung vor.
 	 */
 	public SolvePuzzleCommand() {
-		this(System.out);
+		this(System.out, new PuzzlePrinter());
 	}
 
 	/**
-	 * Dieser Konstruktor erlaubt das Einschleusen des {@link PrintStream} out zum Testen.
+	 * Dieser Konstruktor erlaubt das Einschleusen des {@link PrintStream} out und des
+	 * {@link PuzzlePrinter} zum Testen.
 	 *
-	 * @param out der zu setzende PrintStream
+	 * @param out der zu setzende {@link PrintStream}
+	 * @param puzzlePrinter der zu setzende {@link PuzzlePrinter}
 	 */
-	protected SolvePuzzleCommand(@Nonnull final PrintStream out) {
+	protected SolvePuzzleCommand(
+			@Nonnull final PrintStream out,
+			@Nonnull final PuzzlePrinter puzzlePrinter) {
+
 		this.out = out;
+		this.puzzlePrinter = puzzlePrinter;
 	}
 
 	/**
@@ -81,12 +94,22 @@ public class SolvePuzzleCommand implements Command {
 	 */
 	private void solvePuzzle(@Nonnull final String filename) {
 		try (InputStream inputStream = new FileInputStream(filename)) {
-			this.printSolution(new PuzzleSolver().solvePuzzle(
-					new Protobuf2PuzzleConverter().createPuzzle(
-							Puzzles.SolvePuzzleRequest.parseFrom(inputStream))));
+			this.solvePuzzle(new Protobuf2PuzzleConverter().createPuzzle(
+					Puzzles.SolvePuzzleRequest.parseFrom(inputStream)));
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}
+	}
+
+	/**
+	 * Diese Methode löst ein Rätsel und gibt das Ergebnis aus.
+	 *
+	 * @param puzzle das zu lösende Puzzle
+	 */
+	private void solvePuzzle(@Nonnull final Puzzle puzzle) {
+		this.puzzlePrinter.print(puzzle);
+		this.out.println();
+		this.printSolution(new PuzzleSolver().solvePuzzle(puzzle));
 	}
 
 	/**

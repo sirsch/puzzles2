@@ -24,6 +24,28 @@ public class GeneratePuzzleCommand implements Command {
 	public static final String COMMAND_NAME = "generate-puzzle";
 
 	/**
+	 * Dieses Feld muss den {@link PuzzlePrinter} enthalten.
+	 */
+	@Nonnull
+	private final PuzzlePrinter puzzlePrinter;
+
+	/**
+	 * Dieser Konstruktor führt die interne Initialisierung durch.
+	 */
+	public GeneratePuzzleCommand() {
+		this(new PuzzlePrinter());
+	}
+
+	/**
+	 * Dieser Konstruktor erlaubt das Einschleusen von {@link PuzzlePrinter} zum Testen.
+	 *
+	 * @param puzzlePrinter der zu setzende {@link PuzzlePrinter}
+	 */
+	protected GeneratePuzzleCommand(@Nonnull final PuzzlePrinter puzzlePrinter) {
+		this.puzzlePrinter = puzzlePrinter;
+	}
+
+	/**
 	 * Diese Methode führt das Kommando aus.
 	 *
 	 * <p>
@@ -80,11 +102,26 @@ public class GeneratePuzzleCommand implements Command {
 			@CheckForNull final Integer numberOfDigits) {
 
 		try (OutputStream outputStream = new FileOutputStream(filename)) {
-			new Puzzle2ProtobufConverter().createSolvePuzzleRequest(
-					new PuzzleGenerator().generate(defaultIfNull(numberOfDigits, 2)))
-					.writeTo(outputStream);
+			this.writePuzzle(
+					new PuzzleGenerator().generate(defaultIfNull(numberOfDigits, 2)),
+					outputStream);
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}
+	}
+
+	/**
+	 * Diese Methode schreibt ein Puzzle in die Ausgabe.
+	 *
+	 * @param puzzle das zu schreibende Puzzle
+	 * @param outputStream die zu beschreibende Ausgabe
+	 * @throws IOException zeigt einen Datenübertragungsfehler an
+	 */
+	private void writePuzzle(
+			@Nonnull final Puzzle puzzle,
+			@Nonnull final OutputStream outputStream) throws IOException {
+
+		this.puzzlePrinter.print(puzzle);
+		new Puzzle2ProtobufConverter().createSolvePuzzleRequest(puzzle).writeTo(outputStream);
 	}
 }

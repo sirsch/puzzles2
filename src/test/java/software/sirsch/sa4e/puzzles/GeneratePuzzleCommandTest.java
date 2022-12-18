@@ -14,6 +14,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.notNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /**
  * Diese Klasse stellt Tests für {@link GeneratePuzzleCommand} bereit.
@@ -29,6 +32,11 @@ public class GeneratePuzzleCommandTest {
 	private File tempFile;
 
 	/**
+	 * Dieses Feld soll den Mock für den {@link PuzzlePrinter} enthalten.
+	 */
+	private PuzzlePrinter puzzlePrinter;
+
+	/**
 	 * Dieses Feld soll das zu testende Objekt enthalten.
 	 */
 	private GeneratePuzzleCommand objectUnderTest;
@@ -39,8 +47,9 @@ public class GeneratePuzzleCommandTest {
 	@BeforeEach
 	public void setUp() throws IOException {
 		this.tempFile = File.createTempFile("tempFile", ".test");
+		this.puzzlePrinter = mock(PuzzlePrinter.class);
 
-		this.objectUnderTest = new GeneratePuzzleCommand();
+		this.objectUnderTest = new GeneratePuzzleCommand(this.puzzlePrinter);
 	}
 
 	/**
@@ -64,6 +73,7 @@ public class GeneratePuzzleCommandTest {
 				"6");
 
 		this.verifyResult();
+		verify(this.puzzlePrinter).print(notNull());
 	}
 
 	/**
@@ -78,6 +88,7 @@ public class GeneratePuzzleCommandTest {
 				this.tempFile.getAbsolutePath());
 
 		this.verifyResult();
+		verify(this.puzzlePrinter).print(notNull());
 	}
 
 	/**
@@ -116,6 +127,8 @@ public class GeneratePuzzleCommandTest {
 	 */
 	@Test
 	public void testExecuteMissingFileName() {
+		this.objectUnderTest = new GeneratePuzzleCommand();
+
 		assertThrows(
 				IllegalArgumentException.class,
 				() -> this.objectUnderTest.execute(GeneratePuzzleCommand.COMMAND_NAME));

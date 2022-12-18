@@ -16,10 +16,9 @@ import org.mockito.InOrder;
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 /**
  * Diese Klasse stellt Tests für {@link SolvePuzzleCommand} bereit.
@@ -40,6 +39,11 @@ public class SolvePuzzleCommandTest {
 	private PrintStream out;
 
 	/**
+	 * Dieses Feld soll den Mock für den {@link PuzzlePrinter} enthalten.
+	 */
+	private PuzzlePrinter puzzlePrinter;
+
+	/**
 	 * Dieses Feld soll das zu testende Objekt enthalten.
 	 */
 	private SolvePuzzleCommand objectUnderTest;
@@ -51,8 +55,9 @@ public class SolvePuzzleCommandTest {
 	public void setUp() throws IOException {
 		this.tempFile = File.createTempFile("tempFile", ".test");
 		this.out = mock(PrintStream.class);
+		this.puzzlePrinter = mock(PuzzlePrinter.class);
 
-		this.objectUnderTest = new SolvePuzzleCommand(this.out);
+		this.objectUnderTest = new SolvePuzzleCommand(this.out, this.puzzlePrinter);
 	}
 
 	/**
@@ -70,7 +75,7 @@ public class SolvePuzzleCommandTest {
 	 */
 	@Test
 	public void testExecuteSimplePuzzle() throws IOException {
-		InOrder orderVerifier = inOrder(this.out);
+		InOrder orderVerifier = inOrder(this.out, this.puzzlePrinter);
 
 		this.writePuzzle(this.generateSimplePuzzle());
 
@@ -78,6 +83,8 @@ public class SolvePuzzleCommandTest {
 				SolvePuzzleCommand.COMMAND_NAME,
 				this.tempFile.getAbsolutePath());
 
+		orderVerifier.verify(this.puzzlePrinter).print(notNull());
+		orderVerifier.verify(this.out).println();
 		orderVerifier.verify(this.out).println("Solution found:");
 		orderVerifier.verify(this.out).println("Symbol 0 ID: 0, digit value: 0");
 		orderVerifier.verifyNoMoreInteractions();
@@ -91,14 +98,18 @@ public class SolvePuzzleCommandTest {
 	 */
 	@Test
 	public void testExecuteUnsolvablePuzzle() throws IOException {
+		InOrder orderVerifier = inOrder(this.out, this.puzzlePrinter);
+
 		this.writePuzzle(this.generateUnsolvablePuzzle());
 
 		this.objectUnderTest.execute(
 				SolvePuzzleCommand.COMMAND_NAME,
 				this.tempFile.getAbsolutePath());
 
-		verify(this.out).println("No solution found!");
-		verifyNoMoreInteractions(this.out);
+		orderVerifier.verify(this.puzzlePrinter).print(notNull());
+		orderVerifier.verify(this.out).println();
+		orderVerifier.verify(this.out).println("No solution found!");
+		orderVerifier.verifyNoMoreInteractions();
 	}
 
 	/**
@@ -136,7 +147,7 @@ public class SolvePuzzleCommandTest {
 	}
 
 	/**
-	 * Diese Methode erzeugt ein einfaches Puzzle mit einem Symbol für 0.
+	 * Diese Methode erzeugt ein unlösbares Puzzle.
 	 *
 	 * @return das erzeugte Puzzle
 	 */
