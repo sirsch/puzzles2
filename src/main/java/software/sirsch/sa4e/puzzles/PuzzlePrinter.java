@@ -27,6 +27,12 @@ public class PuzzlePrinter {
 			List.of(new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 
 	/**
+	 * Dieses Feld enthält den {@link StringBuilder} zum Generieren der Zeilen.
+	 */
+	@Nonnull
+	private final StringBuilder rowStringBuilder = new StringBuilder();
+
+	/**
 	 * Dieses Feld muss den zu beschreibenden {@link PrintStream} für die Ausgabe enthalten.
 	 */
 	@Nonnull
@@ -93,58 +99,45 @@ public class PuzzlePrinter {
 	 * @param row die Nummer der auszugebenden Zeile
 	 */
 	private void printRow(final int row) {
-		this.out.println(this.generateRow(row, new StringBuilder()).toString());
+		this.out.println(this.generateRow(row));
 	}
 
 	/**
-	 * Diese Methode erzeugt die Zeile in einem {@link StringBuilder}.
+	 * Diese Methode erzeugt die Zeile.
 	 *
 	 * @param row die Nummer der Zeile
-	 * @param stringBuilder der zu verwendende {@link StringBuilder}
-	 * @return der verwendete {@link StringBuilder}
+	 * @return die erzeugte Zeile
 	 */
-	private StringBuilder generateRow(final int row, @Nonnull final StringBuilder stringBuilder) {
-		this.appendCell(row, 0, stringBuilder);
-		stringBuilder.append(" + ");
-		this.appendCell(row, 1, stringBuilder);
-		stringBuilder.append(" = ");
-		this.appendCell(row, 2, stringBuilder);
-		return stringBuilder;
+	private String generateRow(final int row) {
+		this.rowStringBuilder.setLength(0);
+		this.appendCell(row, 0);
+		this.rowStringBuilder.append(" + ");
+		this.appendCell(row, 1);
+		this.rowStringBuilder.append(" = ");
+		this.appendCell(row, 2);
+		return this.rowStringBuilder.toString();
 	}
 
 	/**
-	 * Diese Methode fügt die Darstellung eine Zelle in den {@link StringBuilder} ein.
+	 * Diese Methode fügt die Darstellung eine Zelle in den {@link #rowStringBuilder} ein.
 	 *
 	 * @param row die Zeilennummer
 	 * @param column die Spaltennummer
-	 * @param stringBuilder der zu verwendende {@link StringBuilder}
-	 * @return der verwendete {@link StringBuilder}
 	 */
-	private StringBuilder appendCell(
-			final int row,
-			final int column,
-			@Nonnull final StringBuilder stringBuilder) {
-
-		return this.appendCell(column, this.columns.get(column).get(row), stringBuilder);
+	private void appendCell(final int row, final int column) {
+		this.appendCell(column, this.columns.get(column).get(row));
 	}
 
 	/**
-	 * Diese Methode fügt die Darstellung eine Zelle in den {@link StringBuilder} ein.
+	 * Diese Methode fügt die Darstellung eine Zelle in den {@link #rowStringBuilder} ein.
 	 *
 	 * @param column die Spaltennummer
 	 * @param cell der Inhalt der Zelle
-	 * @param stringBuilder der zu verwendende {@link StringBuilder}
-	 * @return der verwendete {@link StringBuilder}
 	 */
-	private StringBuilder appendCell(
-			final int column,
-			@Nonnull final List<Symbol> cell,
-			@Nonnull final StringBuilder stringBuilder) {
-
-		this.addCellPadding(column, cell.size(), stringBuilder);
+	private void appendCell(final int column, @Nonnull final List<Symbol> cell) {
+		this.addCellPadding(column, cell.size());
 		new ReverseListIterator<>(cell).forEachRemaining(
-				symbol -> stringBuilder.appendCodePoint(symbol.getIconCodePoint()));
-		return stringBuilder;
+				symbol -> this.rowStringBuilder.appendCodePoint(symbol.getIconCodePoint()));
 	}
 
 	/**
@@ -152,16 +145,9 @@ public class PuzzlePrinter {
 	 *
 	 * @param column die Spaltennummer
 	 * @param cellSize die Größe des Inhalts der Zelle
-	 * @param stringBuilder der zu verwendende {@link StringBuilder}
-	 * @return der verwendete {@link StringBuilder}
 	 */
-	private StringBuilder addCellPadding(
-			final int column,
-			final int cellSize,
-			@Nonnull final StringBuilder stringBuilder) {
-
-		this.addPadding(this.findColumnWidth(column) - cellSize, stringBuilder);
-		return stringBuilder;
+	private void addCellPadding(final int column, final int cellSize) {
+		this.addPadding(this.findColumnWidth(column) - cellSize);
 	}
 
 	/**
@@ -178,17 +164,11 @@ public class PuzzlePrinter {
 	}
 
 	/**
-	 * Diese Methode fügt den Abstand in den {@link StringBuilder} ein.
+	 * Diese Methode fügt den Abstand in den {@link #rowStringBuilder} ein.
 	 *
 	 * @param padding die Anzahl der Zeichen für den Abstand
-	 * @param stringBuilder der zu verwendende {@link StringBuilder}
-	 * @return der verwendete {@link StringBuilder}
 	 */
-	private StringBuilder addPadding(
-			final int padding,
-			@Nonnull final StringBuilder stringBuilder) {
-
-		IntStream.range(0, padding).forEach(i -> stringBuilder.append(' '));
-		return stringBuilder;
+	private void addPadding(final int padding) {
+		IntStream.range(0, padding).forEach(ignore -> this.rowStringBuilder.append(' '));
 	}
 }
