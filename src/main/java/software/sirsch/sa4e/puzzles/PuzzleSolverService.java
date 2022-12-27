@@ -1,6 +1,8 @@
 package software.sirsch.sa4e.puzzles;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
@@ -56,11 +58,28 @@ public class PuzzleSolverService extends PuzzleSolverGrpc.PuzzleSolverImplBase {
 			@Nonnull final SolvePuzzleRequest request,
 			@Nonnull final StreamObserver<SolvePuzzleResponse> responseObserver) {
 
-		responseObserver.onNext(
-				this.generateResponse(
-						this.puzzleSolver.solvePuzzle(
-								this.protobuf2PuzzleConverter.createPuzzle(request))));
+		responseObserver.onNext(this.solvePuzzle(request));
 		responseObserver.onCompleted();
+	}
+
+	/**
+	 * Diese Methode löst ein Rätsel.
+	 *
+	 * @param request die auszuwertende Anfrage
+	 * @return die erzeugte Antwort
+	 */
+	private SolvePuzzleResponse solvePuzzle(@Nonnull final SolvePuzzleRequest request) {
+		return this.generateResponse(this.puzzleSolver.solvePuzzle(this.convertRequest(request)));
+	}
+
+	/**
+	 * Diese Methode überträgt einen {@link SolvePuzzleRequest} in ein {@link Puzzle}.
+	 *
+	 * @param request die auszuwertende Anfrage
+	 * @return das ermittelte Rätsel
+	 */
+	private Puzzle convertRequest(@Nonnull final SolvePuzzleRequest request) {
+		return this.protobuf2PuzzleConverter.createPuzzle(request);
 	}
 
 	/**
@@ -74,13 +93,20 @@ public class PuzzleSolverService extends PuzzleSolverGrpc.PuzzleSolverImplBase {
 	 * @return die erzeugte Antwort
 	 */
 	private SolvePuzzleResponse generateResponse(@Nonnull final List<Symbol> result) {
-		SolvePuzzleResponse.Builder responseBuilder = SolvePuzzleResponse.newBuilder();
+		return SolvePuzzleResponse.newBuilder()
+				.setSolutionFound(!result.isEmpty())
+				.putAllSymbolIdToDigit(this.collectSymbolIdToDigitMap(result))
+				.build();
+	}
 
-		responseBuilder.setSolutionFound(!result.isEmpty());
-		result.forEach(
-				symbol -> responseBuilder.putSymbolIdToDigit(
-						symbol.getId(),
-						symbol.getBoundValue()));
-		return responseBuilder.build();
+	/**
+	 * Diese Methode gibt die Zuordnung von Symbol-Id zu Symbol-Wert zurück.
+	 *
+	 * @param result das zu untersuchende Ergebnis
+	 * @return die erzeugte Zuordnung
+	 */
+	private Map<Integer, Integer> collectSymbolIdToDigitMap(@Nonnull final List<Symbol> result) {
+		return result.stream()
+				.collect(Collectors.toMap(Symbol::getId, symbol -> (int) symbol.getBoundValue()));
 	}
 }
