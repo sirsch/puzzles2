@@ -25,4 +25,5 @@ message Cell {
 
 message SolvePuzzleResponse {
   map<uint32, uint32> symbol_id_to_digit = 1;
+  bool solution_found = 2;
 }

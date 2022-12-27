@@ -2650,6 +2650,12 @@ public final class Puzzles {
 
     int getSymbolIdToDigitOrThrow(
         int key);
+
+    /**
+     * <code>bool solution_found = 2;</code>
+     * @return The solutionFound.
+     */
+    boolean getSolutionFound();
   }
   /**
    * Protobuf type {@code software.sirsch.sa4e.puzzles.protobuf.SolvePuzzleResponse}
@@ -2784,6 +2790,17 @@ public final class Puzzles {
       return map.get(key);
     }
 
+    public static final int SOLUTION_FOUND_FIELD_NUMBER = 2;
+    private boolean solutionFound_;
+    /**
+     * <code>bool solution_found = 2;</code>
+     * @return The solutionFound.
+     */
+    @java.lang.Override
+    public boolean getSolutionFound() {
+      return solutionFound_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -2804,6 +2821,9 @@ public final class Puzzles {
           internalGetSymbolIdToDigit(),
           SymbolIdToDigitDefaultEntryHolder.defaultEntry,
           1);
+      if (solutionFound_ != false) {
+        output.writeBool(2, solutionFound_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -2823,6 +2843,10 @@ public final class Puzzles {
         size += com.google.protobuf.CodedOutputStream
             .computeMessageSize(1, symbolIdToDigit__);
       }
+      if (solutionFound_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(2, solutionFound_);
+      }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
@@ -2840,6 +2864,8 @@ public final class Puzzles {
 
       if (!internalGetSymbolIdToDigit().equals(
           other.internalGetSymbolIdToDigit())) return false;
+      if (getSolutionFound()
+          != other.getSolutionFound()) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -2855,6 +2881,9 @@ public final class Puzzles {
         hash = (37 * hash) + SYMBOL_ID_TO_DIGIT_FIELD_NUMBER;
         hash = (53 * hash) + internalGetSymbolIdToDigit().hashCode();
       }
+      hash = (37 * hash) + SOLUTION_FOUND_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getSolutionFound());
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -3006,6 +3035,8 @@ public final class Puzzles {
       public Builder clear() {
         super.clear();
         internalGetMutableSymbolIdToDigit().clear();
+        solutionFound_ = false;
+
         return this;
       }
 
@@ -3035,6 +3066,7 @@ public final class Puzzles {
         int from_bitField0_ = bitField0_;
         result.symbolIdToDigit_ = internalGetSymbolIdToDigit();
         result.symbolIdToDigit_.makeImmutable();
+        result.solutionFound_ = solutionFound_;
         onBuilt();
         return result;
       }
@@ -3085,6 +3117,9 @@ public final class Puzzles {
         if (other == software.sirsch.sa4e.puzzles.protobuf.Puzzles.SolvePuzzleResponse.getDefaultInstance()) return this;
         internalGetMutableSymbolIdToDigit().mergeFrom(
             other.internalGetSymbolIdToDigit());
+        if (other.getSolutionFound() != false) {
+          setSolutionFound(other.getSolutionFound());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
@@ -3119,6 +3154,11 @@ public final class Puzzles {
                     symbolIdToDigit__.getKey(), symbolIdToDigit__.getValue());
                 break;
               } // case 10
+              case 16: {
+                solutionFound_ = input.readBool();
+
+                break;
+              } // case 16
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -3263,6 +3303,37 @@ public final class Puzzles {
             .putAll(values);
         return this;
       }
+
+      private boolean solutionFound_ ;
+      /**
+       * <code>bool solution_found = 2;</code>
+       * @return The solutionFound.
+       */
+      @java.lang.Override
+      public boolean getSolutionFound() {
+        return solutionFound_;
+      }
+      /**
+       * <code>bool solution_found = 2;</code>
+       * @param value The solutionFound to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSolutionFound(boolean value) {
+        
+        solutionFound_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool solution_found = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearSolutionFound() {
+        
+        solutionFound_ = false;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -3371,16 +3442,16 @@ public final class Puzzles {
       "\022\030\n\013description\030\002 \001(\tH\000\210\001\001\022\025\n\riconCodePo" +
       "int\030\003 \001(\rB\016\n\014_description\"A\n\004Cell\022\013\n\003row" +
       "\030\001 \001(\r\022\016\n\006column\030\002 \001(\r\022\034\n\024number_as_symb" +
-      "ol_ids\030\003 \003(\r\"\272\001\n\023SolvePuzzleResponse\022k\n\022" +
+      "ol_ids\030\003 \003(\r\"\322\001\n\023SolvePuzzleResponse\022k\n\022" +
       "symbol_id_to_digit\030\001 \003(\0132O.software.sirs" +
       "ch.sa4e.puzzles.protobuf.SolvePuzzleResp" +
-      "onse.SymbolIdToDigitEntry\0326\n\024SymbolIdToD" +
-      "igitEntry\022\013\n\003key\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028" +
-      "\0012\227\001\n\014PuzzleSolver\022\206\001\n\013SolvePuzzle\0229.sof" +
-      "tware.sirsch.sa4e.puzzles.protobuf.Solve" +
-      "PuzzleRequest\032:.software.sirsch.sa4e.puz" +
-      "zles.protobuf.SolvePuzzleResponse\"\000b\006pro" +
-      "to3"
+      "onse.SymbolIdToDigitEntry\022\026\n\016solution_fo" +
+      "und\030\002 \001(\010\0326\n\024SymbolIdToDigitEntry\022\013\n\003key" +
+      "\030\001 \001(\r\022\r\n\005value\030\002 \001(\r:\0028\0012\227\001\n\014PuzzleSolv" +
+      "er\022\206\001\n\013SolvePuzzle\0229.software.sirsch.sa4" +
+      "e.puzzles.protobuf.SolvePuzzleRequest\032:." +
+      "software.sirsch.sa4e.puzzles.protobuf.So" +
+      "lvePuzzleResponse\"\000b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -3409,7 +3480,7 @@ public final class Puzzles {
     internal_static_software_sirsch_sa4e_puzzles_protobuf_SolvePuzzleResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_software_sirsch_sa4e_puzzles_protobuf_SolvePuzzleResponse_descriptor,
-        new java.lang.String[] { "SymbolIdToDigit", });
+        new java.lang.String[] { "SymbolIdToDigit", "SolutionFound", });
     internal_static_software_sirsch_sa4e_puzzles_protobuf_SolvePuzzleResponse_SymbolIdToDigitEntry_descriptor =
       internal_static_software_sirsch_sa4e_puzzles_protobuf_SolvePuzzleResponse_descriptor.getNestedTypes().get(0);
     internal_static_software_sirsch_sa4e_puzzles_protobuf_SolvePuzzleResponse_SymbolIdToDigitEntry_fieldAccessorTable = new
