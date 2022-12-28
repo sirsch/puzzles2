@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 
 import software.sirsch.sa4e.puzzles.protobuf.PuzzleSolverGrpc;
 import software.sirsch.sa4e.puzzles.protobuf.PuzzleSolverGrpc.PuzzleSolverBlockingStub;
+import software.sirsch.sa4e.puzzles.protobuf.Puzzles.SolvePuzzleRequest;
 import software.sirsch.sa4e.puzzles.protobuf.Puzzles.SolvePuzzleResponse;
 
 import io.grpc.Grpc;
@@ -79,9 +80,28 @@ public class PuzzleSolverClient implements Closeable {
 	 * @throws RuntimeException falls das Rätsel keine Lösung hat
 	 */
 	public Map<Integer, Integer> solvePuzzle(@Nonnull final Puzzle puzzle) {
-		SolvePuzzleResponse response = this.stub.solvePuzzle(
-				this.puzzle2ProtobufConverter.createSolvePuzzleRequest(puzzle));
+		return this.extractResult(this.stub.solvePuzzle(this.convertRequest(puzzle)));
+	}
 
+	/**
+	 * Diese Methode erzeugt einen {@link SolvePuzzleRequest}.
+	 *
+	 * @param puzzle das zu untersuchende Puzzle
+	 * @return die erzeugte Abfrage
+	 */
+	@Nonnull
+	private SolvePuzzleRequest convertRequest(@Nonnull final Puzzle puzzle) {
+		return this.puzzle2ProtobufConverter.createSolvePuzzleRequest(puzzle);
+	}
+
+	/**
+	 * Diese Methode ermittelt das Ergebnis der Abfrage.
+	 *
+	 * @param response die auszuwertende Rückgabe
+	 * @return die ermittelte Zuordnung von Symbol-ID zu Ziffernwert
+	 */
+	@Nonnull
+	private Map<Integer, Integer> extractResult(@Nonnull final SolvePuzzleResponse response) {
 		if (!response.getSolutionFound()) {
 			throw new RuntimeException("Puzzle has no solution!");
 		}
