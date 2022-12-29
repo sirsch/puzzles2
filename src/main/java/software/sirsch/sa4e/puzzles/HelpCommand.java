@@ -19,5 +19,6 @@ public class HelpCommand implements Command {
 	public void execute(@Nonnull final String[] args) {
 		System.out.println("usage: generate-puzzle <filename> <?numberOfDigits>");
 		System.out.println("usage: solve-puzzle <filename>");
+		System.out.println("usage: run-server <port>");
 	}
 }

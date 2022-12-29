@@ -21,6 +21,7 @@ public class PuzzlesApplication {
 	private static final PuzzlesApplication DEFAULT_INSTANCE = new PuzzlesApplication(Map.of(
 			GeneratePuzzleCommand.COMMAND_NAME, GeneratePuzzleCommand::new,
 			SolvePuzzleCommand.COMMAND_NAME, SolvePuzzleCommand::new,
+			RunServerCommand.COMMAND_NAME, RunServerCommand::new,
 			HelpCommand.COMMAND_NAME, HelpCommand::new));
 
 	/**
