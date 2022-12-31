@@ -99,6 +99,7 @@ public class RequestSolvePuzzleCommandTest {
 		this.objectUnderTest.execute("request-solve-puzzle", "testhost", "42", "3");
 
 		verify(this.puzzlePrinter).print(puzzle);
+		verify(this.puzzleSolverClient).close();
 		verify(this.out).println("Solution found:");
 		verify(this.out).println("Symbol A ID: 1, digit value: 1");
 		verify(this.out).println("Symbol B ID: 2, digit value: 2");
@@ -126,6 +127,7 @@ public class RequestSolvePuzzleCommandTest {
 		this.objectUnderTest.execute("request-solve-puzzle", "testhost", "42");
 
 		verify(this.puzzlePrinter).print(puzzle);
+		verify(this.puzzleSolverClient).close();
 		verify(this.out).println("Solution found:");
 		verify(this.out).println("Symbol A ID: 1, digit value: 1");
 		verify(this.out).println("Symbol B ID: 2, digit value: 2");

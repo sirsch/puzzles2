@@ -171,9 +171,29 @@ public class RequestSolvePuzzleCommand implements Command {
 		Map<Integer, Integer> result;
 
 		this.puzzlePrinter.print(puzzle);
-		result = this.puzzleSolverClientFactory.create(host, port).solvePuzzle(puzzle);
+		result = this.solvePuzzleWithNewClient(host, port, puzzle);
 		this.out.println("Solution found:");
 		this.printSymbols(puzzle.getSymbols(), result);
+	}
+
+	/**
+	 * Diese Methode erzeugt einen neuen Client und sendet mit diesem die Anfrage zum Lösen eines
+	 * Rätsels an den Server.
+	 *
+	 * @param host der Hostname des Servers
+	 * @param port der Port des Servers
+	 * @param puzzle das zu lösende Puzzle
+	 * @return die ermittelte Antwort
+	 */
+	@Nonnull
+	private Map<Integer, Integer> solvePuzzleWithNewClient(
+			@Nonnull final String host,
+			@Nonnull final Integer port,
+			@Nonnull final Puzzle puzzle) {
+
+		try (PuzzleSolverClient client = this.puzzleSolverClientFactory.create(host, port)) {
+			return client.solvePuzzle(puzzle);
+		}
 	}
 
 	/**
