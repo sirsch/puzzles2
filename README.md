@@ -57,6 +57,80 @@ als Datei abgespeichert werden.
 Mit dem Kommando `solve-puzzle <filename>` kann ein Rätsel aus einer Datei gelesen und gelöst
 werden.
 
-| Parameter           | Beschreibung                                     |
-|---------------------|--------------------------------------------------|
-| `<filename>`        | Der Name der einzulesenden Datei                 |
+| Parameter    | Beschreibung                     |
+|--------------|----------------------------------|
+| `<filename>` | Der Name der einzulesenden Datei |
+
+## zu Aufgabe 2
+
+Weil gRPC das Thema von Aufgabe 2 ist, wird hier zunächst näher auf die Code-Generierung mit dem
+Protobuf-Compiler eingegangen. Dann wird die allgemeine Architektur beschrieben und schließlich
+die Verwendung des Programms in Bezug auf die Client-Server-Kommunikation erläutert.
+
+### Code-Generierung mit `protoc`
+
+Auch der Protocol-Buffer-Code aus Aufgabe 1 wurde bereits mit dem Protobuf-Compiler `protoc`
+erzeugt. Mit dem gRPC-Plugin für protoc können die Stubs und die Basisklasse für die
+Server-Implementierung erzeugt werden. Der Code für die Protocol-Buffers-Nachrichten und gRPC kann
+in derselben protobuf-Datei verfasst werden. Im Rahmen dieses Aufgabenblatts wurde der Code in die
+Datei `Puzzles.proto` geschrieben. Für den generierten Code wurde ein separates Java-Paket
+vorgesehen, um eine klare Trennung zwischen generiertem und selbstgeschriebenem Code zu
+bewerkstelligen.
+
+Mit dem Kommando `protoc --java_out=src/main/java
+src/main/resources/software/sirsch/sa4e/puzzles/protobuf/Puzzles.proto` wurde die Code-Generierung
+für die Nachrichten ausgelöst. Dabei wurde die Klasse
+`software.sirsch.sa4e.puzzles.protobuf.Puzzles` und die Nachrichten als nested Classes erzeugt. Für
+die Erzeugung der gRPC-Stubs und der Basisklasse für den Dienst wurde `protoc
+--plugin=protoc-gen-grpc-java=protoc-gen-grpc-java-1.51.1-linux-x86_64.exe
+--grpc-java_out=src/main/java
+src/main/resources/software/sirsch/sa4e/puzzles/protobuf/Puzzles.proto` verwendet.
+
+### Implementierungsbeschreibung
+
+Die Klasse `PuzzleSolverService` ist von der generierten, abstrakten Klasse
+`PuzzleSolverGrpc.PuzzleSolverImplBase` abgeleitet und fügt die Business-Logik in das generierte
+Gerüst ein. Für das Lifecycle-Management des Servers ist die Klasse `PuzzleSolverServer` zuständig. 
+Weil es sich bei der Abgabe um eine Konsolenanwendung handelt, wurde, wie im Tutorial
+https://grpc.io/docs/languages/java/basics/, ein Shutdown-Hook zum Reagieren auf ein Signal
+verwendet. Der Main-Thread wartet derweil auf das Herunterfahren des gRPC-Servers. Man könnte den
+automatisch generierten Stub `PuzzleSolverGrpc.PuzzleSolverBlockingStub` als Client
+verwenden. Dann müsste sich der Aufrufer um die Behandlung des gRPC-Channels kümmern. Insbesondere
+muss der `Channel` heruntergefahren werden, um Ressourcen freizugeben. Um die Ressourcen-Behandlung
+auf Client-Seite zu vereinfachen, wurden Channel und Blocking-Stub hinter der Schnittstelle der
+Klasse `PuzzleSolverClient` verborgen. Diese Klasse implementiert die Schnittstelle `Closeable`,
+sodass sie in einem Try-With-Resources verwendet werden kann.
+
+### Verwendung
+
+Der Anwendung aus Aufgabe 1 wurden zwei weitere Kommandos hinzugefügt. Mit `run-server` kann ein
+Server zum Lösen von Rätseln gestartet und betrieben werden. Das Kommando `request-solve-puzzle`
+erzeugt ein neues Rätsel und sendet es zur Lösung an einen Server. Die Antwort wird nach Empfang auf
+dem Client ausgegeben.
+
+#### Starten des Servers
+Mit dem Kommando `run-server <port>` wird ein Server gestartet und betrieben. Das Programm läuft
+dabei so lange, bis es von außen zum Beispiel mit `STRG` + `C` beendet wird. Beim Aufruf aus einer
+IDE wie Intellij wird das Programm mit der Stop-Schaltfläche beendet.
+
+| Parameter | Beschreibung                                                  |
+|-----------|---------------------------------------------------------------|
+| `<port>`  | Der Port, auf dem der Server Verbindungen entgegennehmen soll |
+
+#### Rätsel erzeugen und von einem Server lösen lassen
+Mit dem Kommando `request-solve-puzzle <serverHost> <serverPort> <?numberOfDigits>` wird ein neues
+Rätsel erzeugt und zur Lösung an den Server übertragen. Die Antwort des Servers wird im Anschluss
+daran auf dem Client ausgegeben.
+
+| Parameter           | Beschreibung                                            |
+|---------------------|---------------------------------------------------------|
+| `<serverHost>`      | Der Hostname des Servers                                |
+| `<serverPort>`      | Der Port, auf dem der Server Verbindungen entgegennimmt |
+| `<?numberOfDigits>` | (optional) Die Anzahl der zu erzeugenden Stellen        |
+
+## Spring Boot
+
+Das Maven-Projekt dieser Abgabe basiert auf der Parent-POM vom Spring Boot. Diese wird verwendet,
+weil das Spring-Boot-Projekt eine nützliche und aufeinander abgestimmte Auswahl von gängigen
+Java-Bibliotheken und dem Test-Framework Junit 5 als Abhängigkeiten liefert. Die Funktionalität von 
+Spring Boot oder Spring Framework wird nicht verwendet.
