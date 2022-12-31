@@ -22,6 +22,7 @@ public class PuzzlesApplication {
 			GeneratePuzzleCommand.COMMAND_NAME, GeneratePuzzleCommand::new,
 			SolvePuzzleCommand.COMMAND_NAME, SolvePuzzleCommand::new,
 			RunServerCommand.COMMAND_NAME, RunServerCommand::new,
+			RequestSolvePuzzleCommand.COMMAND_NAME, RequestSolvePuzzleCommand::new,
 			HelpCommand.COMMAND_NAME, HelpCommand::new));
 
 	/**
