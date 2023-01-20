@@ -109,7 +109,7 @@ public class SolvePuzzleCommand implements Command {
 	private void solvePuzzle(@Nonnull final Puzzle puzzle) {
 		this.puzzlePrinter.print(puzzle);
 		this.out.println();
-		this.printSolution(new PuzzleSolver().solvePuzzle(puzzle));
+		this.printSolution(PuzzleSolverFactory.getSingletonInstance().create().solvePuzzle(puzzle));
 	}
 
 	/**

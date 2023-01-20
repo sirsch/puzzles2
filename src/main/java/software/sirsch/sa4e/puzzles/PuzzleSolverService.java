@@ -36,7 +36,7 @@ public class PuzzleSolverService extends PuzzleSolverGrpc.PuzzleSolverImplBase {
 	 * Dieser Konstruktor nimmt die interne Initialisierung vor.
 	 */
 	public PuzzleSolverService() {
-		this(new Protobuf2PuzzleConverter(), new PuzzleSolver());
+		this(new Protobuf2PuzzleConverter(), PuzzleSolverFactory.getSingletonInstance().create());
 	}
 
 	/**
