@@ -29,7 +29,7 @@ public class PuzzleSolverFactoryTest {
 	 */
 	@BeforeEach
 	public void setUp() {
-		this.objectUnderTest = PuzzleSolverFactory.getSingletonInstance();
+		this.objectUnderTest = new PuzzleSolverFactory();
 	}
 
 	/**
@@ -38,14 +38,16 @@ public class PuzzleSolverFactoryTest {
 	 */
 	@Test
 	public void testGetSingletonInstance() {
-		assertSame(this.objectUnderTest, PuzzleSolverFactory.getSingletonInstance());
+		assertSame(
+				PuzzleSolverFactory.getSingletonInstance(),
+				PuzzleSolverFactory.getSingletonInstance());
 	}
 
 	/**
-	 * Diese Methode prüft {@link PuzzleSolverFactory#create()}.
+	 * Diese Methode prüft {@link PuzzleSolverFactory#create()} wenn keine Aktion registriert wurde.
 	 */
 	@Test
-	public void testCreate() {
+	public void testCreateWithoutAction() {
 		PuzzleSolver firstResult;
 		PuzzleSolver secondResult;
 
@@ -58,7 +60,28 @@ public class PuzzleSolverFactoryTest {
 	}
 
 	/**
-	 * Diese Methode prüft {@link PuzzleSolverFactory#forEach(Consumer)}.
+	 * Diese Methode prüft {@link PuzzleSolverFactory#create()} wenn eine Aktion registriert wurde.
+	 */
+	@Test
+	public void testCreateWithAction() {
+		Consumer<PuzzleSolver> action = mock(Consumer.class);
+		PuzzleSolver firstResult;
+		PuzzleSolver secondResult;
+
+		this.objectUnderTest.updateAction(action);
+
+		firstResult = this.objectUnderTest.create();
+		secondResult = this.objectUnderTest.create();
+
+		assertNotNull(firstResult);
+		assertNotNull(secondResult);
+		assertNotSame(firstResult, secondResult);
+		verify(action).accept(firstResult);
+		verify(action).accept(secondResult);
+	}
+
+	/**
+	 * Diese Methode prüft {@link PuzzleSolverFactory#updateAction(Consumer)}.
 	 */
 	@Test
 	public void testForEach() {
@@ -66,7 +89,7 @@ public class PuzzleSolverFactoryTest {
 		PuzzleSolver firstPuzzleSolver = this.objectUnderTest.create();
 		PuzzleSolver secondPuzzleSolver = this.objectUnderTest.create();
 
-		this.objectUnderTest.forEach(acton);
+		this.objectUnderTest.updateAction(acton);
 
 		verify(acton).accept(firstPuzzleSolver);
 		verify(acton).accept(secondPuzzleSolver);
