@@ -178,6 +178,9 @@ public class LogOutputManager {
 			this.selectOutput(null);
 		} else if (StringUtils.equalsIgnoreCase(input, "stdout")) {
 			this.selectOutput(this.solverProgressLoggerFactory.createStdoutLogger());
+		} else if (StringUtils.startsWithIgnoreCase(input, "file=")) {
+			this.selectOutput(this.solverProgressLoggerFactory.createFileLogger(
+					input.substring("file=".length())));
 		} else {
 			this.consoleWriter.println("Invalid log output!");
 		}

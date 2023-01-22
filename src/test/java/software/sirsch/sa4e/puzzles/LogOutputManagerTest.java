@@ -204,6 +204,34 @@ public class LogOutputManagerTest {
 	}
 
 	/**
+	 * Diese Methode prüft {@link LogOutputManager#showPromptRepeatedly()} mit ausgabe in Datei.
+	 *
+	 * @throws IOException wird in diesem Testfall nicht erwartet
+	 */
+	@Test
+	public void testShowPromptRepeatedlyFile() throws IOException {
+		InOrder orderVerifier = inOrder(
+				this.consoleReader,
+				this.consoleWriter,
+				this.puzzleSolverFactory);
+		SolverProgressLogger fileLogger = mock(SolverProgressLogger.class);
+		Consumer<PuzzleSolver> fileUpdateAction = mock(Consumer.class);
+
+		when(this.consoleReader.readLine()).thenReturn("file=test.file", (String) null);
+		when(this.solverProgressLoggerFactory.createFileLogger("test.file"))
+				.thenReturn(fileLogger);
+		when(this.updateActionFactory.apply(fileLogger)).thenReturn(fileUpdateAction);
+
+		this.objectUnderTest.showPromptRepeatedly();
+
+		orderVerifier.verify(this.consoleWriter).println(argThatStartsWith("Select log output"));
+		orderVerifier.verify(this.consoleReader).readLine();
+		orderVerifier.verify(this.puzzleSolverFactory).updateAction(fileUpdateAction);
+		orderVerifier.verify(this.consoleWriter).println(argThatStartsWith("Select log output"));
+		orderVerifier.verify(this.consoleReader).readLine();
+	}
+
+	/**
 	 * Diese Methode prüft {@link LogOutputManager#showPromptRepeatedly()} mit ungültiger Eingabe.
 	 *
 	 * @throws IOException wird in diesem Testfall nicht erwartet
