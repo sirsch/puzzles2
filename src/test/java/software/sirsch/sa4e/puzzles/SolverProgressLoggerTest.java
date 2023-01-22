@@ -5,6 +5,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -65,5 +66,13 @@ public class SolverProgressLoggerTest {
 		this.objectUnderTest.logPermutation(List.of(firstSymbol, secondSymbol), false);
 
 		verify(this.objectUnderTest).log("Permutation A:1 B:2 is not a solution.");
+	}
+
+	/**
+	 * Diese Methode prüft {@link SolverProgressLogger#close()}.
+	 */
+	@Test
+	public void testClose() {
+		assertDoesNotThrow(() -> this.objectUnderTest.close());
 	}
 }

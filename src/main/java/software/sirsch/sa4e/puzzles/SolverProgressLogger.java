@@ -47,4 +47,10 @@ public interface SolverProgressLogger {
 	 * @param message die Nachricht
 	 */
 	void log(@Nonnull String message);
+
+	/**
+	 * Diese Methode schließt die Ausgabe.
+	 */
+	default void close() {
+	}
 }

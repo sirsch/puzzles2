@@ -45,4 +45,14 @@ public class PrintStreamSolverProgressLoggerTest {
 
 		verify(this.out).println("testMessage");
 	}
+
+	/**
+	 * Diese Methode prüft {@link PrintStreamSolverProgressLogger#close()}.
+	 */
+	@Test
+	public void testClose() {
+		this.objectUnderTest.close();
+
+		verify(this.out).close();
+	}
 }

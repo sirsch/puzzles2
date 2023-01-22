@@ -32,4 +32,9 @@ public class PrintStreamSolverProgressLogger implements SolverProgressLogger {
 	public void log(@Nonnull final String message) {
 		this.out.println(message);
 	}
+
+	@Override
+	public void close() {
+		this.out.close();
+	}
 }
