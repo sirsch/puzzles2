@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
 import static org.springframework.util.ReflectionUtils.doWithFields;
@@ -22,7 +23,7 @@ import static org.springframework.util.ReflectionUtils.setField;
 public class Injector<T, V> implements Function<V, Consumer<T>> {
 
 	@Override
-	public Consumer<T> apply(@Nonnull final V value) {
+	public Consumer<T> apply(@CheckForNull final V value) {
 		return instance -> this.inject(instance, value);
 	}
 
@@ -32,7 +33,7 @@ public class Injector<T, V> implements Function<V, Consumer<T>> {
 	 * @param targetInstance das Zielobjekt, in das injiziert werden soll
 	 * @param value der zu injizierende Wert
 	 */
-	public void inject(@Nonnull final T targetInstance, @Nonnull final V value) {
+	public void inject(@Nonnull final T targetInstance, @CheckForNull final V value) {
 		doWithFields(
 				targetInstance.getClass(),
 				field -> this.handleField(field, targetInstance, value));
@@ -54,13 +55,13 @@ public class Injector<T, V> implements Function<V, Consumer<T>> {
 	private void handleField(
 			@Nonnull final Field field,
 			@Nonnull final T targetInstance,
-			@Nonnull final V value) {
+			@CheckForNull final V value) {
 
 		if (!field.isAnnotationPresent(Injectable.class)) {
 			return;
 		}
 
-		if (!field.getType().isInstance(value)) {
+		if (value != null && !field.getType().isInstance(value)) {
 			return;
 		}
 

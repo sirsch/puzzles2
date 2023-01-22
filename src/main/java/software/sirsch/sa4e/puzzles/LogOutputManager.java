@@ -32,8 +32,7 @@ public class LogOutputManager {
 			new BufferedReader(new InputStreamReader(System.in)),
 			new PrintWriter(new OutputStreamWriter(System.out), true),
 			new SolverProgressLoggerFactory(),
-			solverProgressLogger ->
-					puzzleSolver -> puzzleSolver.setSolverProgressLogger(solverProgressLogger),
+			new Injector<>(),
 			Thread::new);
 
 	/**

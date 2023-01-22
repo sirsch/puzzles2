@@ -58,6 +58,26 @@ public class InjectorTest {
 	}
 
 	/**
+	 * Diese Methode prüft {@link Injector#apply(Object)}.
+	 */
+	@Test
+	public void testApplyNull() {
+		Consumer<TestTarget> result;
+
+		this.testTarget.firstString = "firstString";
+
+		result = this.objectUnderTest.apply(null);
+
+		assertNotNull(result);
+		result.accept(new TestTarget());
+		result.accept(this.testTarget);
+		assertNull(this.testTarget.firstString);
+		assertNull(this.testTarget.secondString);
+		assertNull(this.testTarget.notInjectableString);
+		assertNull(this.testTarget.integer);
+	}
+
+	/**
 	 * Diese Klasse stellt Objekte für den Test bereit.
 	 */
 	private static class TestTarget {

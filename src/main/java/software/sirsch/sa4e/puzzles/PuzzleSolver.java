@@ -29,6 +29,7 @@ public class PuzzleSolver {
 	/**
 	 * Dieses Feld kann einen Logger zur Fortschrittsaufzeichnung enthalten.
 	 */
+	@Injectable
 	@CheckForNull
 	private volatile SolverProgressLogger solverProgressLogger;
 
