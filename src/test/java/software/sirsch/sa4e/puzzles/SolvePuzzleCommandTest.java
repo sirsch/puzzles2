@@ -16,6 +16,7 @@ import org.mockito.InOrder;
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.inOrder;
@@ -70,7 +71,7 @@ public class SolvePuzzleCommandTest {
 		this.puzzlePrinter = mock(PuzzlePrinter.class);
 		this.puzzleSolverFactory = mock(PuzzleSolverFactory.class);
 		this.logOutputManager = mock(LogOutputManager.class);
-		when(this.puzzleSolverFactory.create()).thenReturn(new PuzzleSolver(0));
+		when(this.puzzleSolverFactory.create(anyInt())).thenReturn(new PuzzleSolver(0));
 
 		this.objectUnderTest = new SolvePuzzleCommand(
 				this.out,
@@ -111,7 +112,7 @@ public class SolvePuzzleCommandTest {
 		orderVerifier.verify(this.out).println();
 		orderVerifier.verify(this.logOutputManager).init();
 		orderVerifier.verify(this.logOutputManager).awaitFirstSelection();
-		orderVerifier.verify(this.puzzleSolverFactory).create();
+		orderVerifier.verify(this.puzzleSolverFactory).create(0);
 		orderVerifier.verify(this.out).println("Solution found:");
 		orderVerifier.verify(this.out).println("Symbol 0 ID: 0, digit value: 0");
 		orderVerifier.verifyNoMoreInteractions();
@@ -166,13 +167,14 @@ public class SolvePuzzleCommandTest {
 
 		this.objectUnderTest.execute(
 				SolvePuzzleCommand.COMMAND_NAME,
-				this.tempFile.getAbsolutePath());
+				this.tempFile.getAbsolutePath(),
+				"42");
 
 		orderVerifier.verify(this.puzzlePrinter).print(notNull());
 		orderVerifier.verify(this.out).println();
 		orderVerifier.verify(this.logOutputManager).init();
 		orderVerifier.verify(this.logOutputManager).awaitFirstSelection();
-		orderVerifier.verify(this.puzzleSolverFactory).create();
+		orderVerifier.verify(this.puzzleSolverFactory).create(42);
 		orderVerifier.verify(this.out).println("No solution found!");
 		orderVerifier.verifyNoMoreInteractions();
 	}
