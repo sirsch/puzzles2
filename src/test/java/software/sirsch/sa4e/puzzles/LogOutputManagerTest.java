@@ -4,6 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Optional;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -18,6 +23,8 @@ import org.mockito.InOrder;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.Mockito.inOrder;
@@ -140,6 +147,31 @@ public class LogOutputManagerTest {
 		this.objectUnderTest.init();
 
 		verify(this.backgroundThread).start();
+	}
+
+	/**
+	 * Diese Methode prüft {@link LogOutputManager#awaitFirstSelection()}.
+	 */
+	@Test
+	public void testAwaitFirstSelection() throws IOException {
+		ScheduledFuture<?> future = Executors.newSingleThreadScheduledExecutor().schedule(
+				() -> {
+					try {
+						this.objectUnderTest.awaitFirstSelection();
+					} catch (InterruptedException e) {
+						fail(e);
+					}
+				},
+				0L,
+				TimeUnit.SECONDS);
+
+		when(this.consoleReader.readLine()).thenReturn("stdout", null);
+		assertThrows(TimeoutException.class, () -> future.get(3, TimeUnit.SECONDS));
+
+		this.objectUnderTest.showPromptRepeatedly();
+
+		assertDoesNotThrow(() -> future.get(3, TimeUnit.SECONDS));
+		assertDoesNotThrow(this.objectUnderTest::awaitFirstSelection);
 	}
 
 	/**

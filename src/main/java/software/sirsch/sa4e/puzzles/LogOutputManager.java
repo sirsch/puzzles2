@@ -5,6 +5,7 @@ import java.io.Console;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Optional;
+import java.util.concurrent.CountDownLatch;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -36,6 +37,13 @@ public class LogOutputManager {
 			solverProgressLogger ->
 					puzzleSolver -> puzzleSolver.setSolverProgressLogger(solverProgressLogger),
 			Thread::new);
+
+	/**
+	 * Dieses Feld enthält ein {@link CountDownLatch}, um das erste Setzen einer Log-Ausgabe
+	 * abzuwarten.
+	 */
+	@Nonnull
+	private final CountDownLatch firstSelection = new CountDownLatch(1);
 
 	/**
 	 * Dieses Feld muss die Fabrik für {@link PuzzleSolver} enthalten.
@@ -125,6 +133,15 @@ public class LogOutputManager {
 	}
 
 	/**
+	 * Diese Methode wartet, bis die erste Ausgabe gewählt wurde.
+	 *
+	 * @throws InterruptedException falls der Thread beim Warten unterbrochen wurde
+	 */
+	public void awaitFirstSelection() throws InterruptedException {
+		this.firstSelection.await();
+	}
+
+	/**
 	 * Diese Methode führt die Abfrage der Einstellung wiederholt aus.
 	 */
 	protected void showPromptRepeatedly() {
@@ -209,6 +226,7 @@ public class LogOutputManager {
 	 */
 	private void selectOutput(@CheckForNull final SolverProgressLogger solverProgressLogger) {
 		this.puzzleSolverFactory.updateAction(this.updateActionFactory.apply(solverProgressLogger));
+		this.firstSelection.countDown();
 	}
 
 	/**
