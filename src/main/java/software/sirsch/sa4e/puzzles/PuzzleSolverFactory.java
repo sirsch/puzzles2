@@ -7,8 +7,6 @@ import java.util.function.Consumer;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
-import org.apache.commons.collections4.Factory;
-
 import static java.util.Collections.newSetFromMap;
 
 /**
@@ -22,7 +20,7 @@ import static java.util.Collections.newSetFromMap;
  * @author sirsch
  * @since 20.01.2023
  */
-public class PuzzleSolverFactory implements Factory<PuzzleSolver> {
+public class PuzzleSolverFactory {
 
 	/**
 	 * Dieses Feld soll die Singleton-Instance dieser Klasse enthalten.
@@ -68,9 +66,18 @@ public class PuzzleSolverFactory implements Factory<PuzzleSolver> {
 	 *
 	 * @return die erzeugte Instanz
 	 */
-	@Override
 	public synchronized PuzzleSolver create() {
-		PuzzleSolver newInstance = new PuzzleSolver();
+		return this.create(0);
+	}
+
+	/**
+	 * Diese Methode erzeugt einen neuen {@link PuzzleSolver}.
+	 *
+	 * @param delay das zu verwendende Delay in Millisekunden
+	 * @return die erzeugte Instanz
+	 */
+	public synchronized PuzzleSolver create(final int delay) {
+		PuzzleSolver newInstance = new PuzzleSolver(delay);
 
 		if (this.action != null) {
 			this.action.accept(newInstance);

@@ -27,11 +27,25 @@ import static java.util.Spliterators.spliteratorUnknownSize;
 public class PuzzleSolver {
 
 	/**
+	 * Dieses Feld enthält das Delay zur Erzeugung der Permutationen in Millisekunden.
+	 */
+	private final int delay;
+
+	/**
 	 * Dieses Feld kann einen Logger zur Fortschrittsaufzeichnung enthalten.
 	 */
 	@Injectable
 	@CheckForNull
 	private volatile SolverProgressLogger solverProgressLogger;
+
+	/**
+	 * Dieser Konstruktor legt das Delay zur Verzögerung der Anwendung fest.
+	 *
+	 * @param delay das zu verwendende Delay in Millisekunden
+	 */
+	public PuzzleSolver(final int delay) {
+		this.delay = delay;
+	}
 
 	/**
 	 * Diese Methode legt den {@link SolverProgressLogger} fest.
@@ -53,11 +67,44 @@ public class PuzzleSolver {
 	 * wurde
 	 */
 	public List<Symbol> solvePuzzle(@Nonnull final Puzzle puzzle) {
-		return this.createPermutationStream()
+		return this.createPermutationStreamWithDelay()
 				.filter(this.createIsSolutionPredicate(puzzle))
 				.findFirst()
 				.map(permutation -> puzzle.getSymbols())
 				.orElseGet(Collections::emptyList);
+	}
+
+	/**
+	 * Diese Methode fügt dem {@link #createPermutationStream()} gegebenenfalls ein Delay hinzu.
+	 *
+	 * @return der resultierende {@link Stream}
+	 */
+	@Nonnull
+	private Stream<List<Byte>> createPermutationStreamWithDelay() {
+		Stream<List<Byte>> result = this.createPermutationStream();
+
+		if (this.delay > 0) {
+			result = result.map(this::delay);
+		}
+
+		return result;
+	}
+
+	/**
+	 * Diese Methode verzögert die Rückgabe um {@link #delay} Millisekunden.
+	 *
+	 * @param permutation der zu verzögernde Wert
+	 * @return der verzögerte Wert
+	 */
+	@Nonnull
+	private List<Byte> delay(@Nonnull final List<Byte> permutation) {
+		try {
+			Thread.sleep(this.delay);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+
+		return permutation;
 	}
 
 	/**

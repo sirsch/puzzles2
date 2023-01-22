@@ -70,7 +70,7 @@ public class SolvePuzzleCommandTest {
 		this.puzzlePrinter = mock(PuzzlePrinter.class);
 		this.puzzleSolverFactory = mock(PuzzleSolverFactory.class);
 		this.logOutputManager = mock(LogOutputManager.class);
-		when(this.puzzleSolverFactory.create()).thenReturn(new PuzzleSolver());
+		when(this.puzzleSolverFactory.create()).thenReturn(new PuzzleSolver(0));
 
 		this.objectUnderTest = new SolvePuzzleCommand(
 				this.out,

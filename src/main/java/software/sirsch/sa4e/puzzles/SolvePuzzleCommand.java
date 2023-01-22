@@ -91,7 +91,7 @@ public class SolvePuzzleCommand implements Command {
 	 */
 	@Override
 	public void execute(@Nonnull final String... args) {
-		this.solvePuzzle(this.extractFilename(args));
+		this.solvePuzzle(this.extractFilename(args), this.extractDelay(args));
 	}
 
 	/**
@@ -110,14 +110,31 @@ public class SolvePuzzleCommand implements Command {
 	}
 
 	/**
+	 * Diese Methode ermittelt das Delay in Millisekunden.
+	 *
+	 * @param args die zu übergebenden Argumente
+	 * @return das ermittelte Delay in Millisekunden
+	 */
+	private int extractDelay(@Nonnull final String[] args) {
+		if (args.length > 2) {
+			return Integer.valueOf(args[2]);
+		} else {
+			return 0;
+		}
+	}
+
+	/**
 	 * Diese Methode löst ein Puzzle.
 	 *
 	 * @param filename der Name der Eingabedatei
+	 * @param delay das Delay in Millisekunden
 	 */
-	private void solvePuzzle(@Nonnull final String filename) {
+	private void solvePuzzle(@Nonnull final String filename, final int delay) {
 		try (InputStream inputStream = new FileInputStream(filename)) {
-			this.solvePuzzle(new Protobuf2PuzzleConverter().createPuzzle(
-					Puzzles.SolvePuzzleRequest.parseFrom(inputStream)));
+			this.solvePuzzle(
+					new Protobuf2PuzzleConverter().createPuzzle(
+							Puzzles.SolvePuzzleRequest.parseFrom(inputStream)),
+					delay);
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}
@@ -127,8 +144,9 @@ public class SolvePuzzleCommand implements Command {
 	 * Diese Methode löst ein Rätsel und gibt das Ergebnis aus.
 	 *
 	 * @param puzzle das zu lösende Puzzle
+	 * @param delay das Delay in Millisekunden
 	 */
-	private void solvePuzzle(@Nonnull final Puzzle puzzle) {
+	private void solvePuzzle(@Nonnull final Puzzle puzzle, final int delay) {
 		this.puzzlePrinter.print(puzzle);
 		this.out.println();
 		this.logOutputManager.init();
@@ -139,7 +157,7 @@ public class SolvePuzzleCommand implements Command {
 			return;
 		}
 
-		this.printSolution(this.puzzleSolverFactory.create().solvePuzzle(puzzle));
+		this.printSolution(this.puzzleSolverFactory.create(delay).solvePuzzle(puzzle));
 	}
 
 	/**

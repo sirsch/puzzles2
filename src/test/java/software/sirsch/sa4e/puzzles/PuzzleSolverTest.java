@@ -42,7 +42,7 @@ public class PuzzleSolverTest {
 	public void setUp() {
 		this.solverProgressLoggerMock = new SolverProgressLoggerMock();
 
-		this.objectUnderTest = new PuzzleSolver();
+		this.objectUnderTest = new PuzzleSolver(0);
 
 		this.objectUnderTest.setSolverProgressLogger(this.solverProgressLoggerMock);
 	}
