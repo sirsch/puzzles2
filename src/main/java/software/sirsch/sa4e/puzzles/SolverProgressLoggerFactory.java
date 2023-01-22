@@ -44,4 +44,16 @@ public class SolverProgressLoggerFactory {
 			throw new UncheckedIOException(e);
 		}
 	}
+
+	/**
+	 * Diese Methode erzeugt einen {@link SolverProgressLogger} für das Versenden der Meldungen an
+	 * einen MQTT-Server.
+	 *
+	 * @param serverURI die URI des zu verwendenden Servers
+	 * @return die erzeugte Instanz
+	 */
+	@Nonnull
+	public SolverProgressLogger createMqttLogger(@Nonnull final String serverURI) {
+		return new MqttSolverProgressLogger(serverURI);
+	}
 }

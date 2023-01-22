@@ -109,4 +109,16 @@ public class SolverProgressLoggerFactoryTest {
 				UncheckedIOException.class,
 				() -> this.objectUnderTest.createFileLogger(this.tempFile.getAbsolutePath()));
 	}
+
+	/**
+	 * Diese Methode prüft {@link SolverProgressLoggerFactory#createMqttLogger(String)}.
+	 */
+	@Test
+	public void testCreateMqttLogger() {
+		SolverProgressLogger result;
+
+		result = this.objectUnderTest.createMqttLogger("tcp://dummy:1883");
+
+		assertNotNull(result);
+	}
 }
