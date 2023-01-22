@@ -29,12 +29,8 @@ public class LogOutputManager {
 	@Nonnull
 	private static final LogOutputManager SINGLETON_INSTANCE = new LogOutputManager(
 			PuzzleSolverFactory.getSingletonInstance(),
-			Optional.ofNullable(System.in)
-					.map(InputStreamReader::new)
-					.map(BufferedReader::new),
-			Optional.ofNullable(System.out)
-					.map(OutputStreamWriter::new)
-					.map(writer -> new PrintWriter(writer, true)),
+			new BufferedReader(new InputStreamReader(System.in)),
+			new PrintWriter(new OutputStreamWriter(System.out), true),
 			new SolverProgressLoggerFactory(),
 			solverProgressLogger ->
 					puzzleSolver -> puzzleSolver.setSolverProgressLogger(solverProgressLogger),
@@ -61,18 +57,16 @@ public class LogOutputManager {
 	private final Thread backgroundThread;
 
 	/**
-	 * Dieses Feld muss das {@link Optional} für den {@link BufferedReader} für die Konsoleneingabe
-	 * enthalten.
+	 * Dieses Feld muss den {@link BufferedReader} für die Konsoleneingabe enthalten.
 	 */
 	@Nonnull
-	private final Optional<BufferedReader> consoleReader;
+	private final BufferedReader consoleReader;
 
 	/**
-	 * Dieses Feld muss das {@link Optional} für den {@link PrintWriter} für die Konsolenausgabe
-	 * enthalten.
+	 * Dieses Feld muss den {@link PrintWriter} für die Konsolenausgabe enthalten.
 	 */
 	@Nonnull
-	private final Optional<PrintWriter> consoleWriter;
+	private final PrintWriter consoleWriter;
 
 	/**
 	 * Dieses Feld muss die Fabrik für verschiedene {@link SolverProgressLogger} enthalten.
@@ -98,8 +92,8 @@ public class LogOutputManager {
 	 */
 	protected LogOutputManager(
 			@Nonnull final PuzzleSolverFactory puzzleSolverFactory,
-			@Nonnull final Optional<BufferedReader> consoleReader,
-			@Nonnull final Optional<PrintWriter> consoleWriter,
+			@Nonnull final BufferedReader consoleReader,
+			@Nonnull final PrintWriter consoleWriter,
 			@Nonnull final SolverProgressLoggerFactory solverProgressLoggerFactory,
 			@Nonnull
 			final Function<SolverProgressLogger, Consumer<PuzzleSolver>> updateActionFactory,
@@ -125,13 +119,10 @@ public class LogOutputManager {
 	}
 
 	/**
-	 * Diese Methode startet den Hintergrund-Thread, falls die für den Prompt benötigten Kanäle
-	 * verfügbar sind.
+	 * Diese Methode startet den Hintergrund-Thread.
 	 */
 	public void init() {
-		if (this.consoleReader.isPresent() && this.consoleWriter.isPresent()) {
-			this.backgroundThread.start();
-		}
+		this.backgroundThread.start();
 	}
 
 	/**
@@ -160,36 +151,19 @@ public class LogOutputManager {
 	 * Diese Methode fragt die Einstellung für die Log-Ausgabe ab.
 	 */
 	private void showPrompt() {
-		this.consoleWriter
-				.ifPresent(this::writePrompt);
-		this.consoleReader
-				.map(this::readPrompt)
-				.ifPresentOrElse(
-						this::handleUserInput,
-						() -> {
-							throw new EndOfInputException();
-						});
-	}
-
-	/**
-	 * Diese Methode gibt die Abfragemeldung für die Einstellung der Log-Ausgabe in einen
-	 * {@link PrintWriter}.
-	 *
-	 * @param printWriter der zu verwendende Writer
-	 */
-	private void writePrompt(@Nonnull final PrintWriter printWriter) {
-		printWriter.println("Select log output [none | stdout]:");
+		this.consoleWriter.println("Select log output [none | stdout]:");
+		this.handleUserInput(this.readPrompt());
 	}
 
 	/**
 	 * Diese Methode liest eine Zeile von der Konsole.
 	 *
-	 * @param reader der Reader von dem gelesen werden soll
 	 * @return die gelesene Zeile oder {@code null} bei End-of-Stream
 	 */
-	private String readPrompt(@Nonnull final BufferedReader reader) {
+	private String readPrompt() {
 		try {
-			return reader.readLine();
+			return Optional.ofNullable(this.consoleReader.readLine())
+					.orElseThrow(EndOfInputException::new);
 		} catch (IOException e) {
 			throw new EndOfInputException();
 		}
@@ -206,18 +180,8 @@ public class LogOutputManager {
 		} else if (StringUtils.equalsIgnoreCase(input, "stdout")) {
 			this.selectOutput(this.solverProgressLoggerFactory.createStdoutLogger());
 		} else {
-			this.consoleWriter
-					.ifPresent(this::writeInvalidInputMessage);
+			this.consoleWriter.println("Invalid log output!");
 		}
-	}
-
-	/**
-	 * Diese Methode schreibt die Meldung für ungültige Eingaben in einen {@link PrintWriter}.
-	 *
-	 * @param printWriter der zu verwendende Writer
-	 */
-	private void writeInvalidInputMessage(@Nonnull final PrintWriter printWriter) {
-		printWriter.println("Invalid log output!");
 	}
 
 	/**

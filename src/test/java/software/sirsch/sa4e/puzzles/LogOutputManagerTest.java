@@ -3,8 +3,6 @@ package software.sirsch.sa4e.puzzles;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Optional;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -29,7 +27,6 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -100,16 +97,16 @@ public class LogOutputManagerTest {
 
 		this.objectUnderTest = new LogOutputManager(
 				this.puzzleSolverFactory,
-				Optional.of(this.consoleReader),
-				Optional.of(this.consoleWriter),
+				this.consoleReader,
+				this.consoleWriter,
 				this.solverProgressLoggerFactory,
 				this.updateActionFactory,
 				this.threadFactory);
 	}
 
 	/**
-	 * Diese Methode prüft {@link LogOutputManager#LogOutputManager(PuzzleSolverFactory, Optional,
-	 * Optional, SolverProgressLoggerFactory, Function, Function)}.
+	 * Diese Methode prüft {@link LogOutputManager#LogOutputManager(PuzzleSolverFactory,
+	 * BufferedReader, PrintWriter, SolverProgressLoggerFactory, Function, Function)}.
 	 *
 	 * @throws IOException wird in diesem Testfall nicht erwartet
 	 */
@@ -165,49 +162,13 @@ public class LogOutputManagerTest {
 				0L,
 				TimeUnit.SECONDS);
 
-		when(this.consoleReader.readLine()).thenReturn("stdout", null);
+		when(this.consoleReader.readLine()).thenReturn("stdout", (String) null);
 		assertThrows(TimeoutException.class, () -> future.get(3, TimeUnit.SECONDS));
 
 		this.objectUnderTest.showPromptRepeatedly();
 
 		assertDoesNotThrow(() -> future.get(3, TimeUnit.SECONDS));
 		assertDoesNotThrow(this.objectUnderTest::awaitFirstSelection);
-	}
-
-	/**
-	 * Diese Methode prüft {@link LogOutputManager#init()} wenn der Reader fehlt.
-	 */
-	@Test
-	public void testInitReaderNotPresent() {
-		this.objectUnderTest = new LogOutputManager(
-				this.puzzleSolverFactory,
-				Optional.of(this.consoleReader),
-				Optional.empty(),
-				this.solverProgressLoggerFactory,
-				this.updateActionFactory,
-				this.threadFactory);
-
-		this.objectUnderTest.init();
-
-		verify(this.backgroundThread, never()).start();
-	}
-
-	/**
-	 * Diese Methode prüft {@link LogOutputManager#init()} wenn der Writer fehlt.
-	 */
-	@Test
-	public void testInitWriterNotPresent() {
-		this.objectUnderTest = new LogOutputManager(
-				this.puzzleSolverFactory,
-				Optional.empty(),
-				Optional.of(this.consoleWriter),
-				this.solverProgressLoggerFactory,
-				this.updateActionFactory,
-				this.threadFactory);
-
-		this.objectUnderTest.init();
-
-		verify(this.backgroundThread, never()).start();
 	}
 
 	/**
