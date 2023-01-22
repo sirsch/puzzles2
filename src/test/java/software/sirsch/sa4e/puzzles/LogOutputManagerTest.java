@@ -204,7 +204,7 @@ public class LogOutputManagerTest {
 	}
 
 	/**
-	 * Diese Methode prüft {@link LogOutputManager#showPromptRepeatedly()} mit ausgabe in Datei.
+	 * Diese Methode prüft {@link LogOutputManager#showPromptRepeatedly()} mit Ausgabe in Datei.
 	 *
 	 * @throws IOException wird in diesem Testfall nicht erwartet
 	 */
@@ -227,6 +227,34 @@ public class LogOutputManagerTest {
 		orderVerifier.verify(this.consoleWriter).println(argThatStartsWith("Select log output"));
 		orderVerifier.verify(this.consoleReader).readLine();
 		orderVerifier.verify(this.puzzleSolverFactory).updateAction(fileUpdateAction);
+		orderVerifier.verify(this.consoleWriter).println(argThatStartsWith("Select log output"));
+		orderVerifier.verify(this.consoleReader).readLine();
+	}
+
+	/**
+	 * Diese Methode prüft {@link LogOutputManager#showPromptRepeatedly()} mit Ausgabe nach MQTT.
+	 *
+	 * @throws IOException wird in diesem Testfall nicht erwartet
+	 */
+	@Test
+	public void testShowPromptRepeatedlyMqtt() throws IOException {
+		InOrder orderVerifier = inOrder(
+				this.consoleReader,
+				this.consoleWriter,
+				this.puzzleSolverFactory);
+		SolverProgressLogger mqttLogger = mock(SolverProgressLogger.class);
+		Consumer<PuzzleSolver> mqttUpdateAction = mock(Consumer.class);
+
+		when(this.consoleReader.readLine()).thenReturn("mqtt=tcp://test.uri:1883", (String) null);
+		when(this.solverProgressLoggerFactory.createMqttLogger("tcp://test.uri:1883"))
+				.thenReturn(mqttLogger);
+		when(this.updateActionFactory.apply(mqttLogger)).thenReturn(mqttUpdateAction);
+
+		this.objectUnderTest.showPromptRepeatedly();
+
+		orderVerifier.verify(this.consoleWriter).println(argThatStartsWith("Select log output"));
+		orderVerifier.verify(this.consoleReader).readLine();
+		orderVerifier.verify(this.puzzleSolverFactory).updateAction(mqttUpdateAction);
 		orderVerifier.verify(this.consoleWriter).println(argThatStartsWith("Select log output"));
 		orderVerifier.verify(this.consoleReader).readLine();
 	}

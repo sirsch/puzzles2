@@ -181,6 +181,9 @@ public class LogOutputManager {
 		} else if (StringUtils.startsWithIgnoreCase(input, "file=")) {
 			this.selectOutput(this.solverProgressLoggerFactory.createFileLogger(
 					input.substring("file=".length())));
+		} else if (StringUtils.startsWithIgnoreCase(input, "mqtt=")) {
+			this.selectOutput(this.solverProgressLoggerFactory.createMqttLogger(
+					input.substring("mqtt=".length())));
 		} else {
 			this.consoleWriter.println("Invalid log output!");
 		}
