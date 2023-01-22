@@ -1,8 +1,9 @@
 package software.sirsch.sa4e.puzzles;
 
 import java.io.BufferedReader;
-import java.io.Console;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
@@ -28,11 +29,12 @@ public class LogOutputManager {
 	@Nonnull
 	private static final LogOutputManager SINGLETON_INSTANCE = new LogOutputManager(
 			PuzzleSolverFactory.getSingletonInstance(),
-			Optional.ofNullable(System.console())
-					.map(Console::reader)
+			Optional.ofNullable(System.in)
+					.map(InputStreamReader::new)
 					.map(BufferedReader::new),
-			Optional.ofNullable(System.console())
-					.map(Console::writer),
+			Optional.ofNullable(System.out)
+					.map(OutputStreamWriter::new)
+					.map(writer -> new PrintWriter(writer, true)),
 			new SolverProgressLoggerFactory(),
 			solverProgressLogger ->
 					puzzleSolver -> puzzleSolver.setSolverProgressLogger(solverProgressLogger),

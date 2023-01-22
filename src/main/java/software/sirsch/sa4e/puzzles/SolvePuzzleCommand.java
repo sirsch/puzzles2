@@ -31,16 +31,32 @@ public class SolvePuzzleCommand implements Command {
 	private final PrintStream out;
 
 	/**
-	 * Dieses Feld soll den {@link PuzzlePrinter} enthalten.
+	 * Dieses Feld muss den {@link PuzzlePrinter} enthalten.
 	 */
 	@Nonnull
 	private final PuzzlePrinter puzzlePrinter;
 
 	/**
+	 * Dieses Feld muss die Fabrik für {@link PuzzleSolver} enthalten.
+	 */
+	@Nonnull
+	private final PuzzleSolverFactory puzzleSolverFactory;
+
+	/**
+	 * Dieses Feld muss den {@link LogOutputManager} enthalten.
+	 */
+	@Nonnull
+	private final LogOutputManager logOutputManager;
+
+	/**
 	 * Dieser Konstruktor nimmt die interne Initialisierung vor.
 	 */
 	public SolvePuzzleCommand() {
-		this(System.out, new PuzzlePrinter());
+		this(
+				System.out,
+				new PuzzlePrinter(),
+				PuzzleSolverFactory.getSingletonInstance(),
+				LogOutputManager.getSingletonInstance());
 	}
 
 	/**
@@ -49,13 +65,19 @@ public class SolvePuzzleCommand implements Command {
 	 *
 	 * @param out der zu setzende {@link PrintStream}
 	 * @param puzzlePrinter der zu setzende {@link PuzzlePrinter}
+	 * @param puzzleSolverFactory die zu setzende {@link PuzzleSolverFactory}
+	 * @param logOutputManager die zu setzende {@link LogOutputManager}
 	 */
 	protected SolvePuzzleCommand(
 			@Nonnull final PrintStream out,
-			@Nonnull final PuzzlePrinter puzzlePrinter) {
+			@Nonnull final PuzzlePrinter puzzlePrinter,
+			@Nonnull final PuzzleSolverFactory puzzleSolverFactory,
+			@Nonnull final LogOutputManager logOutputManager) {
 
 		this.out = out;
 		this.puzzlePrinter = puzzlePrinter;
+		this.puzzleSolverFactory = puzzleSolverFactory;
+		this.logOutputManager = logOutputManager;
 	}
 
 	/**
@@ -109,7 +131,15 @@ public class SolvePuzzleCommand implements Command {
 	private void solvePuzzle(@Nonnull final Puzzle puzzle) {
 		this.puzzlePrinter.print(puzzle);
 		this.out.println();
-		this.printSolution(PuzzleSolverFactory.getSingletonInstance().create().solvePuzzle(puzzle));
+		this.logOutputManager.init();
+
+		try {
+			this.logOutputManager.awaitFirstSelection();
+		} catch (InterruptedException e) {
+			return;
+		}
+
+		this.printSolution(this.puzzleSolverFactory.create().solvePuzzle(puzzle));
 	}
 
 	/**

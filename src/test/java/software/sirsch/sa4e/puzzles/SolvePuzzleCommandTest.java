@@ -17,8 +17,10 @@ import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.notNull;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Diese Klasse stellt Tests für {@link SolvePuzzleCommand} bereit.
@@ -44,6 +46,16 @@ public class SolvePuzzleCommandTest {
 	private PuzzlePrinter puzzlePrinter;
 
 	/**
+	 * Dieses Feld soll den Mock für {@link PuzzleSolverFactory} enthalten.
+	 */
+	private PuzzleSolverFactory puzzleSolverFactory;
+
+	/**
+	 * Dieses Feld soll den Mock für {@link LogOutputManager} enthalten.
+	 */
+	private LogOutputManager logOutputManager;
+
+	/**
 	 * Dieses Feld soll das zu testende Objekt enthalten.
 	 */
 	private SolvePuzzleCommand objectUnderTest;
@@ -56,8 +68,15 @@ public class SolvePuzzleCommandTest {
 		this.tempFile = File.createTempFile("tempFile", ".test");
 		this.out = mock(PrintStream.class);
 		this.puzzlePrinter = mock(PuzzlePrinter.class);
+		this.puzzleSolverFactory = mock(PuzzleSolverFactory.class);
+		this.logOutputManager = mock(LogOutputManager.class);
+		when(this.puzzleSolverFactory.create()).thenReturn(new PuzzleSolver());
 
-		this.objectUnderTest = new SolvePuzzleCommand(this.out, this.puzzlePrinter);
+		this.objectUnderTest = new SolvePuzzleCommand(
+				this.out,
+				this.puzzlePrinter,
+				this.puzzleSolverFactory,
+				this.logOutputManager);
 	}
 
 	/**
@@ -72,10 +91,15 @@ public class SolvePuzzleCommandTest {
 	 * Diese Methode prüft {@link SolvePuzzleCommand#execute(String...)} mit einem einfachen Puzzle.
 	 *
 	 * @throws IOException wird in diesem Testfall nicht erwartet
+	 * @throws InterruptedException wird in diesem Testfall nicht erwartet
 	 */
 	@Test
-	public void testExecuteSimplePuzzle() throws IOException {
-		InOrder orderVerifier = inOrder(this.out, this.puzzlePrinter);
+	public void testExecuteSimplePuzzle() throws IOException, InterruptedException {
+		InOrder orderVerifier = inOrder(
+				this.out,
+				this.puzzlePrinter,
+				this.puzzleSolverFactory,
+				this.logOutputManager);
 
 		this.writePuzzle(this.generateSimplePuzzle());
 
@@ -85,8 +109,41 @@ public class SolvePuzzleCommandTest {
 
 		orderVerifier.verify(this.puzzlePrinter).print(notNull());
 		orderVerifier.verify(this.out).println();
+		orderVerifier.verify(this.logOutputManager).init();
+		orderVerifier.verify(this.logOutputManager).awaitFirstSelection();
+		orderVerifier.verify(this.puzzleSolverFactory).create();
 		orderVerifier.verify(this.out).println("Solution found:");
 		orderVerifier.verify(this.out).println("Symbol 0 ID: 0, digit value: 0");
+		orderVerifier.verifyNoMoreInteractions();
+	}
+
+	/**
+	 * Diese Methode prüft {@link SolvePuzzleCommand#execute(String...)} mit einem einfachen Puzzle.
+	 *
+	 * @throws IOException wird in diesem Testfall nicht erwartet
+	 * @throws InterruptedException wird in diesem Testfall nicht erwartet
+	 */
+	@Test
+	public void testExecuteInterruptedOnAwaitFirstSelection()
+			throws IOException, InterruptedException {
+
+		InOrder orderVerifier = inOrder(
+				this.out,
+				this.puzzlePrinter,
+				this.puzzleSolverFactory,
+				this.logOutputManager);
+
+		doThrow(new InterruptedException()).when(this.logOutputManager).awaitFirstSelection();
+		this.writePuzzle(this.generateSimplePuzzle());
+
+		this.objectUnderTest.execute(
+				SolvePuzzleCommand.COMMAND_NAME,
+				this.tempFile.getAbsolutePath());
+
+		orderVerifier.verify(this.puzzlePrinter).print(notNull());
+		orderVerifier.verify(this.out).println();
+		orderVerifier.verify(this.logOutputManager).init();
+		orderVerifier.verify(this.logOutputManager).awaitFirstSelection();
 		orderVerifier.verifyNoMoreInteractions();
 	}
 
@@ -95,10 +152,15 @@ public class SolvePuzzleCommandTest {
 	 * Puzzle.
 	 *
 	 * @throws IOException wird in diesem Testfall nicht erwartet
+	 * @throws InterruptedException wird in diesem Testfall nicht erwartet
 	 */
 	@Test
-	public void testExecuteUnsolvablePuzzle() throws IOException {
-		InOrder orderVerifier = inOrder(this.out, this.puzzlePrinter);
+	public void testExecuteUnsolvablePuzzle() throws IOException, InterruptedException {
+		InOrder orderVerifier = inOrder(
+				this.out,
+				this.puzzlePrinter,
+				this.puzzleSolverFactory,
+				this.logOutputManager);
 
 		this.writePuzzle(this.generateUnsolvablePuzzle());
 
@@ -108,6 +170,9 @@ public class SolvePuzzleCommandTest {
 
 		orderVerifier.verify(this.puzzlePrinter).print(notNull());
 		orderVerifier.verify(this.out).println();
+		orderVerifier.verify(this.logOutputManager).init();
+		orderVerifier.verify(this.logOutputManager).awaitFirstSelection();
+		orderVerifier.verify(this.puzzleSolverFactory).create();
 		orderVerifier.verify(this.out).println("No solution found!");
 		orderVerifier.verifyNoMoreInteractions();
 	}
