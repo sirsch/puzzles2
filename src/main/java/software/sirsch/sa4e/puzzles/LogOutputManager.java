@@ -150,7 +150,8 @@ public class LogOutputManager {
 	 * Diese Methode fragt die Einstellung für die Log-Ausgabe ab.
 	 */
 	private void showPrompt() {
-		this.consoleWriter.println("Select log output [none | stdout]:");
+		this.consoleWriter.println(
+				"Select log output [none | stdout | file=<filename> | mqtt=<serverURI>]:");
 		this.handleUserInput(this.readPrompt());
 	}
 
