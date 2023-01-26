@@ -1,7 +1,6 @@
 package software.sirsch.sa4e.puzzles;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 import software.sirsch.sa4e.puzzles.protobuf.Puzzles;
 import software.sirsch.sa4e.puzzles.protobuf.Puzzles.SolvePuzzleRequest;
@@ -54,11 +53,6 @@ public class Protobuf2PuzzleConverterTest {
 	private PuzzleBuilder puzzleBuilder;
 
 	/**
-	 * Dieses Feld soll den Mock für die Fabrik für {@link PuzzleBuilder} enthalten.
-	 */
-	private Supplier<PuzzleBuilder> puzzleBuilderFactory;
-
-	/**
 	 * Dieses Feld soll den Mock für die Fabrik für {@link Cell} enthalten.
 	 */
 	private CellFactory cellFactory;
@@ -78,9 +72,7 @@ public class Protobuf2PuzzleConverterTest {
 		this.cell = mock(Cell.class);
 		this.puzzle = mock(Puzzle.class);
 		this.puzzleBuilder = mock(PuzzleBuilder.class);
-		this.puzzleBuilderFactory = mock(Supplier.class);
 		this.cellFactory = mock(CellFactory.class);
-		when(this.puzzleBuilderFactory.get()).thenReturn(this.puzzleBuilder);
 		when(this.puzzleBuilder.findOrCreateSymbol(any())).thenCallRealMethod();
 		when(this.puzzleBuilder.findOrCreateSymbol(eq(0), any(), anyInt()))
 				.thenReturn(this.symbolA);
@@ -92,7 +84,7 @@ public class Protobuf2PuzzleConverterTest {
 				List.of(this.symbolA, this.symbolB, this.symbolA))).thenReturn(this.cell);
 		when(this.puzzleBuilder.build()).thenReturn(this.puzzle);
 
-		this.objectUnderTest = new Protobuf2PuzzleConverter(this.puzzleBuilderFactory, this.cellFactory);
+		this.objectUnderTest = new Protobuf2PuzzleConverter(this.puzzleBuilder, this.cellFactory);
 	}
 
 	/**

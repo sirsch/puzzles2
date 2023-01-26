@@ -1,7 +1,6 @@
 package software.sirsch.sa4e.puzzles;
 
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -32,20 +31,20 @@ public class Protobuf2PuzzleConverter {
 	 * Dieser Konstruktor nimmt die interne Initialisierung vor.
 	 */
 	public Protobuf2PuzzleConverter() {
-		this(PuzzleBuilder::new, Cell::new);
+		this(new PuzzleBuilder(), Cell::new);
 	}
 
 	/**
 	 * Dieser Konstruktor erlaubt das Einschleusen der Fabriken zum Testen.
 	 *
-	 * @param puzzleBuilderFactory die zu setzende Fabrik für {@link PuzzleBuilder}
+	 * @param puzzleBuilder der zu setzende {@link PuzzleBuilder}
 	 * @param cellFactory die zu setzende Fabrik für {@link Cell}
 	 */
 	protected Protobuf2PuzzleConverter(
-			@Nonnull final  Supplier<PuzzleBuilder> puzzleBuilderFactory,
+			@Nonnull final  PuzzleBuilder puzzleBuilder,
 			@Nonnull final  CellFactory cellFactory) {
 
-		this.puzzleBuilder = puzzleBuilderFactory.get();
+		this.puzzleBuilder = puzzleBuilder;
 		this.cellFactory = cellFactory;
 	}
 
