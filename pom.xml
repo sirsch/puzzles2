@@ -12,6 +12,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
+		<google-guava-version>${grpc-guava-version}</google-guava-version>
 	</properties>
 
 	<parent>
@@ -32,6 +33,32 @@
 			<groupId>org.eclipse.paho</groupId>
 			<artifactId>org.eclipse.paho.mqttv5.client</artifactId>
 			<version>1.2.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-core</artifactId>
+			<version>3.20.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-paho-mqtt5</artifactId>
+			<version>3.20.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jackson</artifactId>
+			<version>3.20.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-grpc</artifactId>
+			<version>3.20.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.36</version>
 		</dependency>
 
 		<dependency>
