@@ -23,6 +23,7 @@ public class PuzzlesApplication {
 			SolvePuzzleCommand.COMMAND_NAME, SolvePuzzleCommand::new,
 			RunServerCommand.COMMAND_NAME, RunServerCommand::new,
 			RequestSolvePuzzleCommand.COMMAND_NAME, RequestSolvePuzzleCommand::new,
+			RunCamelCommand.COMMAND_NAME, RunCamelCommand::new,
 			HelpCommand.COMMAND_NAME, HelpCommand::new));
 
 	/**
