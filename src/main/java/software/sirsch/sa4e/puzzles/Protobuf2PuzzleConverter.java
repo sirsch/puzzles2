@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import software.sirsch.sa4e.puzzles.protobuf.Puzzles;
 
 /**
- * Diese Klasse stellt die Konvertierung von und nach Protobuf bereit.
+ * Diese Klasse stellt die Konvertierung von Protobuf in das {@link Puzzle}-Datenformat bereit.
  *
  * @author sirsch
  * @since 29.11.2022
@@ -41,8 +41,8 @@ public class Protobuf2PuzzleConverter {
 	 * @param cellFactory die zu setzende Fabrik für {@link Cell}
 	 */
 	protected Protobuf2PuzzleConverter(
-			@Nonnull final  PuzzleBuilder puzzleBuilder,
-			@Nonnull final  CellFactory cellFactory) {
+			@Nonnull final PuzzleBuilder puzzleBuilder,
+			@Nonnull final CellFactory cellFactory) {
 
 		this.puzzleBuilder = puzzleBuilder;
 		this.cellFactory = cellFactory;
@@ -69,7 +69,6 @@ public class Protobuf2PuzzleConverter {
 	 *
 	 * @param request die zu untersuchende Anfrage
 	 */
-	@Nonnull
 	private void loadPuzzle(@Nonnull final Puzzles.SolvePuzzleRequest request) {
 		request.getSymbolsList().forEach(this.puzzleBuilder::findOrCreateSymbol);
 		request.getCellsList().forEach(this::addCell);
@@ -80,7 +79,6 @@ public class Protobuf2PuzzleConverter {
 	 *
 	 * @param cell die zu übernehmende Zelle aus der Anfrage
 	 */
-	@Nonnull
 	private void addCell(@Nonnull final Puzzles.Cell cell) {
 		this.puzzleBuilder.withCell(this.convertCell(cell));
 	}
