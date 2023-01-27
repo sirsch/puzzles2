@@ -87,9 +87,8 @@ public class Puzzle2CommonConverter {
 
 		stringBuilder.setLength(0);
 		symbols.stream()
-				.map(Symbol::getId)
-				.map(Character::toString)
-				.forEach(stringBuilder::append);
+				.map(Symbol::getIconCodePoint)
+				.forEach(stringBuilder::appendCodePoint);
 		stringBuilder.reverse();
 	}
 
