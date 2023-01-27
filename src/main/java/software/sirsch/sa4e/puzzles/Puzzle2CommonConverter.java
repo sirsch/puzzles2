@@ -1,13 +1,9 @@
 package software.sirsch.sa4e.puzzles;
 
-import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
-
-import org.apache.commons.collections4.iterators.ReverseListIterator;
 
 /**
  * Diese Klasse stellt die Funktionalität zur konvertierung eines Puzzles in das
@@ -19,10 +15,10 @@ import org.apache.commons.collections4.iterators.ReverseListIterator;
 public class Puzzle2CommonConverter {
 
 	/**
-	 * Dieses Feld enthält die Zellen als Liste von Spalten.
+	 * Dieses Feld enthält die Zellen als Liste von Zeilen.
 	 */
 	@Nonnull
-	private final List<List<StringBuilder>> columns = List.of(
+	private final List<List<StringBuilder>> rows = List.of(
 			List.of(new StringBuilder(), new StringBuilder(), new StringBuilder()),
 			List.of(new StringBuilder(), new StringBuilder(), new StringBuilder()),
 			List.of(new StringBuilder(), new StringBuilder(), new StringBuilder()));
@@ -34,13 +30,13 @@ public class Puzzle2CommonConverter {
 	 * @return die erzeugte Instanz
 	 */
 	@Nonnull
-	public CommonSolvePuzzleRequest print(@Nonnull final Puzzle puzzle) {
+	public CommonSolvePuzzleRequest createCommonSolvePuzzleRequest(@Nonnull final Puzzle puzzle) {
 		this.setCells(puzzle);
-		return null;
+		return generateCommonSolvePuzzleRequest();
 	}
 
 	/**
-	 * Diese Methode setzt die Zellen aus {@link #columns}.
+	 * Diese Methode setzt die Zellen aus {@link #rows}.
 	 *
 	 * @param puzzle das zu untersuchende Puzzle
 	 */
@@ -50,10 +46,10 @@ public class Puzzle2CommonConverter {
 	}
 
 	/**
-	 * Diese Methode löscht die Zellen aus {@link #columns}.
+	 * Diese Methode löscht die Zellen aus {@link #rows}.
 	 */
 	private void clear() {
-		this.columns.forEach(column -> column.forEach(stringBuilder -> stringBuilder.setLength(0)));
+		this.rows.forEach(column -> column.forEach(stringBuilder -> stringBuilder.setLength(0)));
 	}
 
 	/**
@@ -71,7 +67,7 @@ public class Puzzle2CommonConverter {
 	 * @param cell die zu verwendende Zelle
 	 */
 	private void addCell(@Nonnull final Cell cell) {
-		this.addSymbols(cell.getSymbols(), this.columns.get(cell.getRow()).get(cell.getColumn()));
+		this.addSymbols(cell.getSymbols(), this.rows.get(cell.getRow()).get(cell.getColumn()));
 	}
 
 	/**
@@ -82,17 +78,46 @@ public class Puzzle2CommonConverter {
 	 *     Puzzle-Datenmodell die niederwertigste Stelle an Position 0 angeordnet ist.
 	 * </p>
 	 *
-	 * @param symbols
-	 * @param stringBuilder
+	 * @param symbols die zu verarbeitenden Symbole
+	 * @param stringBuilder der zu befüllende StringBuilder
 	 */
 	private void addSymbols(
 			@Nonnull final List<Symbol> symbols,
 			@Nonnull final StringBuilder stringBuilder) {
 
+		stringBuilder.setLength(0);
 		symbols.stream()
 				.map(Symbol::getId)
 				.map(Character::toString)
 				.forEach(stringBuilder::append);
 		stringBuilder.reverse();
+	}
+
+	/**
+	 * Diese Methode erzeugt aus den Inhalten von {@link #rows} einen
+	 * {@link CommonSolvePuzzleRequest}.
+	 *
+	 * @return die erzeugte Instanz
+	 */
+	@Nonnull
+	private CommonSolvePuzzleRequest generateCommonSolvePuzzleRequest() {
+		CommonSolvePuzzleRequest request = new CommonSolvePuzzleRequest();
+
+		request.setRow1(this.generateRow(0));
+		request.setRow2(this.generateRow(1));
+		request.setRow3(this.generateRow(2));
+		return request;
+	}
+
+	/**
+	 * Diese Methode erzeugt eine Zeile als Liste von String.
+	 *
+	 * @param row die Zeilennummer
+	 * @return die erzeugte Liste
+	 */
+	private List<String> generateRow(final int row) {
+		return this.rows.get(row).stream()
+				.map(StringBuilder::toString)
+				.collect(Collectors.toList());
 	}
 }
