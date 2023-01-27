@@ -123,7 +123,9 @@ public class Common2PuzzleConverter {
 	 */
 	@Nonnull
 	private List<Symbol> convertSymbols(@Nonnull final String cell) {
-		return cell.chars()
+		return new StringBuilder(cell)
+				.reverse()
+				.chars()
 				.mapToObj(this::findSymbol)
 				.collect(Collectors.toList());
 	}
