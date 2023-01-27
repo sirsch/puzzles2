@@ -3,14 +3,21 @@ package software.sirsch.sa4e.puzzles;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
+import software.sirsch.sa4e.puzzles.protobuf.Puzzles;
+import software.sirsch.sa4e.puzzles.protobuf.Puzzles.SolvePuzzleResponse;
+
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
+import org.apache.camel.Message;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.model.dataformat.JsonLibrary;
@@ -27,6 +34,18 @@ public class RunCamelCommand implements Command {
 	 * Diese Konstante enthält den Namen des Kommandos.
 	 */
 	public static final String COMMAND_NAME = "run-camel";
+
+	/**
+	 * Diese Konstante enthält den Schlüssel für den Header, der die ursprüngliche Anfrage enthält.
+	 */
+	private static final String ORIGINAL_REQUEST_HEADER
+			= RunCamelCommand.class.getName() + ".ORIGINAL_REQUEST_HEADER";
+
+	/**
+	 * Diese Konstante enthält den Schlüssel für den Header, der den Startzeitpunkt enthält.
+	 */
+	private static final String START_TIMESTAMP_HEADER
+			= RunCamelCommand.class.getName() + ".START_TIMESTAMP_HEADER";
 
 	/**
 	 * Dieses Feld soll die URL des MQTT-Brokers enthalten.
@@ -151,17 +170,12 @@ public class RunCamelCommand implements Command {
 			public void configure() throws Exception {
 				from(createMqttUri("Zahlenraetsel"))
 						.unmarshal().json(JsonLibrary.Jackson, CommonSolvePuzzleRequest.class)
-						.process(exchange -> exchange.getMessage().setBody(
-								new Puzzle2ProtobufConverter().createSolvePuzzleRequest(
-										new Common2PuzzleConverter().createPuzzle(
-												exchange.getIn().getBody(
-														CommonSolvePuzzleRequest.class)))))
-						.to("grpc://" + grpcServer
-								+ "/software.sirsch.sa4e.puzzles.protobuf.PuzzleSolver"
-								+ "?method=solvePuzzle&synchronous=true")
-						.process()
-						.body(System.out::println)
-						.log("log message");
+						.process(RunCamelCommand.this::convertCommonFormat2Protobuf)
+						.to(createGrpcSolvePuzzleUri())
+						.filter(RunCamelCommand.this::isSolutionFound)
+						.process(RunCamelCommand.this::mergeResult)
+						.marshal().json(JsonLibrary.Jackson, true)
+						.to(createMqttUri("Loesung"));
 			}
 		};
 	}
@@ -175,13 +189,138 @@ public class RunCamelCommand implements Command {
 	private RouteBuilder createGeneratorRouteBuilder() {
 		return new RouteBuilder() {
 			@Override
-			public void configure() throws Exception {
+			public void configure() {
 				from("timer:puzzleGenerator?period=60000")
 						.process(RunCamelCommand.this::generatePuzzle)
 						.marshal().json(JsonLibrary.Jackson, true)
 						.to(createMqttUri("Zahlenraetsel"));
 			}
 		};
+	}
+
+	/**
+	 * Diese Methode stellt einen Camel-Prozessor zur Konvertierung von Austauschdatenformat in das
+	 * lokale Protobuf-Format bereit.
+	 *
+	 * @param exchange das zu verwendende Austauschobjekt
+	 */
+	private void convertCommonFormat2Protobuf(@Nonnull final Exchange exchange) {
+		this.convertCommonFormat2Protobuf(
+				exchange.getIn().getBody(CommonSolvePuzzleRequest.class),
+				exchange.getMessage());
+	}
+
+	/**
+	 * Diese Methode konvertiert ein Puzzle vom Austauschdatenformat in das lokale Protobuf-Format.
+	 *
+	 * @param inMessageBody der Inhalt der Eingangsnachricht
+	 * @param outMessage die zu befüllende Ausgangsnachricht
+	 */
+	private void convertCommonFormat2Protobuf(
+			@Nonnull final CommonSolvePuzzleRequest inMessageBody,
+			@Nonnull final Message outMessage) {
+
+		outMessage.setHeader(ORIGINAL_REQUEST_HEADER, inMessageBody);
+		outMessage.setHeader(START_TIMESTAMP_HEADER, System.currentTimeMillis());
+		outMessage.setBody(this.convertCommonFormat2Protobuf(inMessageBody));
+	}
+
+	/**
+	 * Diese Methode konvertiert ein Puzzle vom Austauschdatenformat in das lokale Protobuf-Format.
+	 *
+	 * @param request das Puzzle im Austauschformat
+	 * @return das Puzzle im Protobuf-Format
+	 */
+	private Puzzles.SolvePuzzleRequest convertCommonFormat2Protobuf(
+			@Nonnull final CommonSolvePuzzleRequest request) {
+
+		return new Puzzle2ProtobufConverter().createSolvePuzzleRequest(
+				new Common2PuzzleConverter().createPuzzle(request));
+	}
+
+	/**
+	 * Diese Methode stellt einen Camel-Predicate zur Prüfung, ob eine Lösung gefunden wurde,
+	 * bereit.
+	 *
+	 * @param exchange das zu verwendende Austauschobjekt
+	 * @return {@code true} falls eine Lösung gefunden wurde, sonst {@code false}
+	 */
+	private boolean isSolutionFound(@Nonnull final Exchange exchange) {
+		return exchange.getIn().getBody(SolvePuzzleResponse.class).getSolutionFound();
+	}
+
+	/**
+	 * Diese Methode stellt einen Camel-Prozessor zur Zusammenführung der Lösung mit dem Rätsel im
+	 * Austauschdatenformat bereit.
+	 *
+	 * @param exchange das zu verwendende Austauschobjekt
+	 */
+	private void mergeResult(@Nonnull final Exchange exchange) {
+		final double millisecondsPerSecond = 1000.0;
+		CommonSolvePuzzleResponse response = new CommonSolvePuzzleResponse();
+
+		response.setRaetselId(exchange.getIn().getHeader(
+				ORIGINAL_REQUEST_HEADER,
+				CommonSolvePuzzleRequest.class).getRaetselId());
+		response.setServerId(exchange.getIn().getHeader(
+				ORIGINAL_REQUEST_HEADER,
+				CommonSolvePuzzleRequest.class).getServerId());
+		response.setRow1(this.convertRow(
+				exchange.getIn().getHeader(
+						ORIGINAL_REQUEST_HEADER,
+						CommonSolvePuzzleRequest.class).getRow1(),
+				exchange.getIn().getBody(SolvePuzzleResponse.class).getSymbolIdToDigitMap()));
+		response.setRow2(this.convertRow(
+				exchange.getIn().getHeader(
+						ORIGINAL_REQUEST_HEADER,
+						CommonSolvePuzzleRequest.class).getRow2(),
+				exchange.getIn().getBody(SolvePuzzleResponse.class).getSymbolIdToDigitMap()));
+		response.setRow3(this.convertRow(
+				exchange.getIn().getHeader(
+						ORIGINAL_REQUEST_HEADER,
+						CommonSolvePuzzleRequest.class).getRow3(),
+				exchange.getIn().getBody(SolvePuzzleResponse.class).getSymbolIdToDigitMap()));
+		response.setTime(
+				(System.currentTimeMillis()
+						- exchange.getIn().getHeader(START_TIMESTAMP_HEADER, Long.class))
+						/ millisecondsPerSecond);
+		exchange.getMessage().setBody(response);
+	}
+
+	/**
+	 * Diese Methode konvertiert eine Zeile.
+	 *
+	 * @param row die zu konvertierende Zeile
+	 * @param symbolIdToDigitMap die Zuordnung, für die Zeichenersetzung
+	 * @return die konvertierte Zeile
+	 */
+	private List<Integer> convertRow(
+			@Nonnull final List<String> row,
+			@Nonnull final Map<Integer, Integer> symbolIdToDigitMap) {
+
+		return row.stream()
+				.map(cell -> this.convertCell(cell, symbolIdToDigitMap))
+				.collect(Collectors.toList());
+	}
+
+	/**
+	 * Diese Methode konvertiert eine Zelle.
+	 *
+	 * @param cell die zu konvertierende Zelle
+	 * @param symbolIdToDigitMap die Zuordnung, für die Zeichenersetzung
+	 * @return die konvertierte Zelle
+	 */
+	private Integer convertCell(
+			@Nonnull final String cell,
+			@Nonnull final Map<Integer, Integer> symbolIdToDigitMap) {
+
+		StringBuilder stringBuilder = new StringBuilder();
+
+		cell.chars()
+				.map(symbolIdToDigitMap::get)
+				.mapToObj(Integer::toString)
+				.forEach(stringBuilder::append);
+		return Integer.valueOf(stringBuilder.toString());
 	}
 
 	/**
@@ -218,6 +357,18 @@ public class RunCamelCommand implements Command {
 	@Nonnull
 	private String createMqttUri(@Nonnull final String topic) {
 		return "paho-mqtt5:" + topic + "?brokerUrl=" + this.mqttBrokerUrl;
+	}
+
+	/**
+	 * Diese Methode erzeugte die Camel-URI für den gRPC-Endpoint.
+	 *
+	 * @return die erzeugte Camel-URI
+	 */
+	@Nonnull
+	private String createGrpcSolvePuzzleUri() {
+		return "grpc://" + this.grpcServer
+				+ "/software.sirsch.sa4e.puzzles.protobuf.PuzzleSolver"
+				+ "?method=solvePuzzle&synchronous=true";
 	}
 
 	/**
