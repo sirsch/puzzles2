@@ -10,6 +10,8 @@ import software.sirsch.sa4e.puzzles.protobuf.PuzzleSolverGrpc;
 import software.sirsch.sa4e.puzzles.protobuf.Puzzles.SolvePuzzleRequest;
 import software.sirsch.sa4e.puzzles.protobuf.Puzzles.SolvePuzzleResponse;
 
+import org.apache.commons.collections4.Factory;
+
 import io.grpc.stub.StreamObserver;
 
 /**
@@ -21,10 +23,10 @@ import io.grpc.stub.StreamObserver;
 public class PuzzleSolverService extends PuzzleSolverGrpc.PuzzleSolverImplBase {
 
 	/**
-	 * Dieses Feld muss den {@link Protobuf2PuzzleConverter} enthalten.
+	 * Dieses Feld muss die Fabrik für {@link Protobuf2PuzzleConverter} enthalten.
 	 */
 	@Nonnull
-	private final Protobuf2PuzzleConverter protobuf2PuzzleConverter;
+	private final Factory<Protobuf2PuzzleConverter> protobuf2PuzzleConverterFactory;
 
 	/**
 	 * Dieses Feld muss den {@link PuzzleSolver} enthalten.
@@ -36,20 +38,21 @@ public class PuzzleSolverService extends PuzzleSolverGrpc.PuzzleSolverImplBase {
 	 * Dieser Konstruktor nimmt die interne Initialisierung vor.
 	 */
 	public PuzzleSolverService() {
-		this(new Protobuf2PuzzleConverter(), PuzzleSolverFactory.getSingletonInstance().create());
+		this(Protobuf2PuzzleConverter::new, PuzzleSolverFactory.getSingletonInstance().create());
 	}
 
 	/**
 	 * Dieser Konstruktor erlaubt das Einschleusen von Objekten zum Testen.
 	 *
-	 * @param protobuf2PuzzleConverter der zu setzende {@link Protobuf2PuzzleConverter}
+	 * @param protobuf2PuzzleConverterFactory der zu setzende Farbrik für
+	 * {@link Protobuf2PuzzleConverter}
 	 * @param puzzleSolver der zu setzende {@link PuzzleSolver}
 	 */
 	protected PuzzleSolverService(
-			@Nonnull final Protobuf2PuzzleConverter protobuf2PuzzleConverter,
+			@Nonnull final Factory<Protobuf2PuzzleConverter> protobuf2PuzzleConverterFactory,
 			@Nonnull final PuzzleSolver puzzleSolver) {
 
-		this.protobuf2PuzzleConverter = protobuf2PuzzleConverter;
+		this.protobuf2PuzzleConverterFactory = protobuf2PuzzleConverterFactory;
 		this.puzzleSolver = puzzleSolver;
 	}
 
@@ -79,7 +82,7 @@ public class PuzzleSolverService extends PuzzleSolverGrpc.PuzzleSolverImplBase {
 	 * @return das ermittelte Rätsel
 	 */
 	private Puzzle convertRequest(@Nonnull final SolvePuzzleRequest request) {
-		return this.protobuf2PuzzleConverter.createPuzzle(request);
+		return this.protobuf2PuzzleConverterFactory.create().createPuzzle(request);
 	}
 
 	/**
