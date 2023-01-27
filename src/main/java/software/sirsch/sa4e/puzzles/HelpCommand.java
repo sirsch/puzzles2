@@ -22,5 +22,7 @@ public class HelpCommand implements Command {
 		System.out.println("usage: run-server <port>");
 		System.out.println(
 				"usage: request-solve-puzzle <serverHost> <serverPort> <?numberOfDigits>");
+		System.out.println("usage: "
+				+ "run-camel <mqttBrokerUrl> <grpcServer> <?generatePuzzleNumberOfDigits>");
 	}
 }
