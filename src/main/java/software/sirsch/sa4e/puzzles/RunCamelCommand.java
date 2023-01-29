@@ -167,7 +167,7 @@ public class RunCamelCommand implements Command {
 	private RouteBuilder createDefaultRouteBuilder() {
 		return new RouteBuilder() {
 			@Override
-			public void configure() throws Exception {
+			public void configure() {
 				from(createMqttUri("Zahlenraetsel"))
 						.unmarshal().json(JsonLibrary.Jackson, CommonSolvePuzzleRequest.class)
 						.process(RunCamelCommand.this::convertCommonFormat2Protobuf)
