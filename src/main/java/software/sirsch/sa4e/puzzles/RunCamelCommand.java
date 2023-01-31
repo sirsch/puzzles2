@@ -262,9 +262,7 @@ public class RunCamelCommand implements Command {
 		response.setRaetselId(exchange.getIn().getHeader(
 				ORIGINAL_REQUEST_HEADER,
 				CommonSolvePuzzleRequest.class).getRaetselId());
-		response.setServerId(exchange.getIn().getHeader(
-				ORIGINAL_REQUEST_HEADER,
-				CommonSolvePuzzleRequest.class).getServerId());
+		response.setServerId(this.serverId);
 		response.setRow1(this.convertRow(
 				exchange.getIn().getHeader(
 						ORIGINAL_REQUEST_HEADER,
